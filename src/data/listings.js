@@ -1,8 +1,13 @@
+import cellarIcon from "../assets/icons/cellar.png";
+import garageIcon from "../assets/icons/garage.png";
+import parkingIcon from "../assets/icons/parking.png";
+import storageIcon from "../assets/icons/storage.png";
+
 export const ROOM_TYPES = [
-  { value: "cellar", icon: "🧺" },
-  { value: "garage", icon: "🚗" },
-  { value: "storage", icon: "📦" },
-  { value: "parking", icon: "🅿️" },
+  { value: "cellar", icon: cellarIcon },
+  { value: "garage", icon: garageIcon },
+  { value: "storage", icon: storageIcon },
+  { value: "parking", icon: parkingIcon },
 ];
 
 export const NEIGHBOURHOODS = [

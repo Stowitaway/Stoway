@@ -8,20 +8,21 @@ import {
 } from "../data/neighbourhoodCoords";
 import { useLanguage } from "../i18n/LanguageContext";
 
-function createMarkerIcon(icon, isActive) {
+function createMarkerIcon(iconUrl, isActive) {
   return L.divIcon({
     html: `<div style="
       display:flex;align-items:center;justify-content:center;
-      width:34px;height:34px;border-radius:50% 50% 50% 0;
+      width:36px;height:36px;border-radius:50% 50% 50% 0;
       transform:rotate(-45deg);
       background:${isActive ? "#c2703d" : "#333333"};
       border:2px solid white;
       box-shadow:0 1px 4px rgba(0,0,0,0.4);
-    "><span style="transform:rotate(45deg);font-size:16px;">${icon ?? "📦"}</span></div>`,
+      overflow:hidden;
+    "><img src="${iconUrl}" style="width:22px;height:22px;object-fit:cover;border-radius:4px;transform:rotate(45deg);" /></div>`,
     className: "",
-    iconSize: [34, 34],
-    iconAnchor: [17, 32],
-    popupAnchor: [0, -30],
+    iconSize: [36, 36],
+    iconAnchor: [18, 34],
+    popupAnchor: [0, -32],
   });
 }
 

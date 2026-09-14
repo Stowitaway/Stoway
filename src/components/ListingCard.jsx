@@ -15,7 +15,11 @@ export default function ListingCard({ listing, highlighted }) {
       }`}
     >
       <div className="relative flex h-36 items-center justify-center border-b border-kraft-300 bg-kraft-100">
-        <span className="text-5xl">{type?.icon}</span>
+        <img
+          src={type?.icon}
+          alt={t(`roomTypes.${type?.value}`)}
+          className="h-full w-full object-cover"
+        />
         <span className="absolute right-3 top-3 rounded bg-stamp px-2 py-0.5 text-sm font-medium text-kraft-50">
           €{listing.price}{t("perMonth")}
         </span>

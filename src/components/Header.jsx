@@ -68,13 +68,14 @@ export default function Header({
                 key={rt.value}
                 type="button"
                 onClick={() => onTypeChange(rt.value)}
-                className={`rounded-full border px-3 py-1.5 text-sm font-medium transition ${
+                className={`flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm font-medium transition ${
                   activeType === rt.value
                     ? "border-kraft-700 bg-kraft-700 text-kraft-50"
                     : "border-kraft-300 bg-kraft-50 text-kraft-800 hover:bg-kraft-200"
                 }`}
               >
-                {rt.icon} {t(`roomTypes.${rt.value}`)}
+                <img src={rt.icon} alt="" className="h-4 w-4 rounded-sm object-cover" />
+                {t(`roomTypes.${rt.value}`)}
               </button>
             ))}
           </div>
