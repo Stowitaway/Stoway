@@ -8,12 +8,12 @@ export default function Header({
   onListSpaceClick,
 }) {
   return (
-    <header className="border-b-4 border-double border-kraft-400 bg-kraft-200/80 backdrop-blur-sm">
+    <header className="border-b border-kraft-300 bg-kraft-50">
       <div className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-4 sm:px-6">
         <div className="flex items-center justify-between gap-4">
           <div className="flex items-center gap-2">
             <span className="text-2xl">📦</span>
-            <h1 className="font-display text-3xl tracking-wide text-kraft-900">
+            <h1 className="text-2xl font-semibold tracking-wide text-kraft-900">
               Stowt
             </h1>
             <span className="hidden text-sm text-kraft-700 sm:inline">
@@ -24,7 +24,7 @@ export default function Header({
           <button
             type="button"
             onClick={onListSpaceClick}
-            className="shrink-0 rounded-md border-2 border-kraft-700 bg-stamp px-4 py-2 font-display text-sm text-kraft-50 shadow-[2px_2px_0_0_rgba(92,65,44,0.4)] transition hover:-translate-y-0.5 hover:shadow-[3px_3px_0_0_rgba(92,65,44,0.4)]"
+            className="shrink-0 rounded-md bg-stamp px-4 py-2 text-sm font-medium text-kraft-50 transition hover:opacity-90"
           >
             List your space
           </button>

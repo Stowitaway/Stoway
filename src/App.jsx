@@ -45,7 +45,7 @@ function App() {
         </p>
 
         {filteredListings.length === 0 ? (
-          <div className="rounded-lg border border-dashed border-kraft-300 bg-kraft-50 p-10 text-center text-kraft-700">
+          <div className="rounded-lg border border-kraft-300 bg-kraft-50 p-10 text-center text-kraft-700">
             Keine Angebote für diese Suche gefunden.
           </div>
         ) : (

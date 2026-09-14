@@ -35,8 +35,8 @@ export default function ListSpaceModal({ onClose, onSubmit }) {
         onClick={(e) => e.stopPropagation()}
         className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-lg border-2 border-kraft-400 bg-kraft-50 shadow-2xl"
       >
-        <div className="flex items-center justify-between border-b border-dashed border-kraft-300 bg-kraft-200/70 px-5 py-4">
-          <h2 className="font-display text-2xl text-kraft-900">
+        <div className="flex items-center justify-between border-b border-kraft-300 bg-kraft-100 px-5 py-4">
+          <h2 className="text-xl font-semibold text-kraft-900">
             Deinen Stauraum vermieten
           </h2>
           <button
@@ -154,7 +154,7 @@ export default function ListSpaceModal({ onClose, onSubmit }) {
             </button>
             <button
               type="submit"
-              className="rounded-md border-2 border-kraft-700 bg-stamp px-4 py-2 font-display text-sm text-kraft-50 shadow-[2px_2px_0_0_rgba(92,65,44,0.4)] hover:-translate-y-0.5"
+              className="rounded-md bg-stamp px-4 py-2 text-sm font-medium text-kraft-50 transition hover:opacity-90"
             >
               Angebot veröffentlichen
             </button>
