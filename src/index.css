@@ -1,0 +1,27 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Kalam", "Segoe Print", cursive;
+
+  --color-kraft-50: #fbf6ee;
+  --color-kraft-100: #f4e9d7;
+  --color-kraft-200: #e7d3b0;
+  --color-kraft-300: #d7b787;
+  --color-kraft-400: #c39a63;
+  --color-kraft-500: #ad8049;
+  --color-kraft-600: #8f653b;
+  --color-kraft-700: #714f32;
+  --color-kraft-800: #5c412c;
+  --color-kraft-900: #4d3728;
+  --color-tape: #d6c19a;
+  --color-stamp: #b5482f;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--color-kraft-100);
+  background-image:
+    radial-gradient(circle at 1px 1px, rgba(93, 65, 44, 0.08) 1px, transparent 0);
+  background-size: 18px 18px;
+}
