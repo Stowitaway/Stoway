@@ -1,12 +1,19 @@
 import { ROOM_TYPES, localizedText } from "../data/listings";
 import { useLanguage } from "../i18n/LanguageContext";
 
-export default function ListingCard({ listing }) {
+export default function ListingCard({ listing, highlighted }) {
   const { t, locale } = useLanguage();
   const type = ROOM_TYPES.find((rt) => rt.value === listing.type);
 
   return (
-    <article className="flex flex-col overflow-hidden rounded-lg border border-kraft-300 bg-kraft-50 transition hover:shadow-md">
+    <article
+      id={`listing-${listing.id}`}
+      className={`flex flex-col overflow-hidden rounded-lg border bg-kraft-50 transition hover:shadow-md ${
+        highlighted
+          ? "border-stamp ring-2 ring-stamp"
+          : "border-kraft-300"
+      }`}
+    >
       <div className="relative flex h-36 items-center justify-center border-b border-kraft-300 bg-kraft-100">
         <span className="text-5xl">{type?.icon}</span>
         <span className="absolute right-3 top-3 rounded bg-stamp px-2 py-0.5 text-sm font-medium text-kraft-50">
