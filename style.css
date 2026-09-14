@@ -1,0 +1,17 @@
+body {
+  font-family: system-ui, sans-serif;
+  max-width: 640px;
+  margin: 4rem auto;
+  padding: 0 1rem;
+  color: #222;
+}
+
+header h1 {
+  margin-bottom: 1rem;
+}
+
+button {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  cursor: pointer;
+}
