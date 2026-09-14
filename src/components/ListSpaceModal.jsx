@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { NEIGHBOURHOODS, ROOM_TYPES } from "../data/listings";
+import { useLanguage } from "../i18n/LanguageContext";
 
 const emptyForm = {
   title: "",
@@ -12,6 +13,7 @@ const emptyForm = {
 };
 
 export default function ListSpaceModal({ onClose, onSubmit }) {
+  const { t } = useLanguage();
   const [form, setForm] = useState(emptyForm);
 
   const update = (field) => (e) =>
@@ -37,12 +39,12 @@ export default function ListSpaceModal({ onClose, onSubmit }) {
       >
         <div className="flex items-center justify-between border-b border-kraft-300 bg-kraft-100 px-5 py-4">
           <h2 className="text-xl font-semibold text-kraft-900">
-            Deinen Stauraum vermieten
+            {t("modal.title")}
           </h2>
           <button
             type="button"
             onClick={onClose}
-            aria-label="Schließen"
+            aria-label={t("modal.close")}
             className="rounded-full px-2 py-1 text-kraft-700 hover:bg-kraft-200"
           >
             ✕
@@ -51,20 +53,20 @@ export default function ListSpaceModal({ onClose, onSubmit }) {
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4 px-5 py-5">
           <label className="flex flex-col gap-1 text-sm text-kraft-800">
-            Titel
+            {t("modal.fieldTitle")}
             <input
               required
               type="text"
               value={form.title}
               onChange={update("title")}
-              placeholder="z. B. Trockener Keller in Alfama"
+              placeholder={t("modal.titlePlaceholder")}
               className="rounded-md border border-kraft-300 bg-white px-3 py-2 text-sm focus:border-kraft-500 focus:outline-none focus:ring-2 focus:ring-kraft-400"
             />
           </label>
 
           <div className="grid grid-cols-2 gap-4">
             <label className="flex flex-col gap-1 text-sm text-kraft-800">
-              Stadtteil
+              {t("modal.fieldNeighbourhood")}
               <select
                 value={form.neighbourhood}
                 onChange={update("neighbourhood")}
@@ -79,15 +81,15 @@ export default function ListSpaceModal({ onClose, onSubmit }) {
             </label>
 
             <label className="flex flex-col gap-1 text-sm text-kraft-800">
-              Raumtyp
+              {t("modal.fieldRoomType")}
               <select
                 value={form.type}
                 onChange={update("type")}
                 className="rounded-md border border-kraft-300 bg-white px-3 py-2 text-sm focus:border-kraft-500 focus:outline-none focus:ring-2 focus:ring-kraft-400"
               >
-                {ROOM_TYPES.map((t) => (
-                  <option key={t.value} value={t.value}>
-                    {t.label}
+                {ROOM_TYPES.map((rt) => (
+                  <option key={rt.value} value={rt.value}>
+                    {t(`roomTypes.${rt.value}`)}
                   </option>
                 ))}
               </select>
@@ -96,7 +98,7 @@ export default function ListSpaceModal({ onClose, onSubmit }) {
 
           <div className="grid grid-cols-2 gap-4">
             <label className="flex flex-col gap-1 text-sm text-kraft-800">
-              Größe (m²)
+              {t("modal.fieldSize")}
               <input
                 required
                 type="number"
@@ -108,7 +110,7 @@ export default function ListSpaceModal({ onClose, onSubmit }) {
             </label>
 
             <label className="flex flex-col gap-1 text-sm text-kraft-800">
-              Preis (€/Monat)
+              {t("modal.fieldPrice")}
               <input
                 required
                 type="number"
@@ -121,25 +123,25 @@ export default function ListSpaceModal({ onClose, onSubmit }) {
           </div>
 
           <label className="flex flex-col gap-1 text-sm text-kraft-800">
-            Dein Name
+            {t("modal.fieldHost")}
             <input
               required
               type="text"
               value={form.host}
               onChange={update("host")}
-              placeholder="z. B. Mariana"
+              placeholder={t("modal.hostPlaceholder")}
               className="rounded-md border border-kraft-300 bg-white px-3 py-2 text-sm focus:border-kraft-500 focus:outline-none focus:ring-2 focus:ring-kraft-400"
             />
           </label>
 
           <label className="flex flex-col gap-1 text-sm text-kraft-800">
-            Beschreibung
+            {t("modal.fieldDescription")}
             <textarea
               required
               rows={3}
               value={form.description}
               onChange={update("description")}
-              placeholder="Zugang, Sicherheit, Besonderheiten…"
+              placeholder={t("modal.descriptionPlaceholder")}
               className="resize-none rounded-md border border-kraft-300 bg-white px-3 py-2 text-sm focus:border-kraft-500 focus:outline-none focus:ring-2 focus:ring-kraft-400"
             />
           </label>
@@ -150,13 +152,13 @@ export default function ListSpaceModal({ onClose, onSubmit }) {
               onClick={onClose}
               className="rounded-md border border-kraft-300 px-4 py-2 text-sm text-kraft-800 hover:bg-kraft-200"
             >
-              Abbrechen
+              {t("modal.cancel")}
             </button>
             <button
               type="submit"
               className="rounded-md bg-stamp px-4 py-2 text-sm font-medium text-kraft-50 transition hover:opacity-90"
             >
-              Angebot veröffentlichen
+              {t("modal.publish")}
             </button>
           </div>
         </form>

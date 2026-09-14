@@ -1,4 +1,6 @@
 import { ROOM_TYPES } from "../data/listings";
+import { useLanguage } from "../i18n/LanguageContext";
+import LanguageSwitcher from "./LanguageSwitcher";
 
 export default function Header({
   search,
@@ -7,6 +9,8 @@ export default function Header({
   onTypeChange,
   onListSpaceClick,
 }) {
+  const { t } = useLanguage();
+
   return (
     <header className="border-b border-kraft-300 bg-kraft-50">
       <div className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-4 sm:px-6">
@@ -17,17 +21,20 @@ export default function Header({
               Stowt
             </h1>
             <span className="hidden text-sm text-kraft-700 sm:inline">
-              · Stauraum in Lissabon mieten &amp; vermieten
+              · {t("tagline")}
             </span>
           </div>
 
-          <button
-            type="button"
-            onClick={onListSpaceClick}
-            className="shrink-0 rounded-md bg-stamp px-4 py-2 text-sm font-medium text-kraft-50 transition hover:opacity-90"
-          >
-            List your space
-          </button>
+          <div className="flex items-center gap-3">
+            <LanguageSwitcher />
+            <button
+              type="button"
+              onClick={onListSpaceClick}
+              className="shrink-0 rounded-md bg-stamp px-4 py-2 text-sm font-medium text-kraft-50 transition hover:opacity-90"
+            >
+              {t("listYourSpace")}
+            </button>
+          </div>
         </div>
 
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
@@ -39,7 +46,7 @@ export default function Header({
               type="text"
               value={search}
               onChange={(e) => onSearchChange(e.target.value)}
-              placeholder="Nach Stadtteil suchen, z. B. Alfama, Chiado, Graça…"
+              placeholder={t("searchPlaceholder")}
               className="w-full rounded-md border border-kraft-300 bg-kraft-50 py-2 pl-9 pr-3 text-sm text-kraft-900 placeholder:text-kraft-500 focus:border-kraft-500 focus:outline-none focus:ring-2 focus:ring-kraft-400"
             />
           </div>
@@ -54,20 +61,20 @@ export default function Header({
                   : "border-kraft-300 bg-kraft-50 text-kraft-800 hover:bg-kraft-200"
               }`}
             >
-              Alle
+              {t("filterAll")}
             </button>
-            {ROOM_TYPES.map((t) => (
+            {ROOM_TYPES.map((rt) => (
               <button
-                key={t.value}
+                key={rt.value}
                 type="button"
-                onClick={() => onTypeChange(t.value)}
+                onClick={() => onTypeChange(rt.value)}
                 className={`rounded-full border px-3 py-1.5 text-sm font-medium transition ${
-                  activeType === t.value
+                  activeType === rt.value
                     ? "border-kraft-700 bg-kraft-700 text-kraft-50"
                     : "border-kraft-300 bg-kraft-50 text-kraft-800 hover:bg-kraft-200"
                 }`}
               >
-                {t.icon} {t.label}
+                {rt.icon} {t(`roomTypes.${rt.value}`)}
               </button>
             ))}
           </div>

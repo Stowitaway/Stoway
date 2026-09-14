@@ -1,0 +1,161 @@
+export const LOCALES = [
+  { code: "en", label: "EN", flag: "🇬🇧" },
+  { code: "pt", label: "PT", flag: "🇵🇹" },
+  { code: "de", label: "DE", flag: "🇩🇪" },
+  { code: "it", label: "IT", flag: "🇮🇹" },
+];
+
+export const DEFAULT_LOCALE = "en";
+
+export const translations = {
+  en: {
+    tagline: "Rent storage space in Lisbon",
+    listYourSpace: "List your space",
+    searchPlaceholder: "Search by neighbourhood, e.g. Alfama, Chiado, Graça…",
+    filterAll: "All",
+    roomTypes: {
+      cellar: "Cellar",
+      garage: "Garage",
+      storage: "Storage room",
+      parking: "Parking spot",
+    },
+    resultsOne: "listing found",
+    resultsOther: "listings found",
+    noResults: "No listings found for this search.",
+    perMonth: "/month",
+    rentedBy: "Rented out by {host}",
+    request: "Request",
+    modal: {
+      title: "List your space",
+      close: "Close",
+      fieldTitle: "Title",
+      titlePlaceholder: "e.g. Dry cellar in Alfama",
+      fieldNeighbourhood: "Neighbourhood",
+      fieldRoomType: "Space type",
+      fieldSize: "Size (m²)",
+      fieldPrice: "Price (€/month)",
+      fieldHost: "Your name",
+      hostPlaceholder: "e.g. Mariana",
+      fieldDescription: "Description",
+      descriptionPlaceholder: "Access, security, special features…",
+      cancel: "Cancel",
+      publish: "Publish listing",
+    },
+  },
+  pt: {
+    tagline: "Alugue espaço de armazenamento em Lisboa",
+    listYourSpace: "Anuncie o seu espaço",
+    searchPlaceholder: "Pesquisar por bairro, ex. Alfama, Chiado, Graça…",
+    filterAll: "Todos",
+    roomTypes: {
+      cellar: "Cave",
+      garage: "Garagem",
+      storage: "Arrecadação",
+      parking: "Lugar de estacionamento",
+    },
+    resultsOne: "anúncio encontrado",
+    resultsOther: "anúncios encontrados",
+    noResults: "Nenhum anúncio encontrado para esta pesquisa.",
+    perMonth: "/mês",
+    rentedBy: "Alugado por {host}",
+    request: "Contactar",
+    modal: {
+      title: "Anuncie o seu espaço",
+      close: "Fechar",
+      fieldTitle: "Título",
+      titlePlaceholder: "ex. Cave seca em Alfama",
+      fieldNeighbourhood: "Bairro",
+      fieldRoomType: "Tipo de espaço",
+      fieldSize: "Tamanho (m²)",
+      fieldPrice: "Preço (€/mês)",
+      fieldHost: "O seu nome",
+      hostPlaceholder: "ex. Mariana",
+      fieldDescription: "Descrição",
+      descriptionPlaceholder: "Acesso, segurança, particularidades…",
+      cancel: "Cancelar",
+      publish: "Publicar anúncio",
+    },
+  },
+  de: {
+    tagline: "Stauraum in Lissabon mieten",
+    listYourSpace: "Stauraum vermieten",
+    searchPlaceholder: "Nach Stadtteil suchen, z. B. Alfama, Chiado, Graça…",
+    filterAll: "Alle",
+    roomTypes: {
+      cellar: "Keller",
+      garage: "Garage",
+      storage: "Lagerraum",
+      parking: "Parkplatz",
+    },
+    resultsOne: "Angebot gefunden",
+    resultsOther: "Angebote gefunden",
+    noResults: "Keine Angebote für diese Suche gefunden.",
+    perMonth: "/Monat",
+    rentedBy: "Vermietet von {host}",
+    request: "Anfragen",
+    modal: {
+      title: "Deinen Stauraum vermieten",
+      close: "Schließen",
+      fieldTitle: "Titel",
+      titlePlaceholder: "z. B. Trockener Keller in Alfama",
+      fieldNeighbourhood: "Stadtteil",
+      fieldRoomType: "Raumtyp",
+      fieldSize: "Größe (m²)",
+      fieldPrice: "Preis (€/Monat)",
+      fieldHost: "Dein Name",
+      hostPlaceholder: "z. B. Mariana",
+      fieldDescription: "Beschreibung",
+      descriptionPlaceholder: "Zugang, Sicherheit, Besonderheiten…",
+      cancel: "Abbrechen",
+      publish: "Angebot veröffentlichen",
+    },
+  },
+  it: {
+    tagline: "Affitta spazio di deposito a Lisbona",
+    listYourSpace: "Metti in affitto il tuo spazio",
+    searchPlaceholder: "Cerca per quartiere, es. Alfama, Chiado, Graça…",
+    filterAll: "Tutti",
+    roomTypes: {
+      cellar: "Cantina",
+      garage: "Garage",
+      storage: "Ripostiglio",
+      parking: "Posto auto",
+    },
+    resultsOne: "annuncio trovato",
+    resultsOther: "annunci trovati",
+    noResults: "Nessun annuncio trovato per questa ricerca.",
+    perMonth: "/mese",
+    rentedBy: "Affittato da {host}",
+    request: "Contatta",
+    modal: {
+      title: "Metti in affitto il tuo spazio",
+      close: "Chiudi",
+      fieldTitle: "Titolo",
+      titlePlaceholder: "es. Cantina asciutta ad Alfama",
+      fieldNeighbourhood: "Quartiere",
+      fieldRoomType: "Tipo di spazio",
+      fieldSize: "Dimensione (m²)",
+      fieldPrice: "Prezzo (€/mese)",
+      fieldHost: "Il tuo nome",
+      hostPlaceholder: "es. Mariana",
+      fieldDescription: "Descrizione",
+      descriptionPlaceholder: "Accesso, sicurezza, particolarità…",
+      cancel: "Annulla",
+      publish: "Pubblica annuncio",
+    },
+  },
+};
+
+export function translate(locale, key, vars) {
+  const parts = key.split(".");
+  let value = translations[locale];
+  for (const part of parts) {
+    value = value?.[part];
+  }
+  if (typeof value !== "string") return key;
+  if (!vars) return value;
+  return Object.entries(vars).reduce(
+    (str, [k, v]) => str.replaceAll(`{${k}}`, v),
+    value,
+  );
+}

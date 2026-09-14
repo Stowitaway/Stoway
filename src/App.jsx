@@ -3,8 +3,10 @@ import Header from "./components/Header";
 import ListingCard from "./components/ListingCard";
 import ListSpaceModal from "./components/ListSpaceModal";
 import { INITIAL_LISTINGS } from "./data/listings";
+import { useLanguage } from "./i18n/LanguageContext";
 
 function App() {
+  const { t } = useLanguage();
   const [listings, setListings] = useState(INITIAL_LISTINGS);
   const [search, setSearch] = useState("");
   const [activeType, setActiveType] = useState("all");
@@ -41,12 +43,12 @@ function App() {
       <main className="mx-auto max-w-6xl px-4 py-6 sm:px-6">
         <p className="mb-4 text-sm text-kraft-700">
           {filteredListings.length}{" "}
-          {filteredListings.length === 1 ? "Angebot" : "Angebote"} gefunden
+          {t(filteredListings.length === 1 ? "resultsOne" : "resultsOther")}
         </p>
 
         {filteredListings.length === 0 ? (
           <div className="rounded-lg border border-kraft-300 bg-kraft-50 p-10 text-center text-kraft-700">
-            Keine Angebote für diese Suche gefunden.
+            {t("noResults")}
           </div>
         ) : (
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
