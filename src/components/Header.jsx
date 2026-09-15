@@ -1,4 +1,5 @@
 import { useAuth } from "../auth/AuthContext";
+import logo from "../assets/brand/logo.png";
 import { ROOM_TYPES } from "../data/listings";
 import { useLanguage } from "../i18n/LanguageContext";
 import AccountMenu from "./AccountMenu";
@@ -21,7 +22,7 @@ export default function Header({
       <div className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-4 sm:px-6">
         <div className="flex items-center justify-between gap-4">
           <div className="flex items-center gap-2">
-            <span className="text-2xl">📦</span>
+            <img src={logo} alt="" className="h-9 w-9 rounded-lg" />
             <h1 className="text-2xl font-semibold tracking-wide text-kraft-900">
               Stoway
             </h1>
