@@ -4,6 +4,8 @@ import { useLanguage } from "../i18n/LanguageContext";
 export default function ListingCard({ listing, highlighted }) {
   const { t, locale } = useLanguage();
   const type = ROOM_TYPES.find((rt) => rt.value === listing.type);
+  const hasPhotos = listing.photos?.length > 0;
+  const coverImage = hasPhotos ? listing.photos[0] : type?.icon;
 
   return (
     <article
@@ -16,10 +18,15 @@ export default function ListingCard({ listing, highlighted }) {
     >
       <div className="relative flex h-36 items-center justify-center border-b border-kraft-300 bg-kraft-100">
         <img
-          src={type?.icon}
+          src={coverImage}
           alt={t(`roomTypes.${type?.value}`)}
           className="h-full w-full object-cover"
         />
+        {hasPhotos && listing.photos.length > 1 && (
+          <span className="absolute left-3 top-3 rounded bg-kraft-900/70 px-2 py-0.5 text-xs font-medium text-kraft-50">
+            📷 {listing.photos.length}
+          </span>
+        )}
         <span className="absolute right-3 top-3 rounded bg-stamp px-2 py-0.5 text-sm font-medium text-kraft-50">
           €{listing.price}{t("perMonth")}
         </span>

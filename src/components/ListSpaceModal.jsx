@@ -10,7 +10,17 @@ const emptyForm = {
   price: "",
   description: "",
   host: "",
+  photos: [],
 };
+
+function fileToDataUrl(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
 
 export default function ListSpaceModal({ onClose, onSubmit }) {
   const { t } = useLanguage();
@@ -18,6 +28,20 @@ export default function ListSpaceModal({ onClose, onSubmit }) {
 
   const update = (field) => (e) =>
     setForm((f) => ({ ...f, [field]: e.target.value }));
+
+  const handlePhotosChange = async (e) => {
+    const files = Array.from(e.target.files ?? []);
+    e.target.value = "";
+    const dataUrls = await Promise.all(files.map(fileToDataUrl));
+    setForm((f) => ({ ...f, photos: [...f.photos, ...dataUrls] }));
+  };
+
+  const removePhoto = (index) => {
+    setForm((f) => ({
+      ...f,
+      photos: f.photos.filter((_, i) => i !== index),
+    }));
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -133,6 +157,43 @@ export default function ListSpaceModal({ onClose, onSubmit }) {
               className="rounded-md border border-kraft-300 bg-white px-3 py-2 text-sm focus:border-kraft-500 focus:outline-none focus:ring-2 focus:ring-kraft-400"
             />
           </label>
+
+          <div className="flex flex-col gap-2 text-sm text-kraft-800">
+            <span>{t("modal.fieldPhotos")}</span>
+
+            {form.photos.length > 0 && (
+              <div className="grid grid-cols-4 gap-2">
+                {form.photos.map((src, index) => (
+                  <div key={index} className="group relative aspect-square">
+                    <img
+                      src={src}
+                      alt=""
+                      className="h-full w-full rounded-md border border-kraft-300 object-cover"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => removePhoto(index)}
+                      aria-label={t("modal.removePhoto")}
+                      className="absolute -right-1.5 -top-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-kraft-900 text-xs text-kraft-50 shadow"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            <label className="flex cursor-pointer items-center justify-center rounded-md border border-dashed border-kraft-400 bg-white px-3 py-4 text-sm text-kraft-600 hover:bg-kraft-100">
+              <span>📷 {t("modal.addPhotos")}</span>
+              <input
+                type="file"
+                accept="image/*"
+                multiple
+                onChange={handlePhotosChange}
+                className="hidden"
+              />
+            </label>
+          </div>
 
           <label className="flex flex-col gap-1 text-sm text-kraft-800">
             {t("modal.fieldDescription")}
