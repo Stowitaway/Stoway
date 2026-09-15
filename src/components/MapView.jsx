@@ -41,8 +41,13 @@ export default function MapView({ listings, highlightedId, onMarkerClick }) {
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
       {listings.map((listing) => {
-        const base = NEIGHBOURHOOD_COORDS[listing.neighbourhood] ?? LISBON_CENTER;
-        const position = jitterCoords(base, listing.id);
+        const position =
+          listing.lat != null && listing.lng != null
+            ? [listing.lat, listing.lng]
+            : jitterCoords(
+                NEIGHBOURHOOD_COORDS[listing.neighbourhood] ?? LISBON_CENTER,
+                listing.id,
+              );
         const type = ROOM_TYPES.find((rt) => rt.value === listing.type);
         const isActive = listing.id === highlightedId;
 

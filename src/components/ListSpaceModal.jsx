@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { useAuth } from "../auth/AuthContext";
 import { NEIGHBOURHOODS, ROOM_TYPES } from "../data/listings";
+import { fuzzLocation, geocodeAddress } from "../lib/geocode";
 import { useLanguage } from "../i18n/LanguageContext";
 import { supabase } from "../lib/supabaseClient";
 
 const emptyForm = {
   title: "",
+  address: "",
   neighbourhood: NEIGHBOURHOODS[0],
   type: ROOM_TYPES[0].value,
   size: "",
@@ -60,6 +62,16 @@ export default function ListSpaceModal({ onClose, onCreated }) {
     setError("");
     setSubmitting(true);
     try {
+      const geocoded = await geocodeAddress(
+        `${form.address}, ${form.neighbourhood}, Lisboa, Portugal`,
+      );
+      if (!geocoded) {
+        setError(t("modal.addressNotFound"));
+        setSubmitting(false);
+        return;
+      }
+      const { lat, lng } = fuzzLocation(geocoded);
+
       const photoUrls = await uploadPhotos(user.id, form.photos);
       const { data, error: insertError } = await supabase
         .from("listings")
@@ -73,6 +85,8 @@ export default function ListSpaceModal({ onClose, onCreated }) {
           size: Number(form.size) || 0,
           price: Number(form.price) || 0,
           photos: photoUrls,
+          lat,
+          lng,
         })
         .select()
         .single();
@@ -118,6 +132,21 @@ export default function ListSpaceModal({ onClose, onCreated }) {
               placeholder={t("modal.titlePlaceholder")}
               className="rounded-md border border-kraft-300 bg-white px-3 py-2 text-sm focus:border-kraft-500 focus:outline-none focus:ring-2 focus:ring-kraft-400"
             />
+          </label>
+
+          <label className="flex flex-col gap-1 text-sm text-kraft-800">
+            {t("modal.fieldAddress")}
+            <input
+              required
+              type="text"
+              value={form.address}
+              onChange={update("address")}
+              placeholder={t("modal.addressPlaceholder")}
+              className="rounded-md border border-kraft-300 bg-white px-3 py-2 text-sm focus:border-kraft-500 focus:outline-none focus:ring-2 focus:ring-kraft-400"
+            />
+            <span className="text-xs text-kraft-600">
+              {t("modal.addressPrivacyHint")}
+            </span>
           </label>
 
           <div className="grid grid-cols-2 gap-4">
