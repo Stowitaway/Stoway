@@ -15,9 +15,9 @@ export const translations = {
     searchPlaceholder: "Search by neighbourhood, e.g. Alfama, Chiado, Graça…",
     filterAll: "All",
     roomTypes: {
-      cellar: "Cellar",
+      cellar: "Basement",
       garage: "Garage",
-      storage: "Storage room",
+      storage: "Closet",
     },
     resultsOne: "listing found",
     resultsOther: "listings found",
