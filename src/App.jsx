@@ -16,7 +16,7 @@ function mapRow(row) {
 }
 
 function App() {
-  const { t } = useLanguage();
+  const { t, locale } = useLanguage();
   const { user } = useAuth();
   const [listings, setListings] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -55,11 +55,14 @@ function App() {
     const query = search.trim().toLowerCase();
     return listings.filter((listing) => {
       const matchesSearch =
-        !query || listing.neighbourhood.toLowerCase().includes(query);
+        !query ||
+        listing.neighbourhood.toLowerCase().includes(query) ||
+        localizedText(listing.title, locale).toLowerCase().includes(query) ||
+        localizedText(listing.description, locale).toLowerCase().includes(query);
       const matchesType = activeType === "all" || listing.type === activeType;
       return matchesSearch && matchesType;
     });
-  }, [listings, search, activeType]);
+  }, [listings, search, activeType, locale]);
 
   useEffect(() => {
     if (highlightedId === null) return;

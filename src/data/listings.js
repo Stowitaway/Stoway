@@ -21,6 +21,16 @@ export const NEIGHBOURHOODS = [
   "Areeiro",
   "Benfica",
   "Arroios",
+  "Santos",
+  "Estrela",
+  "Lapa",
+  "Alvalade",
+  "Anjos",
+  "Santa Catarina",
+  "Bairro Alto",
+  "Marvila",
+  "Beato",
+  "Ajuda",
 ];
 
 export function localizedText(field, locale) {

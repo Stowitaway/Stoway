@@ -13,6 +13,16 @@ export const NEIGHBOURHOOD_COORDS = {
   Areeiro: [38.742, -9.131],
   Benfica: [38.753, -9.208],
   Arroios: [38.728, -9.133],
+  Santos: [38.7059, -9.1553],
+  Estrela: [38.7128, -9.1622],
+  Lapa: [38.7075, -9.165],
+  Alvalade: [38.7515, -9.1436],
+  Anjos: [38.7266, -9.135],
+  "Santa Catarina": [38.7112, -9.147],
+  "Bairro Alto": [38.7139, -9.146],
+  Marvila: [38.745, -9.108],
+  Beato: [38.737, -9.113],
+  Ajuda: [38.706, -9.198],
 };
 
 function hashToInt(id) {
