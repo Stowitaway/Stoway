@@ -3,20 +3,28 @@
 @theme {
   --font-sans: Arial, Helvetica, sans-serif;
 
-  --color-kraft-50: #ffffff;
-  --color-kraft-100: #fafafa;
-  --color-kraft-200: #f2f2f2;
-  --color-kraft-300: #e2e2e2;
-  --color-kraft-400: #cccccc;
-  --color-kraft-500: #a3a3a3;
-  --color-kraft-600: #737373;
-  --color-kraft-700: #525252;
-  --color-kraft-800: #333333;
-  --color-kraft-900: #1a1a1a;
-  --color-stamp: #c2703d;
+  --color-kraft-50: #fffdf8;
+  --color-kraft-100: #f3ecdd;
+  --color-kraft-200: #eae0c8;
+  --color-kraft-300: #ddd0b4;
+  --color-kraft-400: #c7b896;
+  --color-kraft-500: #8b7c64;
+  --color-kraft-600: #6b5d4c;
+  --color-kraft-700: #4a3f32;
+  --color-kraft-800: #3a2f23;
+  --color-kraft-900: #2b241c;
+  --color-stamp: #c1502b;
+
+  --color-tint-cellar: #e8dab9;
+  --color-tint-garage: #e6cdb3;
+  --color-tint-storage: #dad0ae;
 }
 
 body {
   font-family: var(--font-sans);
-  background-color: var(--color-kraft-50);
+  background-color: var(--color-kraft-100);
+}
+
+.map-warm .leaflet-tile-pane {
+  filter: sepia(0.35) saturate(0.65) brightness(0.97) contrast(0.95);
 }

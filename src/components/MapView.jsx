@@ -1,6 +1,6 @@
 import L from "leaflet";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
-import { ROOM_TYPES, localizedText } from "../data/listings";
+import { localizedText } from "../data/listings";
 import {
   LISBON_CENTER,
   NEIGHBOURHOOD_COORDS,
@@ -8,21 +8,25 @@ import {
 } from "../data/neighbourhoodCoords";
 import { useLanguage } from "../i18n/LanguageContext";
 
-function createMarkerIcon(iconUrl, isActive) {
+function createPriceIcon(price, isActive) {
   return L.divIcon({
     html: `<div style="
-      display:flex;align-items:center;justify-content:center;
-      width:36px;height:36px;border-radius:50% 50% 50% 0;
-      transform:rotate(-45deg);
-      background:${isActive ? "#c2703d" : "#333333"};
-      border:2px solid white;
-      box-shadow:0 1px 4px rgba(0,0,0,0.4);
-      overflow:hidden;
-    "><img src="${iconUrl}" style="width:22px;height:22px;object-fit:cover;border-radius:4px;transform:rotate(45deg);" /></div>`,
+      display:inline-flex;align-items:center;justify-content:center;
+      padding:4px 10px;
+      border-radius:999px;
+      background:${isActive ? "#2b241c" : "#c1502b"};
+      color:#fffdf8;
+      font-family:Arial, Helvetica, sans-serif;
+      font-size:12px;
+      font-weight:700;
+      white-space:nowrap;
+      box-shadow:0 1px 4px rgba(43,36,28,0.35);
+      border:2px solid #fffdf8;
+    ">${price}€</div>`,
     className: "",
-    iconSize: [36, 36],
-    iconAnchor: [18, 34],
-    popupAnchor: [0, -32],
+    iconSize: [0, 0],
+    iconAnchor: [20, 13],
+    popupAnchor: [0, -16],
   });
 }
 
@@ -48,14 +52,13 @@ export default function MapView({ listings, highlightedId, onMarkerClick }) {
                 NEIGHBOURHOOD_COORDS[listing.neighbourhood] ?? LISBON_CENTER,
                 listing.id,
               );
-        const type = ROOM_TYPES.find((rt) => rt.value === listing.type);
         const isActive = listing.id === highlightedId;
 
         return (
           <Marker
             key={listing.id}
             position={position}
-            icon={createMarkerIcon(type?.icon, isActive)}
+            icon={createPriceIcon(listing.price, isActive)}
             eventHandlers={{ click: () => onMarkerClick(listing.id) }}
           >
             <Popup>

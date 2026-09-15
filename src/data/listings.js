@@ -3,9 +3,9 @@ import garageIcon from "../assets/icons/garage.png";
 import storageIcon from "../assets/icons/storage.png";
 
 export const ROOM_TYPES = [
-  { value: "cellar", icon: cellarIcon },
-  { value: "garage", icon: garageIcon },
-  { value: "storage", icon: storageIcon },
+  { value: "cellar", icon: cellarIcon, tintClass: "bg-tint-cellar" },
+  { value: "garage", icon: garageIcon, tintClass: "bg-tint-garage" },
+  { value: "storage", icon: storageIcon, tintClass: "bg-tint-storage" },
 ];
 
 export const NEIGHBOURHOODS = [

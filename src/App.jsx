@@ -182,7 +182,7 @@ function App() {
 
           {showMap && (
             <div className="lg:w-1/2">
-              <div className="sticky top-4 h-[60vh] overflow-hidden rounded-lg border border-kraft-300 lg:h-[75vh]">
+              <div className="map-warm sticky top-4 h-[60vh] overflow-hidden rounded-xl border border-kraft-300 lg:h-[75vh]">
                 <MapView
                   listings={filteredListings}
                   highlightedId={highlightedId}

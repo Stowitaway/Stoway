@@ -7,7 +7,8 @@ export default function ListingDetailModal({ listing, onClose, onRequest }) {
   const [photoIndex, setPhotoIndex] = useState(0);
 
   const type = ROOM_TYPES.find((rt) => rt.value === listing.type);
-  const photos = listing.photos?.length ? listing.photos : [type?.icon];
+  const hasPhotos = listing.photos?.length > 0;
+  const photos = hasPhotos ? listing.photos : [];
   const hasMultiplePhotos = photos.length > 1;
 
   const goPrev = () =>
@@ -35,14 +36,22 @@ export default function ListingDetailModal({ listing, onClose, onRequest }) {
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-lg border-2 border-kraft-400 bg-kraft-50 shadow-2xl"
+        className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-xl border-2 border-kraft-400 bg-kraft-50 shadow-2xl"
       >
-        <div className="relative flex h-72 items-center justify-center bg-kraft-100 sm:h-96">
-          <img
-            src={photos[photoIndex]}
-            alt=""
-            className="h-full w-full object-cover"
-          />
+        <div
+          className={`relative flex h-72 items-center justify-center sm:h-96 ${
+            hasPhotos ? "bg-kraft-100" : type?.tintClass
+          }`}
+        >
+          {hasPhotos ? (
+            <img
+              src={photos[photoIndex]}
+              alt=""
+              className="h-full w-full object-cover"
+            />
+          ) : (
+            <img src={type?.icon} alt="" className="h-24 w-24 object-contain" />
+          )}
 
           <button
             type="button"
@@ -127,7 +136,7 @@ export default function ListingDetailModal({ listing, onClose, onRequest }) {
             <button
               type="button"
               onClick={() => onRequest(listing)}
-              className="rounded-md bg-kraft-700 px-4 py-2 font-medium text-kraft-50 transition hover:bg-kraft-800"
+              className="rounded-md border border-kraft-900 bg-transparent px-4 py-2 font-medium text-kraft-900 transition hover:bg-kraft-900/5"
             >
               {t("request")}
             </button>
