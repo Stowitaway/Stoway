@@ -1,6 +1,7 @@
 import { useAuth } from "../auth/AuthContext";
 import { ROOM_TYPES } from "../data/listings";
 import { useLanguage } from "../i18n/LanguageContext";
+import AccountMenu from "./AccountMenu";
 import LanguageSwitcher from "./LanguageSwitcher";
 
 export default function Header({
@@ -13,7 +14,7 @@ export default function Header({
   onChatClick,
 }) {
   const { t } = useLanguage();
-  const { user, signOut } = useAuth();
+  const { user } = useAuth();
 
   return (
     <header className="border-b border-kraft-300 bg-kraft-50">
@@ -30,30 +31,30 @@ export default function Header({
           </div>
 
           <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={onListSpaceClick}
+              className="shrink-0 rounded-md bg-stamp px-4 py-2 text-sm font-medium text-kraft-50 transition hover:opacity-90"
+            >
+              {t("listYourSpace")}
+            </button>
+
+            {user && (
+              <button
+                type="button"
+                onClick={onChatClick}
+                aria-label={t("chat.title")}
+                title={t("chat.title")}
+                className="flex h-9 w-9 items-center justify-center rounded-md border border-kraft-300 bg-kraft-50 text-kraft-800 hover:bg-kraft-200"
+              >
+                ✉️
+              </button>
+            )}
+
             <LanguageSwitcher />
 
             {user ? (
-              <div className="flex items-center gap-2">
-                <button
-                  type="button"
-                  onClick={onChatClick}
-                  aria-label={t("chat.title")}
-                  title={t("chat.title")}
-                  className="rounded-md border border-kraft-300 p-2 text-kraft-800 hover:bg-kraft-200"
-                >
-                  ✉️
-                </button>
-                <span className="hidden text-sm text-kraft-700 sm:inline">
-                  {user.user_metadata?.full_name || user.email}
-                </span>
-                <button
-                  type="button"
-                  onClick={signOut}
-                  className="rounded-md border border-kraft-300 px-3 py-1.5 text-sm font-medium text-kraft-800 hover:bg-kraft-200"
-                >
-                  {t("auth.logOut")}
-                </button>
-              </div>
+              <AccountMenu />
             ) : (
               <button
                 type="button"
@@ -63,14 +64,6 @@ export default function Header({
                 {t("auth.logIn")}
               </button>
             )}
-
-            <button
-              type="button"
-              onClick={onListSpaceClick}
-              className="shrink-0 rounded-md bg-stamp px-4 py-2 text-sm font-medium text-kraft-50 transition hover:opacity-90"
-            >
-              {t("listYourSpace")}
-            </button>
           </div>
         </div>
 
