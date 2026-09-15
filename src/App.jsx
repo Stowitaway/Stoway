@@ -1,11 +1,13 @@
 import { useEffect, useMemo, useState } from "react";
 import { useAuth } from "./auth/AuthContext";
 import AuthModal from "./components/AuthModal";
+import ChatModal from "./components/ChatModal";
 import Header from "./components/Header";
 import ListingCard from "./components/ListingCard";
 import ListingDetailModal from "./components/ListingDetailModal";
 import ListSpaceModal from "./components/ListSpaceModal";
 import MapView from "./components/MapView";
+import { localizedText } from "./data/listings";
 import { useLanguage } from "./i18n/LanguageContext";
 import { supabase } from "./lib/supabaseClient";
 
@@ -26,6 +28,8 @@ function App() {
   const [showMap, setShowMap] = useState(true);
   const [highlightedId, setHighlightedId] = useState(null);
   const [selectedListing, setSelectedListing] = useState(null);
+  const [showChatModal, setShowChatModal] = useState(false);
+  const [chatConversationId, setChatConversationId] = useState(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -70,6 +74,44 @@ function App() {
     setShowModal(false);
   };
 
+  const handleRequest = async (listing) => {
+    if (!user) {
+      setShowAuthModal(true);
+      return;
+    }
+    if (!listing.owner_id || listing.owner_id === user.id) return;
+
+    setSelectedListing(null);
+
+    const { data: existing } = await supabase
+      .from("conversations")
+      .select("*")
+      .eq("listing_id", listing.id)
+      .eq("guest_id", user.id)
+      .maybeSingle();
+
+    let conversation = existing;
+    if (!conversation) {
+      const { data: created, error } = await supabase
+        .from("conversations")
+        .insert({
+          listing_id: listing.id,
+          listing_title: localizedText(listing.title, "en"),
+          host_id: listing.owner_id,
+          host_name: listing.host,
+          guest_id: user.id,
+          guest_name: user.user_metadata?.full_name || user.email,
+        })
+        .select()
+        .single();
+      if (error) return;
+      conversation = created;
+    }
+
+    setChatConversationId(conversation.id);
+    setShowChatModal(true);
+  };
+
   return (
     <div className="min-h-screen">
       <Header
@@ -79,6 +121,10 @@ function App() {
         onTypeChange={setActiveType}
         onListSpaceClick={() => (user ? setShowModal(true) : setShowAuthModal(true))}
         onAuthClick={() => setShowAuthModal(true)}
+        onChatClick={() => {
+          setChatConversationId(null);
+          setShowChatModal(true);
+        }}
       />
 
       <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6">
@@ -124,6 +170,7 @@ function App() {
                     listing={listing}
                     highlighted={listing.id === highlightedId}
                     onOpen={setSelectedListing}
+                    onRequest={handleRequest}
                   />
                 ))}
               </div>
@@ -162,6 +209,14 @@ function App() {
         <ListingDetailModal
           listing={selectedListing}
           onClose={() => setSelectedListing(null)}
+          onRequest={handleRequest}
+        />
+      )}
+
+      {showChatModal && (
+        <ChatModal
+          initialConversationId={chatConversationId}
+          onClose={() => setShowChatModal(false)}
         />
       )}
     </div>

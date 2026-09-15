@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { ROOM_TYPES, localizedText } from "../data/listings";
 import { useLanguage } from "../i18n/LanguageContext";
 
-export default function ListingDetailModal({ listing, onClose }) {
+export default function ListingDetailModal({ listing, onClose, onRequest }) {
   const { t, locale } = useLanguage();
   const [photoIndex, setPhotoIndex] = useState(0);
 
@@ -126,6 +126,7 @@ export default function ListingDetailModal({ listing, onClose }) {
             </span>
             <button
               type="button"
+              onClick={() => onRequest(listing)}
               className="rounded-md bg-kraft-700 px-4 py-2 font-medium text-kraft-50 transition hover:bg-kraft-800"
             >
               {t("request")}

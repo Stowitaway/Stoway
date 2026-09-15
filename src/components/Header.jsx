@@ -10,6 +10,7 @@ export default function Header({
   onTypeChange,
   onListSpaceClick,
   onAuthClick,
+  onChatClick,
 }) {
   const { t } = useLanguage();
   const { user, signOut } = useAuth();
@@ -33,6 +34,15 @@ export default function Header({
 
             {user ? (
               <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={onChatClick}
+                  aria-label={t("chat.title")}
+                  title={t("chat.title")}
+                  className="rounded-md border border-kraft-300 p-2 text-kraft-800 hover:bg-kraft-200"
+                >
+                  ✉️
+                </button>
                 <span className="hidden text-sm text-kraft-700 sm:inline">
                   {user.user_metadata?.full_name || user.email}
                 </span>

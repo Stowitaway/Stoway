@@ -1,7 +1,7 @@
 import { ROOM_TYPES, localizedText } from "../data/listings";
 import { useLanguage } from "../i18n/LanguageContext";
 
-export default function ListingCard({ listing, highlighted, onOpen }) {
+export default function ListingCard({ listing, highlighted, onOpen, onRequest }) {
   const { t, locale } = useLanguage();
   const type = ROOM_TYPES.find((rt) => rt.value === listing.type);
   const hasPhotos = listing.photos?.length > 0;
@@ -62,7 +62,10 @@ export default function ListingCard({ listing, highlighted, onOpen }) {
           </span>
           <button
             type="button"
-            onClick={(e) => e.stopPropagation()}
+            onClick={(e) => {
+              e.stopPropagation();
+              onRequest(listing);
+            }}
             className="rounded-md bg-kraft-700 px-3 py-1.5 font-medium text-kraft-50 transition hover:bg-kraft-800"
           >
             {t("request")}
