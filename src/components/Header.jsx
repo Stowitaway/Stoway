@@ -18,7 +18,7 @@ export default function Header({
           <div className="flex items-center gap-2">
             <span className="text-2xl">📦</span>
             <h1 className="text-2xl font-semibold tracking-wide text-kraft-900">
-              Stowt
+              Stoway
             </h1>
             <span className="hidden text-sm text-kraft-700 sm:inline">
               · {t("tagline")}

@@ -1,7 +1,7 @@
 import { createContext, useContext, useMemo, useState } from "react";
 import { DEFAULT_LOCALE, LOCALES, translate } from "./translations";
 
-const STORAGE_KEY = "stowt-locale";
+const STORAGE_KEY = "stoway-locale";
 const SUPPORTED = LOCALES.map((l) => l.code);
 
 function getInitialLocale() {
