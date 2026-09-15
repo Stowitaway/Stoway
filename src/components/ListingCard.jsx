@@ -1,7 +1,7 @@
 import { ROOM_TYPES, localizedText } from "../data/listings";
 import { useLanguage } from "../i18n/LanguageContext";
 
-export default function ListingCard({ listing, highlighted }) {
+export default function ListingCard({ listing, highlighted, onOpen }) {
   const { t, locale } = useLanguage();
   const type = ROOM_TYPES.find((rt) => rt.value === listing.type);
   const hasPhotos = listing.photos?.length > 0;
@@ -10,7 +10,8 @@ export default function ListingCard({ listing, highlighted }) {
   return (
     <article
       id={`listing-${listing.id}`}
-      className={`flex flex-col overflow-hidden rounded-lg border bg-kraft-50 transition hover:shadow-md ${
+      onClick={() => onOpen(listing)}
+      className={`flex cursor-pointer flex-col overflow-hidden rounded-lg border bg-kraft-50 transition hover:shadow-md ${
         highlighted
           ? "border-stamp ring-2 ring-stamp"
           : "border-kraft-300"
@@ -61,6 +62,7 @@ export default function ListingCard({ listing, highlighted }) {
           </span>
           <button
             type="button"
+            onClick={(e) => e.stopPropagation()}
             className="rounded-md bg-kraft-700 px-3 py-1.5 font-medium text-kraft-50 transition hover:bg-kraft-800"
           >
             {t("request")}

@@ -3,6 +3,7 @@ import { useAuth } from "./auth/AuthContext";
 import AuthModal from "./components/AuthModal";
 import Header from "./components/Header";
 import ListingCard from "./components/ListingCard";
+import ListingDetailModal from "./components/ListingDetailModal";
 import ListSpaceModal from "./components/ListSpaceModal";
 import MapView from "./components/MapView";
 import { useLanguage } from "./i18n/LanguageContext";
@@ -24,6 +25,7 @@ function App() {
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [showMap, setShowMap] = useState(true);
   const [highlightedId, setHighlightedId] = useState(null);
+  const [selectedListing, setSelectedListing] = useState(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -121,6 +123,7 @@ function App() {
                     key={listing.id}
                     listing={listing}
                     highlighted={listing.id === highlightedId}
+                    onOpen={setSelectedListing}
                   />
                 ))}
               </div>
@@ -152,6 +155,13 @@ function App() {
         <AuthModal
           onClose={() => setShowAuthModal(false)}
           onAuthenticated={() => setShowAuthModal(false)}
+        />
+      )}
+
+      {selectedListing && (
+        <ListingDetailModal
+          listing={selectedListing}
+          onClose={() => setSelectedListing(null)}
         />
       )}
     </div>
