@@ -1,19 +1,49 @@
 import { useEffect, useMemo, useState } from "react";
+import { useAuth } from "./auth/AuthContext";
+import AuthModal from "./components/AuthModal";
 import Header from "./components/Header";
 import ListingCard from "./components/ListingCard";
 import ListSpaceModal from "./components/ListSpaceModal";
 import MapView from "./components/MapView";
-import { INITIAL_LISTINGS } from "./data/listings";
 import { useLanguage } from "./i18n/LanguageContext";
+import { supabase } from "./lib/supabaseClient";
+
+function mapRow(row) {
+  return { ...row, host: row.host_name };
+}
 
 function App() {
   const { t } = useLanguage();
-  const [listings, setListings] = useState(INITIAL_LISTINGS);
+  const { user } = useAuth();
+  const [listings, setListings] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState("");
   const [search, setSearch] = useState("");
   const [activeType, setActiveType] = useState("all");
   const [showModal, setShowModal] = useState(false);
+  const [showAuthModal, setShowAuthModal] = useState(false);
   const [showMap, setShowMap] = useState(true);
   const [highlightedId, setHighlightedId] = useState(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    supabase
+      .from("listings")
+      .select("*")
+      .order("created_at", { ascending: false })
+      .then(({ data, error }) => {
+        if (cancelled) return;
+        if (error) {
+          setLoadError(error.message);
+        } else {
+          setListings(data.map(mapRow));
+        }
+        setLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const filteredListings = useMemo(() => {
     const query = search.trim().toLowerCase();
@@ -33,11 +63,8 @@ function App() {
     return () => clearTimeout(timeout);
   }, [highlightedId]);
 
-  const handleAddListing = (newListing) => {
-    setListings((prev) => [
-      { ...newListing, id: prev.length ? Math.max(...prev.map((l) => l.id)) + 1 : 1 },
-      ...prev,
-    ]);
+  const handleCreated = (row) => {
+    setListings((prev) => [mapRow(row), ...prev]);
     setShowModal(false);
   };
 
@@ -48,7 +75,8 @@ function App() {
         onSearchChange={setSearch}
         activeType={activeType}
         onTypeChange={setActiveType}
-        onListSpaceClick={() => setShowModal(true)}
+        onListSpaceClick={() => (user ? setShowModal(true) : setShowAuthModal(true))}
+        onAuthClick={() => setShowAuthModal(true)}
       />
 
       <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6">
@@ -66,9 +94,19 @@ function App() {
           </button>
         </div>
 
+        {loadError && (
+          <div className="mb-4 rounded-lg border border-stamp bg-kraft-50 p-4 text-sm text-stamp">
+            {loadError}
+          </div>
+        )}
+
         <div className={`flex flex-col gap-6 ${showMap ? "lg:flex-row" : ""}`}>
           <div className={showMap ? "lg:w-1/2" : "w-full"}>
-            {filteredListings.length === 0 ? (
+            {loading ? (
+              <div className="rounded-lg border border-kraft-300 bg-kraft-50 p-10 text-center text-kraft-700">
+                …
+              </div>
+            ) : filteredListings.length === 0 ? (
               <div className="rounded-lg border border-kraft-300 bg-kraft-50 p-10 text-center text-kraft-700">
                 {t("noResults")}
               </div>
@@ -106,7 +144,14 @@ function App() {
       {showModal && (
         <ListSpaceModal
           onClose={() => setShowModal(false)}
-          onSubmit={handleAddListing}
+          onCreated={handleCreated}
+        />
+      )}
+
+      {showAuthModal && (
+        <AuthModal
+          onClose={() => setShowAuthModal(false)}
+          onAuthenticated={() => setShowAuthModal(false)}
         />
       )}
     </div>

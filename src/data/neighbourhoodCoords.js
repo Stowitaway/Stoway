@@ -15,11 +15,21 @@ export const NEIGHBOURHOOD_COORDS = {
   Arroios: [38.728, -9.133],
 };
 
+function hashToInt(id) {
+  const str = String(id);
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    hash = (hash * 31 + str.charCodeAt(i)) >>> 0;
+  }
+  return hash;
+}
+
 // Deterministic small offset so listings in the same neighbourhood don't
 // stack exactly on top of each other on the map.
 export function jitterCoords([lat, lng], id) {
-  const seedA = (id * 9301 + 49297) % 233280;
-  const seedB = (id * 33329 + 5237) % 233280;
+  const n = hashToInt(id);
+  const seedA = (n * 9301 + 49297) % 233280;
+  const seedB = (n * 33329 + 5237) % 233280;
   const offsetA = (seedA / 233280 - 0.5) * 0.012;
   const offsetB = (seedB / 233280 - 0.5) * 0.012;
   return [lat + offsetA, lng + offsetB];

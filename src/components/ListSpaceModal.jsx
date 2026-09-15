@@ -1,6 +1,8 @@
 import { useState } from "react";
+import { useAuth } from "../auth/AuthContext";
 import { NEIGHBOURHOODS, ROOM_TYPES } from "../data/listings";
 import { useLanguage } from "../i18n/LanguageContext";
+import { supabase } from "../lib/supabaseClient";
 
 const emptyForm = {
   title: "",
@@ -9,47 +11,77 @@ const emptyForm = {
   size: "",
   price: "",
   description: "",
-  host: "",
   photos: [],
 };
 
-function fileToDataUrl(file) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = reject;
-    reader.readAsDataURL(file);
-  });
+async function uploadPhotos(userId, photos) {
+  const urls = [];
+  for (const { file } of photos) {
+    const path = `${userId}/${Date.now()}-${Math.random().toString(36).slice(2)}-${file.name}`;
+    const { error } = await supabase.storage
+      .from("listing-photos")
+      .upload(path, file);
+    if (error) throw error;
+    const { data } = supabase.storage.from("listing-photos").getPublicUrl(path);
+    urls.push(data.publicUrl);
+  }
+  return urls;
 }
 
-export default function ListSpaceModal({ onClose, onSubmit }) {
+export default function ListSpaceModal({ onClose, onCreated }) {
   const { t } = useLanguage();
+  const { user } = useAuth();
   const [form, setForm] = useState(emptyForm);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState("");
 
   const update = (field) => (e) =>
     setForm((f) => ({ ...f, [field]: e.target.value }));
 
-  const handlePhotosChange = async (e) => {
+  const handlePhotosChange = (e) => {
     const files = Array.from(e.target.files ?? []);
     e.target.value = "";
-    const dataUrls = await Promise.all(files.map(fileToDataUrl));
-    setForm((f) => ({ ...f, photos: [...f.photos, ...dataUrls] }));
+    const newPhotos = files.map((file) => ({
+      file,
+      previewUrl: URL.createObjectURL(file),
+    }));
+    setForm((f) => ({ ...f, photos: [...f.photos, ...newPhotos] }));
   };
 
   const removePhoto = (index) => {
-    setForm((f) => ({
-      ...f,
-      photos: f.photos.filter((_, i) => i !== index),
-    }));
+    setForm((f) => {
+      URL.revokeObjectURL(f.photos[index].previewUrl);
+      return { ...f, photos: f.photos.filter((_, i) => i !== index) };
+    });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onSubmit({
-      ...form,
-      size: Number(form.size) || 0,
-      price: Number(form.price) || 0,
-    });
+    setError("");
+    setSubmitting(true);
+    try {
+      const photoUrls = await uploadPhotos(user.id, form.photos);
+      const { data, error: insertError } = await supabase
+        .from("listings")
+        .insert({
+          owner_id: user.id,
+          host_name: user.user_metadata?.full_name || user.email,
+          title: form.title,
+          description: form.description,
+          neighbourhood: form.neighbourhood,
+          type: form.type,
+          size: Number(form.size) || 0,
+          price: Number(form.price) || 0,
+          photos: photoUrls,
+        })
+        .select()
+        .single();
+      if (insertError) throw insertError;
+      onCreated(data);
+    } catch (err) {
+      setError(err.message);
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -146,27 +178,15 @@ export default function ListSpaceModal({ onClose, onSubmit }) {
             </label>
           </div>
 
-          <label className="flex flex-col gap-1 text-sm text-kraft-800">
-            {t("modal.fieldHost")}
-            <input
-              required
-              type="text"
-              value={form.host}
-              onChange={update("host")}
-              placeholder={t("modal.hostPlaceholder")}
-              className="rounded-md border border-kraft-300 bg-white px-3 py-2 text-sm focus:border-kraft-500 focus:outline-none focus:ring-2 focus:ring-kraft-400"
-            />
-          </label>
-
           <div className="flex flex-col gap-2 text-sm text-kraft-800">
             <span>{t("modal.fieldPhotos")}</span>
 
             {form.photos.length > 0 && (
               <div className="grid grid-cols-4 gap-2">
-                {form.photos.map((src, index) => (
+                {form.photos.map((photo, index) => (
                   <div key={index} className="group relative aspect-square">
                     <img
-                      src={src}
+                      src={photo.previewUrl}
                       alt=""
                       className="h-full w-full rounded-md border border-kraft-300 object-cover"
                     />
@@ -207,6 +227,8 @@ export default function ListSpaceModal({ onClose, onSubmit }) {
             />
           </label>
 
+          {error && <p className="text-sm text-stamp">{error}</p>}
+
           <div className="mt-2 flex justify-end gap-3">
             <button
               type="button"
@@ -217,7 +239,8 @@ export default function ListSpaceModal({ onClose, onSubmit }) {
             </button>
             <button
               type="submit"
-              className="rounded-md bg-stamp px-4 py-2 text-sm font-medium text-kraft-50 transition hover:opacity-90"
+              disabled={submitting}
+              className="rounded-md bg-stamp px-4 py-2 text-sm font-medium text-kraft-50 transition hover:opacity-90 disabled:opacity-60"
             >
               {t("modal.publish")}
             </button>

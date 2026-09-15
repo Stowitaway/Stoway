@@ -1,3 +1,4 @@
+import { useAuth } from "../auth/AuthContext";
 import { ROOM_TYPES } from "../data/listings";
 import { useLanguage } from "../i18n/LanguageContext";
 import LanguageSwitcher from "./LanguageSwitcher";
@@ -8,8 +9,10 @@ export default function Header({
   activeType,
   onTypeChange,
   onListSpaceClick,
+  onAuthClick,
 }) {
   const { t } = useLanguage();
+  const { user, signOut } = useAuth();
 
   return (
     <header className="border-b border-kraft-300 bg-kraft-50">
@@ -27,6 +30,30 @@ export default function Header({
 
           <div className="flex items-center gap-3">
             <LanguageSwitcher />
+
+            {user ? (
+              <div className="flex items-center gap-2">
+                <span className="hidden text-sm text-kraft-700 sm:inline">
+                  {user.user_metadata?.full_name || user.email}
+                </span>
+                <button
+                  type="button"
+                  onClick={signOut}
+                  className="rounded-md border border-kraft-300 px-3 py-1.5 text-sm font-medium text-kraft-800 hover:bg-kraft-200"
+                >
+                  {t("auth.logOut")}
+                </button>
+              </div>
+            ) : (
+              <button
+                type="button"
+                onClick={onAuthClick}
+                className="rounded-md border border-kraft-300 px-3 py-1.5 text-sm font-medium text-kraft-800 hover:bg-kraft-200"
+              >
+                {t("auth.logIn")}
+              </button>
+            )}
+
             <button
               type="button"
               onClick={onListSpaceClick}
