@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useAuth } from "./auth/AuthContext";
 import AuthModal from "./components/AuthModal";
 import ChatModal from "./components/ChatModal";
+import Footer from "./components/Footer";
 import Header from "./components/Header";
 import ListingCard from "./components/ListingCard";
 import ListingDetailModal from "./components/ListingDetailModal";
@@ -116,7 +117,7 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen">
+    <div className="flex min-h-screen flex-col">
       <Header
         search={search}
         onSearchChange={setSearch}
@@ -130,7 +131,7 @@ function App() {
         }}
       />
 
-      <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6">
+      <main className="mx-auto w-full max-w-7xl flex-1 px-4 py-6 sm:px-6">
         <div className="mb-4 flex items-center justify-between gap-4">
           <p className="text-sm text-kraft-700">
             {filteredListings.length}{" "}
@@ -193,6 +194,8 @@ function App() {
           )}
         </div>
       </main>
+
+      <Footer />
 
       {showModal && (
         <ListSpaceModal
