@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import languageIcon from "../assets/icons/language.png";
 import { LOCALES } from "../i18n/translations";
 import { useLanguage } from "../i18n/LanguageContext";
 
@@ -28,7 +29,7 @@ export default function LanguageSwitcher() {
         aria-expanded={open}
         className="flex h-11 items-center gap-1.5 rounded-md border border-kraft-300 bg-kraft-50 px-3.5 text-base font-medium text-kraft-800 hover:bg-kraft-200"
       >
-        <span>{current.flag}</span>
+        <img src={languageIcon} alt="" className="h-5 w-5" />
         <span>{current.label}</span>
         <span className="text-xs text-kraft-500">▾</span>
       </button>
@@ -36,9 +37,9 @@ export default function LanguageSwitcher() {
       {open && (
         <ul
           role="listbox"
-          className="absolute right-0 z-10 mt-1 w-32 overflow-hidden rounded-md border border-kraft-300 bg-kraft-50 shadow-lg"
+          className="absolute right-0 z-10 mt-1 w-40 overflow-hidden rounded-md border border-kraft-300 bg-kraft-50 shadow-lg"
         >
-          {LOCALES.map(({ code, label, flag }) => (
+          {LOCALES.map(({ code, name }) => (
             <li key={code}>
               <button
                 type="button"
@@ -54,8 +55,7 @@ export default function LanguageSwitcher() {
                     : "text-kraft-800 hover:bg-kraft-100"
                 }`}
               >
-                <span>{flag}</span>
-                <span>{label}</span>
+                <span className="italic">{name}</span>
               </button>
             </li>
           ))}
