@@ -4,8 +4,8 @@ export default function Footer() {
       <div className="mx-auto max-w-7xl px-4 py-6 text-xs leading-relaxed text-kraft-600 sm:px-6">
         <p className="font-semibold text-kraft-700">Legal Notice</p>
         <p className="mt-2">
-          Stoway is currently operated as an early-stage pilot project by
-          Adam Tuwebti and Ludwig Bauer, based in Lisbon, Portugal.
+          Stoway is currently operated as an early-stage pilot project,
+          based in Lisbon, Portugal.
         </p>
         <p className="mt-2">
           Contact:{" "}
