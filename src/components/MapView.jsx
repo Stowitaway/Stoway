@@ -1,5 +1,6 @@
-import L from "leaflet";
-import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
+import maplibregl from "maplibre-gl";
+import "maplibre-gl/dist/maplibre-gl.css";
+import { useEffect, useRef } from "react";
 import { localizedText } from "../data/listings";
 import {
   LISBON_CENTER,
@@ -8,68 +9,95 @@ import {
 } from "../data/neighbourhoodCoords";
 import { useLanguage } from "../i18n/LanguageContext";
 
-function createPriceIcon(price, isActive) {
-  return L.divIcon({
-    html: `<div style="
-      display:inline-flex;align-items:center;justify-content:center;
-      padding:4px 10px;
-      border-radius:999px;
-      background:${isActive ? "#2b241c" : "#fffdf8"};
-      color:${isActive ? "#fffdf8" : "#ffb52e"};
-      font-family:Karla, Arial, Helvetica, sans-serif;
-      font-size:12px;
-      font-weight:700;
-      white-space:nowrap;
-      box-shadow:0 1px 4px rgba(43,36,28,0.35);
-      border:2px solid #ddd0b4;
-    ">${price}€</div>`,
-    className: "",
-    iconSize: [0, 0],
-    iconAnchor: [20, 13],
-    popupAnchor: [0, -16],
-  });
+const MAP_STYLE = "https://tiles.openfreemap.org/styles/liberty";
+
+function createPriceElement(price, isActive) {
+  const el = document.createElement("div");
+  el.textContent = `${price}€`;
+  el.style.cssText = `
+    display:inline-flex;align-items:center;justify-content:center;
+    padding:4px 10px;
+    border-radius:999px;
+    background:${isActive ? "#2b241c" : "#fffdf8"};
+    color:${isActive ? "#fffdf8" : "#ffb52e"};
+    font-family:Karla, Arial, Helvetica, sans-serif;
+    font-size:12px;
+    font-weight:700;
+    white-space:nowrap;
+    cursor:pointer;
+    box-shadow:0 1px 4px rgba(43,36,28,0.35);
+    border:2px solid #ddd0b4;
+  `;
+  return el;
+}
+
+function createPopupContent(title, neighbourhood, price, perMonth) {
+  const root = document.createElement("div");
+  const strong = document.createElement("strong");
+  strong.textContent = title;
+  root.append(strong, document.createElement("br"));
+  root.append(`${neighbourhood} · €${price}${perMonth}`);
+  return root;
 }
 
 export default function MapView({ listings, highlightedId, onMarkerClick }) {
   const { locale, t } = useLanguage();
+  const containerRef = useRef(null);
+  const mapRef = useRef(null);
+  const markersRef = useRef([]);
+  const onMarkerClickRef = useRef(onMarkerClick);
+  useEffect(() => {
+    onMarkerClickRef.current = onMarkerClick;
+  }, [onMarkerClick]);
 
-  return (
-    <MapContainer
-      center={LISBON_CENTER}
-      zoom={12}
-      scrollWheelZoom
-      className="h-full w-full"
-    >
-      <TileLayer
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-      />
-      {listings.map((listing) => {
-        const position =
-          listing.lat != null && listing.lng != null
-            ? [listing.lat, listing.lng]
-            : jitterCoords(
-                NEIGHBOURHOOD_COORDS[listing.neighbourhood] ?? LISBON_CENTER,
-                listing.id,
-              );
-        const isActive = listing.id === highlightedId;
+  useEffect(() => {
+    const map = new maplibregl.Map({
+      container: containerRef.current,
+      style: MAP_STYLE,
+      center: [LISBON_CENTER[1], LISBON_CENTER[0]],
+      zoom: 11,
+    });
+    map.addControl(new maplibregl.NavigationControl({ showCompass: false }));
+    mapRef.current = map;
+    return () => {
+      map.remove();
+      mapRef.current = null;
+    };
+  }, []);
 
-        return (
-          <Marker
-            key={listing.id}
-            position={position}
-            icon={createPriceIcon(listing.price, isActive)}
-            eventHandlers={{ click: () => onMarkerClick(listing.id) }}
-          >
-            <Popup>
-              <strong>{localizedText(listing.title, locale)}</strong>
-              <br />
-              {listing.neighbourhood} · €{listing.price}
-              {t("perMonth")}
-            </Popup>
-          </Marker>
-        );
-      })}
-    </MapContainer>
-  );
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map) return;
+
+    markersRef.current.forEach((marker) => marker.remove());
+    markersRef.current = listings.map((listing) => {
+      const [lat, lng] =
+        listing.lat != null && listing.lng != null
+          ? [listing.lat, listing.lng]
+          : jitterCoords(
+              NEIGHBOURHOOD_COORDS[listing.neighbourhood] ?? LISBON_CENTER,
+              listing.id,
+            );
+      const isActive = listing.id === highlightedId;
+      const el = createPriceElement(listing.price, isActive);
+      el.addEventListener("click", () => onMarkerClickRef.current(listing.id));
+
+      const popup = new maplibregl.Popup({ offset: 16 }).setDOMContent(
+        createPopupContent(
+          localizedText(listing.title, locale),
+          listing.neighbourhood,
+          listing.price,
+          t("perMonth"),
+        ),
+      );
+      const marker = new maplibregl.Marker({ element: el })
+        .setLngLat([lng, lat])
+        .setPopup(popup)
+        .addTo(map);
+      if (isActive) marker.getElement().style.zIndex = 1;
+      return marker;
+    });
+  }, [listings, highlightedId, locale, t]);
+
+  return <div ref={containerRef} className="h-full w-full" />;
 }
