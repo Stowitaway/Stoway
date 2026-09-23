@@ -1,9 +1,9 @@
 export const LOCALES = [
-  { code: "en", label: "EN", flag: "🇬🇧" },
-  { code: "pt", label: "PT", flag: "🇵🇹" },
-  { code: "de", label: "DE", flag: "🇩🇪" },
-  { code: "it", label: "IT", flag: "🇮🇹" },
-  { code: "fr", label: "FR", flag: "🇫🇷" },
+  { code: "en", label: "EN", name: "English" },
+  { code: "pt", label: "PT", name: "Português" },
+  { code: "de", label: "DE", name: "Deutsch" },
+  { code: "it", label: "IT", name: "Italiano" },
+  { code: "fr", label: "FR", name: "Français" },
 ];
 
 export const DEFAULT_LOCALE = "en";
