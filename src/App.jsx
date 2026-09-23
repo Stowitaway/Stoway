@@ -153,7 +153,7 @@ function App() {
         )}
 
         <div className={`flex flex-col gap-6 ${showMap ? "lg:flex-row" : ""}`}>
-          <div className={showMap ? "lg:w-2/3" : "w-full"}>
+          <div className={showMap ? "lg:w-3/5" : "w-full"}>
             {loading ? (
               <div className="rounded-lg border border-kraft-300 bg-kraft-50 p-10 text-center text-kraft-700">
                 …
@@ -182,7 +182,7 @@ function App() {
           </div>
 
           {showMap && (
-            <div className="lg:w-1/3">
+            <div className="lg:w-2/5">
               <div className="sticky top-4 h-[60vh] overflow-hidden rounded-xl border border-kraft-300 lg:h-[75vh]">
                 <MapView
                   listings={filteredListings}
