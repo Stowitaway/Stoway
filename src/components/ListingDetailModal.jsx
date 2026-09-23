@@ -107,7 +107,7 @@ export default function ListingDetailModal({ listing, onClose, onRequest }) {
             <h2 className="text-xl font-semibold text-kraft-900">
               {localizedText(listing.title, locale)}
             </h2>
-            <span className="shrink-0 rounded bg-stamp px-2 py-1 text-sm font-medium text-kraft-50">
+            <span className="shrink-0 rounded bg-price px-2 py-1 text-sm font-semibold text-kraft-900">
               €{listing.price}
               {t("perMonth")}
             </span>
