@@ -22,7 +22,7 @@ export default function Header({
       <div className="mx-auto flex max-w-7xl flex-col gap-7 px-4 py-7 sm:px-6">
         <div className="flex items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <img src={logo} alt="" className="h-11 w-11 rounded-lg" />
+            <img src={logo} alt="" className="h-22 w-22 rounded-xl" />
             <h1 className="text-3xl font-semibold tracking-wide text-kraft-900">
               Stoway
             </h1>
