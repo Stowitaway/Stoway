@@ -14,7 +14,7 @@ function createPriceIcon(price, isActive) {
       display:inline-flex;align-items:center;justify-content:center;
       padding:4px 10px;
       border-radius:999px;
-      background:${isActive ? "#2b241c" : "#c1502b"};
+      background:${isActive ? "#2b241c" : "#0605cc"};
       color:#fffdf8;
       font-family:Arial, Helvetica, sans-serif;
       font-size:12px;
