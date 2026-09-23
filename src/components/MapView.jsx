@@ -9,7 +9,7 @@ import {
 } from "../data/neighbourhoodCoords";
 import { useLanguage } from "../i18n/LanguageContext";
 
-const MAP_STYLE = "https://tiles.openfreemap.org/styles/liberty";
+const MAP_STYLE = "https://tiles.openfreemap.org/styles/bright";
 
 function createPriceElement(price, isActive) {
   const el = document.createElement("div");
