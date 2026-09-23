@@ -26,7 +26,7 @@ export default function LanguageSwitcher() {
         onClick={() => setOpen((o) => !o)}
         aria-haspopup="listbox"
         aria-expanded={open}
-        className="flex items-center gap-1.5 rounded-md border border-kraft-300 bg-kraft-50 px-2.5 py-1.5 text-sm font-medium text-kraft-800 hover:bg-kraft-200"
+        className="flex h-11 items-center gap-1.5 rounded-md border border-kraft-300 bg-kraft-50 px-3.5 text-base font-medium text-kraft-800 hover:bg-kraft-200"
       >
         <span>{current.flag}</span>
         <span>{current.label}</span>

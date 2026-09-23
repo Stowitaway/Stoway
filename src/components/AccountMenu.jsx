@@ -26,7 +26,7 @@ export default function AccountMenu() {
         aria-haspopup="menu"
         aria-expanded={open}
         aria-label="Account menu"
-        className="flex h-9 w-9 items-center justify-center rounded-md border border-kraft-300 bg-kraft-50 text-kraft-800 hover:bg-kraft-200"
+        className="flex h-11 w-11 items-center justify-center rounded-md border border-kraft-300 bg-kraft-50 text-lg text-kraft-800 hover:bg-kraft-200"
       >
         ☰
       </button>
