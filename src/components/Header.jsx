@@ -19,10 +19,10 @@ export default function Header({
 
   return (
     <header className="border-b border-kraft-300 bg-kraft-50 font-display">
-      <div className="mx-auto flex max-w-7xl flex-col gap-7 px-4 py-7 sm:px-6">
+      <div className="mx-auto flex max-w-7xl flex-col gap-3.5 px-4 py-3.5 sm:px-6">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <img src={logo} alt="" className="h-22 w-22 rounded-xl" />
+            <img src={logo} alt="" className="h-[66px] w-[66px] shrink-0 rounded-xl" />
             <div className="flex flex-col" style={{ lineHeight: 1.1 }}>
               <h1 className="text-3xl font-semibold tracking-wide text-kraft-900">
                 Stoway
