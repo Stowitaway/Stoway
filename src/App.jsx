@@ -133,7 +133,7 @@ function App() {
 
       <main className="mx-auto w-full max-w-7xl flex-1 px-4 py-6 sm:px-6">
         <div className="mb-4 flex items-center justify-between gap-4">
-          <p className="text-sm text-kraft-700">
+          <p className="text-sm text-kraft-300">
             {filteredListings.length}{" "}
             {t(filteredListings.length === 1 ? "resultsOne" : "resultsOther")}
           </p>
