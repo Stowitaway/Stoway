@@ -14,14 +14,14 @@ function createPriceIcon(price, isActive) {
       display:inline-flex;align-items:center;justify-content:center;
       padding:4px 10px;
       border-radius:999px;
-      background:${isActive ? "#2b241c" : "#ffb52e"};
-      color:${isActive ? "#fffdf8" : "#2b241c"};
-      font-family:Arial, Helvetica, sans-serif;
+      background:${isActive ? "#2b241c" : "#fffdf8"};
+      color:${isActive ? "#fffdf8" : "#ffb52e"};
+      font-family:Karla, Arial, Helvetica, sans-serif;
       font-size:12px;
       font-weight:700;
       white-space:nowrap;
       box-shadow:0 1px 4px rgba(43,36,28,0.35);
-      border:2px solid #fffdf8;
+      border:2px solid #ddd0b4;
     ">${price}€</div>`,
     className: "",
     iconSize: [0, 0],

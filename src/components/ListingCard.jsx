@@ -39,7 +39,7 @@ export default function ListingCard({ listing, highlighted, onOpen, onRequest })
             📷 {listing.photos.length}
           </span>
         )}
-        <span className="absolute right-3 top-3 rounded bg-price px-2 py-0.5 text-sm font-semibold text-kraft-900">
+        <span className="absolute right-3 top-3 rounded bg-kraft-50 px-2 py-0.5 text-sm font-semibold text-price shadow-sm">
           €{listing.price}{t("perMonth")}
         </span>
       </div>
