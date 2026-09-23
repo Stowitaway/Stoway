@@ -1,5 +1,8 @@
+import "@maplibre/maplibre-gl-leaflet";
 import L from "leaflet";
-import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
+import "maplibre-gl/dist/maplibre-gl.css";
+import { useEffect } from "react";
+import { MapContainer, Marker, Popup, useMap } from "react-leaflet";
 import { localizedText } from "../data/listings";
 import {
   LISBON_CENTER,
@@ -30,6 +33,23 @@ function createPriceIcon(price, isActive) {
   });
 }
 
+function VectorBasemap() {
+  const map = useMap();
+
+  useEffect(() => {
+    const layer = L.maplibreGL({
+      style: "https://tiles.openfreemap.org/styles/liberty",
+      attribution:
+        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://openfreemap.org">OpenFreeMap</a>',
+    }).addTo(map);
+    return () => {
+      map.removeLayer(layer);
+    };
+  }, [map]);
+
+  return null;
+}
+
 export default function MapView({ listings, highlightedId, onMarkerClick }) {
   const { locale, t } = useLanguage();
 
@@ -40,10 +60,7 @@ export default function MapView({ listings, highlightedId, onMarkerClick }) {
       scrollWheelZoom
       className="h-full w-full"
     >
-      <TileLayer
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-      />
+      <VectorBasemap />
       {listings.map((listing) => {
         const position =
           listing.lat != null && listing.lng != null
