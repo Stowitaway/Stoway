@@ -68,8 +68,8 @@ export default function Header({
           </div>
         </div>
 
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
-          <div className="relative flex-1">
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-center">
+          <div className="relative lg:w-2/3">
             <span className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-lg text-kraft-600">
               🔍
             </span>
@@ -82,7 +82,7 @@ export default function Header({
             />
           </div>
 
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-2 lg:w-1/3 lg:justify-end">
             <button
               type="button"
               onClick={() => onTypeChange("all")}
