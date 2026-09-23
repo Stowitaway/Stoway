@@ -25,13 +25,13 @@ export default function LanguageSwitcher() {
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
+        aria-label={current.name}
+        title={current.name}
         aria-haspopup="listbox"
         aria-expanded={open}
-        className="flex h-11 items-center gap-1.5 rounded-md border border-kraft-300 bg-kraft-50 px-3.5 text-base font-medium text-kraft-800 hover:bg-kraft-200"
+        className="flex h-11 items-center justify-center rounded-md border border-kraft-300 bg-kraft-50 px-3 text-base font-medium text-kraft-800 hover:bg-kraft-200"
       >
-        <img src={languageIcon} alt="" className="h-5 w-5" />
-        <span>{current.label}</span>
-        <span className="text-xs text-kraft-500">▾</span>
+        <img src={languageIcon} alt="" className="h-6 w-6" />
       </button>
 
       {open && (
