@@ -1,4 +1,10 @@
-import maplibregl from "maplibre-gl";
+import {
+  config,
+  Map as MapLibreMap,
+  Marker,
+  NavigationControl,
+  Popup,
+} from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { useEffect, useRef } from "react";
 import { localizedText } from "../data/listings";
@@ -10,6 +16,12 @@ import {
 import { useLanguage } from "../i18n/LanguageContext";
 
 const MAP_STYLE = "https://tiles.openfreemap.org/styles/bright";
+
+// Vite's bundler doesn't correctly resolve maplibre-gl's internal worker
+// script (it 404s at runtime), so load the matching worker build from a
+// CDN instead of letting the bundler try to chunk it.
+config.WORKER_URL =
+  "https://unpkg.com/maplibre-gl@6.11.1/dist/maplibre-gl-worker.mjs";
 
 function createPriceElement(price, isActive) {
   const el = document.createElement("div");
@@ -51,13 +63,13 @@ export default function MapView({ listings, highlightedId, onMarkerClick }) {
   }, [onMarkerClick]);
 
   useEffect(() => {
-    const map = new maplibregl.Map({
+    const map = new MapLibreMap({
       container: containerRef.current,
       style: MAP_STYLE,
       center: [LISBON_CENTER[1], LISBON_CENTER[0]],
       zoom: 11,
     });
-    map.addControl(new maplibregl.NavigationControl({ showCompass: false }));
+    map.addControl(new NavigationControl({ showCompass: false }));
     mapRef.current = map;
     return () => {
       map.remove();
@@ -82,7 +94,7 @@ export default function MapView({ listings, highlightedId, onMarkerClick }) {
       const el = createPriceElement(listing.price, isActive);
       el.addEventListener("click", () => onMarkerClickRef.current(listing.id));
 
-      const popup = new maplibregl.Popup({ offset: 16 }).setDOMContent(
+      const popup = new Popup({ offset: 16 }).setDOMContent(
         createPopupContent(
           localizedText(listing.title, locale),
           listing.neighbourhood,
@@ -90,7 +102,7 @@ export default function MapView({ listings, highlightedId, onMarkerClick }) {
           t("perMonth"),
         ),
       );
-      const marker = new maplibregl.Marker({ element: el })
+      const marker = new Marker({ element: el })
         .setLngLat([lng, lat])
         .setPopup(popup)
         .addTo(map);
