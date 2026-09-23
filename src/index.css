@@ -24,7 +24,3 @@ body {
   font-family: var(--font-sans);
   background-color: var(--color-kraft-100);
 }
-
-.map-warm .leaflet-tile-pane {
-  filter: sepia(0.1) saturate(0.9) brightness(1) contrast(1);
-}
