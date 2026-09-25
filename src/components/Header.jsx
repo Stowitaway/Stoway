@@ -4,6 +4,7 @@ import { ROOM_TYPES } from "../data/listings";
 import { useLanguage } from "../i18n/LanguageContext";
 import AccountMenu from "./AccountMenu";
 import LanguageSwitcher from "./LanguageSwitcher";
+import RoomTypeIcon from "./RoomTypeIcon";
 
 export default function Header({
   search,
@@ -126,7 +127,7 @@ export default function Header({
                     : "border-kraft-300 bg-kraft-50 text-kraft-800 hover:bg-kraft-200"
                 }`}
               >
-                <img src={rt.icon} alt="" className="h-5 w-5 rounded-sm object-cover" />
+                <RoomTypeIcon icon={rt.icon} className="h-5 w-5 rounded-sm object-cover" />
                 {t(`roomTypes.${rt.value}`)}
               </button>
             ))}

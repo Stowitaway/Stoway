@@ -1,5 +1,6 @@
 import { ROOM_TYPES, localizedText } from "../data/listings";
 import { useLanguage } from "../i18n/LanguageContext";
+import RoomTypeIcon from "./RoomTypeIcon";
 
 export default function ListingCard({ listing, highlighted, onOpen, onRequest }) {
   const { t, locale } = useLanguage();
@@ -28,8 +29,8 @@ export default function ListingCard({ listing, highlighted, onOpen, onRequest })
             className="h-full w-full object-cover"
           />
         ) : (
-          <img
-            src={type?.icon}
+          <RoomTypeIcon
+            icon={type?.icon}
             alt={t(`roomTypes.${type?.value}`)}
             className="h-16 w-16 object-contain"
           />

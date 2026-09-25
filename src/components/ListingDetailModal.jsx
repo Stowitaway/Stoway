@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { ROOM_TYPES, localizedText } from "../data/listings";
 import { useLanguage } from "../i18n/LanguageContext";
+import RoomTypeIcon from "./RoomTypeIcon";
 
 export default function ListingDetailModal({ listing, onClose, onRequest }) {
   const { t, locale } = useLanguage();
@@ -50,7 +51,7 @@ export default function ListingDetailModal({ listing, onClose, onRequest }) {
               className="h-full w-full object-cover"
             />
           ) : (
-            <img src={type?.icon} alt="" className="h-24 w-24 object-contain" />
+            <RoomTypeIcon icon={type?.icon} className="h-24 w-24 object-contain" />
           )}
 
           <button
