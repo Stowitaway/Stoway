@@ -34,7 +34,7 @@ export default function Header({
                     'system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif',
                   fontSize: "0.85rem",
                   fontWeight: 400,
-                  color: "#8a7f6e",
+                  color: "#8e8e93",
                   letterSpacing: "0.02em",
                   marginTop: "4px",
                   whiteSpace: "nowrap",
@@ -109,7 +109,7 @@ export default function Header({
               value={search}
               onChange={(e) => onSearchChange(e.target.value)}
               placeholder={t("searchPlaceholder")}
-              className="w-full rounded-md border border-kraft-300 bg-kraft-50 py-3 pl-11 pr-4 text-base text-kraft-900 placeholder:text-kraft-500 focus:border-kraft-500 focus:outline-none focus:ring-2 focus:ring-kraft-400"
+              className="w-full rounded-md border border-kraft-300 bg-kraft-50 py-3 pl-11 pr-4 text-base text-kraft-900 placeholder:text-[#8E8E93] focus:border-kraft-500 focus:outline-none focus:ring-2 focus:ring-kraft-400"
             />
           </div>
 
