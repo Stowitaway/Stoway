@@ -11,7 +11,7 @@ export default function ListingCard({ listing, highlighted, onOpen, onRequest })
     <article
       id={`listing-${listing.id}`}
       onClick={() => onOpen(listing)}
-      className={`flex cursor-pointer flex-col overflow-hidden rounded-xl border bg-kraft-50 transition hover:shadow-md ${
+      className={`flex cursor-pointer flex-col overflow-hidden rounded-xl border bg-card transition hover:shadow-md ${
         highlighted
           ? "border-stamp ring-2 ring-stamp"
           : "border-kraft-300"
@@ -40,7 +40,7 @@ export default function ListingCard({ listing, highlighted, onOpen, onRequest })
             📷 {listing.photos.length}
           </span>
         )}
-        <span className="absolute right-3 top-3 rounded bg-kraft-50 px-2 py-0.5 text-sm font-semibold text-price shadow-sm">
+        <span className="absolute right-3 top-3 rounded bg-card px-2 py-0.5 text-sm font-semibold text-price shadow-sm">
           €{listing.price}{t("perMonth")}
         </span>
       </div>

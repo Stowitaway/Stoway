@@ -37,7 +37,7 @@ export default function ListingDetailModal({ listing, onClose, onRequest }) {
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-xl border-2 border-kraft-400 bg-kraft-50 shadow-2xl"
+        className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-xl border-2 border-kraft-400 bg-card shadow-2xl"
       >
         <div
           className={`relative flex h-72 items-center justify-center sm:h-96 ${
@@ -90,7 +90,7 @@ export default function ListingDetailModal({ listing, onClose, onRequest }) {
                     onClick={() => setPhotoIndex(i)}
                     aria-label={`Photo ${i + 1}`}
                     className={`h-2 w-2 rounded-full ${
-                      i === photoIndex ? "bg-kraft-50" : "bg-kraft-50/40"
+                      i === photoIndex ? "bg-card" : "bg-card/40"
                     }`}
                   />
                 ))}
@@ -108,7 +108,7 @@ export default function ListingDetailModal({ listing, onClose, onRequest }) {
             <h2 className="text-xl font-semibold text-kraft-900">
               {localizedText(listing.title, locale)}
             </h2>
-            <span className="shrink-0 rounded bg-kraft-50 px-2 py-1 text-sm font-semibold text-price shadow-sm">
+            <span className="shrink-0 rounded bg-card px-2 py-1 text-sm font-semibold text-price shadow-sm">
               €{listing.price}
               {t("perMonth")}
             </span>

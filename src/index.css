@@ -7,7 +7,7 @@
   --color-kraft-50: #ffffff;
   --color-kraft-100: #faf9f6;
   --color-kraft-200: #eae0c8;
-  --color-kraft-300: #ddd0b4;
+  --color-kraft-300: #c7c7c6;
   --color-kraft-400: #c7b896;
   --color-kraft-500: #8b7c64;
   --color-kraft-600: #6b5d4c;
@@ -17,6 +17,9 @@
   --color-stamp: #215fd1;
   --color-price: #ffb52e;
 
+  --color-page: #fafaf9;
+  --color-card: #fcfcfc;
+
   --color-tint-cellar: #e8dab9;
   --color-tint-garage: #e6cdb3;
   --color-tint-storage: #dad0ae;
@@ -24,5 +27,9 @@
 
 body {
   font-family: var(--font-sans);
-  background-color: #f2f0ef;
+  background-color: var(--color-page);
+}
+
+.leaflet-bar a {
+  background-color: var(--color-card);
 }

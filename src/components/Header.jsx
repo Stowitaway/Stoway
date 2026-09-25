@@ -19,7 +19,7 @@ export default function Header({
   const { user } = useAuth();
 
   return (
-    <header className="border-b border-kraft-300 bg-kraft-50 font-display">
+    <header className="border-b border-kraft-300 bg-page font-display">
       <div className="mx-auto flex max-w-7xl flex-col gap-3.5 px-4 py-3.5 sm:px-6">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div className="flex items-center gap-3">

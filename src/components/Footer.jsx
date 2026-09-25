@@ -1,6 +1,6 @@
 export default function Footer() {
   return (
-    <footer className="border-t border-kraft-300 bg-kraft-50">
+    <footer className="border-t border-kraft-300 bg-page">
       <div className="mx-auto max-w-7xl px-4 py-6 text-xs leading-relaxed text-kraft-600 sm:px-6">
         <p className="font-semibold text-kraft-700">Legal Notice</p>
         <p className="mt-2">
