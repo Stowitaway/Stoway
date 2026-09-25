@@ -1,7 +1,5 @@
-import cellarIcon from "../assets/icons/cellar.png";
-
 export const ROOM_TYPES = [
-  { value: "cellar", icon: cellarIcon, tintClass: "bg-tint-cellar" },
+  { value: "cellar", icon: "house", tintClass: "bg-tint-cellar" },
   { value: "garage", icon: "car", tintClass: "bg-tint-garage" },
   { value: "storage", icon: "door", tintClass: "bg-tint-storage" },
 ];

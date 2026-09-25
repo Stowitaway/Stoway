@@ -4,7 +4,7 @@
   --font-sans: "Karla", Arial, Helvetica, sans-serif;
   --font-display: "Fraunces", Georgia, serif;
 
-  --color-kraft-50: #fffdf8;
+  --color-kraft-50: #ffffff;
   --color-kraft-100: #faf9f6;
   --color-kraft-200: #eae0c8;
   --color-kraft-300: #ddd0b4;
@@ -24,5 +24,5 @@
 
 body {
   font-family: var(--font-sans);
-  background-color: #fff;
+  background-color: #f2f0ef;
 }
