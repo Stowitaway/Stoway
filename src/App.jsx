@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useAuth } from "./auth/AuthContext";
 import AuthModal from "./components/AuthModal";
 import ChatModal from "./components/ChatModal";
+import FavoritesModal from "./components/FavoritesModal";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
 import ListingCard from "./components/ListingCard";
@@ -31,6 +32,8 @@ function App() {
   const [selectedListing, setSelectedListing] = useState(null);
   const [showChatModal, setShowChatModal] = useState(false);
   const [chatConversationId, setChatConversationId] = useState(null);
+  const [favoriteIds, setFavoriteIds] = useState(new Set());
+  const [showFavoritesModal, setShowFavoritesModal] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -64,6 +67,45 @@ function App() {
       return matchesSearch && matchesType;
     });
   }, [listings, search, activeType, locale]);
+
+  useEffect(() => {
+    if (!user) {
+      setFavoriteIds(new Set());
+      return;
+    }
+    supabase
+      .from("favorites")
+      .select("listing_id")
+      .eq("user_id", user.id)
+      .then(({ data }) => {
+        setFavoriteIds(new Set((data ?? []).map((row) => row.listing_id)));
+      });
+  }, [user]);
+
+  const handleToggleFavorite = async (listing) => {
+    if (!user) {
+      setShowAuthModal(true);
+      return;
+    }
+    const isFavorite = favoriteIds.has(listing.id);
+    setFavoriteIds((prev) => {
+      const next = new Set(prev);
+      if (isFavorite) next.delete(listing.id);
+      else next.add(listing.id);
+      return next;
+    });
+    if (isFavorite) {
+      await supabase
+        .from("favorites")
+        .delete()
+        .eq("user_id", user.id)
+        .eq("listing_id", listing.id);
+    } else {
+      await supabase
+        .from("favorites")
+        .insert({ user_id: user.id, listing_id: listing.id });
+    }
+  };
 
   useEffect(() => {
     if (highlightedId === null) return;
@@ -129,6 +171,9 @@ function App() {
           setChatConversationId(null);
           setShowChatModal(true);
         }}
+        onFavoritesClick={() =>
+          user ? setShowFavoritesModal(true) : setShowAuthModal(true)
+        }
       />
 
       <main className="mx-auto w-full max-w-7xl flex-1 px-4 py-6 sm:px-6">
@@ -188,6 +233,8 @@ function App() {
                     highlighted={listing.id === highlightedId}
                     onOpen={setSelectedListing}
                     onRequest={handleRequest}
+                    isFavorite={favoriteIds.has(listing.id)}
+                    onToggleFavorite={handleToggleFavorite}
                   />
                 ))}
               </div>
@@ -229,6 +276,8 @@ function App() {
           listing={selectedListing}
           onClose={() => setSelectedListing(null)}
           onRequest={handleRequest}
+          isFavorite={favoriteIds.has(selectedListing.id)}
+          onToggleFavorite={handleToggleFavorite}
         />
       )}
 
@@ -236,6 +285,17 @@ function App() {
         <ChatModal
           initialConversationId={chatConversationId}
           onClose={() => setShowChatModal(false)}
+        />
+      )}
+
+      {showFavoritesModal && (
+        <FavoritesModal
+          listings={listings.filter((l) => favoriteIds.has(l.id))}
+          onClose={() => setShowFavoritesModal(false)}
+          onOpenListing={setSelectedListing}
+          onRequest={handleRequest}
+          favoriteIds={favoriteIds}
+          onToggleFavorite={handleToggleFavorite}
         />
       )}
     </div>

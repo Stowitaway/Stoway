@@ -1,9 +1,16 @@
 import { useEffect, useState } from "react";
 import { ROOM_TYPES, localizedText } from "../data/listings";
 import { useLanguage } from "../i18n/LanguageContext";
+import HeartIcon from "./HeartIcon";
 import RoomTypeIcon from "./RoomTypeIcon";
 
-export default function ListingDetailModal({ listing, onClose, onRequest }) {
+export default function ListingDetailModal({
+  listing,
+  onClose,
+  onRequest,
+  isFavorite,
+  onToggleFavorite,
+}) {
   const { t, locale } = useLanguage();
   const [photoIndex, setPhotoIndex] = useState(0);
 
@@ -63,6 +70,18 @@ export default function ListingDetailModal({ listing, onClose, onRequest }) {
             ✕
           </button>
 
+          <button
+            type="button"
+            onClick={() => onToggleFavorite(listing)}
+            aria-label={t(isFavorite ? "favorites.remove" : "favorites.add")}
+            className="absolute left-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-card/90 shadow-sm"
+          >
+            <HeartIcon
+              filled={isFavorite}
+              className={`h-4 w-4 ${isFavorite ? "" : "text-kraft-700"}`}
+            />
+          </button>
+
           {hasMultiplePhotos && (
             <>
               <button
@@ -96,7 +115,7 @@ export default function ListingDetailModal({ listing, onClose, onRequest }) {
                 ))}
               </div>
 
-              <span className="absolute left-3 top-3 rounded bg-kraft-900/70 px-2 py-0.5 text-xs font-medium text-kraft-50">
+              <span className="absolute bottom-3 left-3 rounded bg-kraft-900/70 px-2 py-0.5 text-xs font-medium text-kraft-50">
                 {photoIndex + 1} / {photos.length}
               </span>
             </>

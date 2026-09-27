@@ -14,6 +14,7 @@ export default function Header({
   onListSpaceClick,
   onAuthClick,
   onChatClick,
+  onFavoritesClick,
 }) {
   const { t } = useLanguage();
   const { user } = useAuth();
@@ -52,6 +53,28 @@ export default function Header({
               className="shrink-0 rounded-md bg-stamp px-5 py-3 text-base font-medium text-kraft-50 transition hover:opacity-90"
             >
               {t("listYourSpace")}
+            </button>
+
+            <button
+              type="button"
+              onClick={onFavoritesClick}
+              aria-label={t("favorites.title")}
+              title={t("favorites.title")}
+              className="flex h-11 w-11 items-center justify-center rounded-md border border-kraft-300 bg-kraft-50 hover:bg-kraft-200"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="18"
+                height="18"
+                fill="#ff0000"
+                viewBox="0 0 16 16"
+                aria-hidden="true"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314"
+                />
+              </svg>
             </button>
 
             {user && (

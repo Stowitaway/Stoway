@@ -47,6 +47,12 @@ export const translations = {
       demoListing: "This is a demo listing without a real host.",
       selectConversation: "Select a conversation to view messages.",
     },
+    favorites: {
+      title: "Favorites",
+      empty: "No favorites yet.",
+      add: "Add to favorites",
+      remove: "Remove from favorites",
+    },
     modal: {
       title: "List your space",
       close: "Close",
@@ -106,6 +112,12 @@ export const translations = {
       ownListing: "Este é o seu próprio anúncio.",
       demoListing: "Este é um anúncio de demonstração sem anfitrião real.",
       selectConversation: "Selecione uma conversa para ver as mensagens.",
+    },
+    favorites: {
+      title: "Favoritos",
+      empty: "Ainda não há favoritos.",
+      add: "Adicionar aos favoritos",
+      remove: "Remover dos favoritos",
     },
     modal: {
       title: "Anuncie o seu espaço",
@@ -167,6 +179,12 @@ export const translations = {
       demoListing: "Das ist ein Beispiel-Angebot ohne echten Vermieter.",
       selectConversation: "Wähle eine Unterhaltung aus, um Nachrichten zu sehen.",
     },
+    favorites: {
+      title: "Favoriten",
+      empty: "Noch keine Favoriten.",
+      add: "Zu Favoriten hinzufügen",
+      remove: "Aus Favoriten entfernen",
+    },
     modal: {
       title: "Deinen Stauraum vermieten",
       close: "Schließen",
@@ -227,6 +245,12 @@ export const translations = {
       demoListing: "Questo è un annuncio dimostrativo senza un host reale.",
       selectConversation: "Seleziona una conversazione per vedere i messaggi.",
     },
+    favorites: {
+      title: "Preferiti",
+      empty: "Nessun preferito ancora.",
+      add: "Aggiungi ai preferiti",
+      remove: "Rimuovi dai preferiti",
+    },
     modal: {
       title: "Metti in affitto il tuo spazio",
       close: "Chiudi",
@@ -286,6 +310,12 @@ export const translations = {
       ownListing: "C'est votre propre annonce.",
       demoListing: "C'est une annonce de démonstration sans hôte réel.",
       selectConversation: "Sélectionnez une conversation pour voir les messages.",
+    },
+    favorites: {
+      title: "Favoris",
+      empty: "Pas encore de favoris.",
+      add: "Ajouter aux favoris",
+      remove: "Retirer des favoris",
     },
     modal: {
       title: "Proposez votre espace",
