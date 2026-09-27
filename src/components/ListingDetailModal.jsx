@@ -45,7 +45,7 @@ export default function ListingDetailModal({
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-xl border-2 border-kraft-400 bg-card shadow-2xl"
+        className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-xl border-2 border-kraft-300 bg-card shadow-2xl"
       >
         <div
           className={`relative flex h-72 items-center justify-center sm:h-96 ${

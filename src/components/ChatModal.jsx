@@ -96,7 +96,7 @@ export default function ChatModal({ initialConversationId, onClose }) {
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="flex h-[80vh] w-full max-w-3xl overflow-hidden rounded-lg border-2 border-kraft-400 bg-kraft-50 shadow-2xl"
+        className="flex h-[80vh] w-full max-w-3xl overflow-hidden rounded-lg border-2 border-kraft-300 bg-kraft-50 shadow-2xl"
       >
         <div
           className={`w-full flex-col sm:flex sm:w-56 sm:shrink-0 sm:border-r sm:border-kraft-300 ${
