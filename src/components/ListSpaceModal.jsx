@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useAuth } from "../auth/AuthContext";
+import CameraIcon from "./CameraIcon";
 import { NEIGHBOURHOODS, ROOM_TYPES } from "../data/listings";
 import { fuzzLocation, geocodeAddress } from "../lib/geocode";
 import { useLanguage } from "../i18n/LanguageContext";
@@ -233,7 +234,9 @@ export default function ListSpaceModal({ onClose, onCreated }) {
             )}
 
             <label className="flex cursor-pointer items-center justify-center rounded-md border border-dashed border-kraft-400 bg-white px-3 py-4 text-sm text-kraft-600 hover:bg-kraft-100">
-              <span>📷 {t("modal.addPhotos")}</span>
+              <span className="flex items-center gap-1.5">
+                <CameraIcon /> {t("modal.addPhotos")}
+              </span>
               <input
                 type="file"
                 accept="image/*"

@@ -135,7 +135,7 @@ export default function ChatModal({ initialConversationId, onClose }) {
                   }}
                   className={`block w-full border-b border-kraft-200 px-4 py-3 text-left text-sm ${
                     conversation.id === activeId
-                      ? "bg-kraft-200"
+                      ? "bg-[#F0EDE9]"
                       : "hover:bg-kraft-100"
                   }`}
                 >
@@ -193,7 +193,7 @@ export default function ChatModal({ initialConversationId, onClose }) {
                     className={`max-w-[75%] rounded-lg px-3 py-2 text-sm ${
                       m.sender_id === user.id
                         ? "self-end bg-stamp text-kraft-50"
-                        : "self-start bg-kraft-200 text-kraft-900"
+                        : "self-start bg-[#F0EDE9] text-kraft-900"
                     }`}
                   >
                     {m.body}

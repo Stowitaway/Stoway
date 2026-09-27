@@ -1,5 +1,6 @@
 import { ROOM_TYPES, localizedText } from "../data/listings";
 import { useLanguage } from "../i18n/LanguageContext";
+import CameraIcon from "./CameraIcon";
 import GeoIcon from "./GeoIcon";
 import HeartIcon from "./HeartIcon";
 import RoomTypeIcon from "./RoomTypeIcon";
@@ -59,8 +60,8 @@ export default function ListingCard({
           />
         </button>
         {hasPhotos && listing.photos.length > 1 && (
-          <span className="absolute bottom-3 left-3 rounded bg-kraft-900/70 px-2 py-0.5 text-xs font-medium text-kraft-50">
-            📷 {listing.photos.length}
+          <span className="absolute bottom-3 left-3 flex items-center gap-1 rounded bg-kraft-900/70 px-2 py-0.5 text-xs font-medium text-kraft-50">
+            <CameraIcon /> {listing.photos.length}
           </span>
         )}
         <span className="absolute right-3 top-3 rounded bg-price px-2 py-0.5 text-sm font-semibold text-kraft-50 shadow-sm">
