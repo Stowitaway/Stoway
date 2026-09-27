@@ -1,5 +1,6 @@
 import { ROOM_TYPES, localizedText } from "../data/listings";
 import { useLanguage } from "../i18n/LanguageContext";
+import GeoIcon from "./GeoIcon";
 import HeartIcon from "./HeartIcon";
 import RoomTypeIcon from "./RoomTypeIcon";
 
@@ -62,7 +63,7 @@ export default function ListingCard({
             📷 {listing.photos.length}
           </span>
         )}
-        <span className="absolute right-3 top-3 rounded bg-card px-2 py-0.5 text-sm font-semibold text-price shadow-sm">
+        <span className="absolute right-3 top-3 rounded bg-price px-2 py-0.5 text-sm font-semibold text-kraft-50 shadow-sm">
           €{listing.price}{t("perMonth")}
         </span>
       </div>
@@ -75,13 +76,13 @@ export default function ListingCard({
         </div>
 
         <div className="flex flex-wrap items-center gap-2 text-xs text-kraft-700">
-          <span className="rounded-full bg-kraft-200 px-2 py-0.5">
-            📍 {listing.neighbourhood}
+          <span className="flex items-center gap-1 rounded-full bg-[#F0EDE9] px-2 py-0.5">
+            <GeoIcon /> {listing.neighbourhood}
           </span>
-          <span className="rounded-full bg-kraft-200 px-2 py-0.5">
+          <span className="rounded-full bg-[#F0EDE9] px-2 py-0.5">
             {t(`roomTypes.${type?.value}`)}
           </span>
-          <span className="rounded-full bg-kraft-200 px-2 py-0.5">
+          <span className="rounded-full bg-[#F0EDE9] px-2 py-0.5">
             {listing.size} m²
           </span>
         </div>

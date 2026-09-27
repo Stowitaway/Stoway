@@ -142,7 +142,7 @@ export default function Header({
               onClick={() => onTypeChange("all")}
               className={`rounded-full border px-4 py-2 text-base font-medium transition ${
                 activeType === "all"
-                  ? "border-kraft-700 bg-kraft-700 text-kraft-50"
+                  ? "border-kraft-900 bg-kraft-900 text-kraft-50"
                   : "border-kraft-300 bg-kraft-50 text-kraft-800 hover:bg-kraft-200"
               }`}
             >
@@ -155,7 +155,7 @@ export default function Header({
                 onClick={() => onTypeChange(rt.value)}
                 className={`flex items-center gap-2 rounded-full border px-4 py-2 text-base font-medium transition ${
                   activeType === rt.value
-                    ? "border-kraft-700 bg-kraft-700 text-kraft-50"
+                    ? "border-kraft-900 bg-kraft-900 text-kraft-50"
                     : "border-kraft-300 bg-kraft-50 text-kraft-800 hover:bg-kraft-200"
                 }`}
               >

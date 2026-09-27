@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { ROOM_TYPES, localizedText } from "../data/listings";
 import { useLanguage } from "../i18n/LanguageContext";
+import GeoIcon from "./GeoIcon";
 import HeartIcon from "./HeartIcon";
 import RoomTypeIcon from "./RoomTypeIcon";
 
@@ -127,20 +128,20 @@ export default function ListingDetailModal({
             <h2 className="text-xl font-semibold text-kraft-900">
               {localizedText(listing.title, locale)}
             </h2>
-            <span className="shrink-0 rounded bg-card px-2 py-1 text-sm font-semibold text-price shadow-sm">
+            <span className="shrink-0 rounded bg-price px-2 py-1 text-sm font-semibold text-kraft-50 shadow-sm">
               €{listing.price}
               {t("perMonth")}
             </span>
           </div>
 
           <div className="flex flex-wrap items-center gap-2 text-xs text-kraft-700">
-            <span className="rounded-full bg-kraft-200 px-2 py-0.5">
-              📍 {listing.neighbourhood}
+            <span className="flex items-center gap-1 rounded-full bg-[#F0EDE9] px-2 py-0.5">
+              <GeoIcon /> {listing.neighbourhood}
             </span>
-            <span className="rounded-full bg-kraft-200 px-2 py-0.5">
+            <span className="rounded-full bg-[#F0EDE9] px-2 py-0.5">
               {t(`roomTypes.${type?.value}`)}
             </span>
-            <span className="rounded-full bg-kraft-200 px-2 py-0.5">
+            <span className="rounded-full bg-[#F0EDE9] px-2 py-0.5">
               {listing.size} m²
             </span>
           </div>
