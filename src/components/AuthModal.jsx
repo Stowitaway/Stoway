@@ -46,7 +46,7 @@ export default function AuthModal({ onClose, onAuthenticated }) {
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="w-full max-w-sm overflow-hidden rounded-lg border-2 border-kraft-400 bg-kraft-50 shadow-2xl"
+        className="w-full max-w-sm overflow-hidden rounded-lg border-2 border-kraft-300 bg-kraft-50 shadow-2xl"
       >
         <div className="flex items-center justify-between border-b border-kraft-300 bg-kraft-100 px-5 py-4">
           <h2 className="text-xl font-semibold text-kraft-900">

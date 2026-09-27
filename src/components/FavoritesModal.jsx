@@ -18,7 +18,7 @@ export default function FavoritesModal({
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="flex max-h-[85vh] w-full max-w-3xl flex-col overflow-hidden rounded-lg border-2 border-kraft-400 bg-card shadow-2xl"
+        className="flex max-h-[85vh] w-full max-w-3xl flex-col overflow-hidden rounded-lg border-2 border-kraft-300 bg-card shadow-2xl"
       >
         <div className="flex items-center justify-between border-b border-kraft-300 bg-kraft-100 px-5 py-4">
           <h2 className="flex items-center gap-2 text-xl font-semibold text-kraft-900">

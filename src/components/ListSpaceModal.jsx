@@ -106,7 +106,7 @@ export default function ListSpaceModal({ onClose, onCreated }) {
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-lg border-2 border-kraft-400 bg-kraft-50 shadow-2xl"
+        className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-lg border-2 border-kraft-300 bg-kraft-50 shadow-2xl"
       >
         <div className="flex items-center justify-between border-b border-kraft-300 bg-kraft-100 px-5 py-4">
           <h2 className="text-xl font-semibold text-kraft-900">
@@ -233,7 +233,7 @@ export default function ListSpaceModal({ onClose, onCreated }) {
               </div>
             )}
 
-            <label className="flex cursor-pointer items-center justify-center rounded-md border border-dashed border-kraft-400 bg-white px-3 py-4 text-sm text-kraft-600 hover:bg-kraft-100">
+            <label className="flex cursor-pointer items-center justify-center rounded-md border border-dashed border-kraft-300 bg-white px-3 py-4 text-sm text-kraft-600 hover:bg-kraft-100">
               <span className="flex items-center gap-1.5">
                 <CameraIcon /> {t("modal.addPhotos")}
               </span>
