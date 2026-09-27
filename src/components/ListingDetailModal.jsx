@@ -157,7 +157,7 @@ export default function ListingDetailModal({
             <button
               type="button"
               onClick={() => onRequest(listing)}
-              className="rounded-md border border-kraft-900 bg-transparent px-4 py-2 font-medium text-kraft-900 transition hover:bg-kraft-900/5"
+              className="rounded-md border border-stamp bg-transparent px-4 py-2 font-medium text-stamp transition hover:bg-stamp/5"
             >
               {t("request")}
             </button>

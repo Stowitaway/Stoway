@@ -30,7 +30,7 @@ function createPriceElement(price, isActive) {
     display:inline-flex;align-items:center;justify-content:center;
     padding:4px 10px;
     border-radius:999px;
-    background:${isActive ? "#2b241c" : "#ffb52e"};
+    background:${isActive ? "#2b241c" : "#c1502b"};
     color:#fffdf8;
     font-family:Karla, Arial, Helvetica, sans-serif;
     font-size:12px;

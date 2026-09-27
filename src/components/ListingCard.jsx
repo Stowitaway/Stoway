@@ -102,7 +102,7 @@ export default function ListingCard({
               e.stopPropagation();
               onRequest(listing);
             }}
-            className="rounded-md border border-kraft-900 bg-transparent px-3 py-1.5 font-medium text-kraft-900 transition hover:bg-kraft-900/5"
+            className="rounded-md border border-stamp bg-transparent px-3 py-1.5 font-medium text-stamp transition hover:bg-stamp/5"
           >
             {t("request")}
           </button>
