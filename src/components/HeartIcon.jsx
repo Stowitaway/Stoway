@@ -3,7 +3,7 @@ export default function HeartIcon({ filled, className }) {
     return (
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        fill="#ff0000"
+        fill="#000000"
         viewBox="0 0 16 16"
         className={className}
         aria-hidden="true"
