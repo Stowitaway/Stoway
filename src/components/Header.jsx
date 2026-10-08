@@ -38,7 +38,7 @@ export default function Header({
 
           <div className="order-last w-full sm:order-none sm:flex-1 sm:max-w-[560px]">
             <SearchInput
-              label={t("searchPlaceholder")}
+              compact
               value={search}
               onChange={(e) => onSearchChange(e.target.value)}
               placeholder={t("searchPlaceholder")}
@@ -71,7 +71,7 @@ export default function Header({
               heading={t("language")}
               value={locale}
               onSelect={setLocale}
-              items={LOCALES.map(({ code, name }) => ({ value: code, label: name }))}
+              items={LOCALES.map(({ code, name }) => ({ value: code, label: <em>{name}</em> }))}
             />
 
             {user ? (
