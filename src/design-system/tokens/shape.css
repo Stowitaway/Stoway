@@ -1,0 +1,46 @@
+/* Stoway shape, elevation and motion — v2. Soft, generous rounding; layered
+   low-contrast shadows instead of borders wherever something floats. */
+:root{
+  --radius-none:0;
+  --radius-xs:4px;
+  --radius-sm:8px;
+  --radius-md:12px;
+  --radius-lg:16px;
+  --radius-xl:20px;
+  --radius-2xl:28px;
+  --radius-pill:999px;
+  --radius-logo:22%;
+
+  --radius-button:var(--radius-md);
+  --radius-chip:var(--radius-pill);
+  --radius-field:var(--radius-md);
+  --radius-media:var(--radius-lg);
+  --radius-card:var(--radius-lg);
+  --radius-modal:var(--radius-xl);
+  --radius-badge:var(--radius-sm);
+
+  --border-width-hairline:1px;
+  --border-width-strong:2px;
+
+  --shadow-none:none;
+  --shadow-xs:0 1px 2px rgb(0 0 0 / .06);
+  --shadow-sm:0 1px 2px rgb(0 0 0 / .06),0 2px 6px rgb(0 0 0 / .06);
+  --shadow-md:0 2px 4px rgb(0 0 0 / .04),0 6px 16px rgb(0 0 0 / .08);
+  --shadow-lg:0 4px 8px rgb(0 0 0 / .04),0 12px 28px rgb(0 0 0 / .12);
+  --shadow-modal:0 8px 24px rgb(0 0 0 / .12),0 24px 64px rgb(0 0 0 / .18);
+  --shadow-search:0 1px 2px rgb(0 0 0 / .06),0 4px 14px rgb(0 0 0 / .06);
+  --shadow-marker:0 1px 2px rgb(0 0 0 / .12),0 2px 8px rgb(0 0 0 / .14);
+
+  --ring-width:3px;
+
+  --duration-fast:120ms; /* @kind other */
+  --duration-base:200ms; /* @kind other */
+  --duration-slow:320ms; /* @kind other */
+  --duration-highlight:2500ms; /* @kind other */
+  --ease-standard:cubic-bezier(.2,0,0,1); /* @kind other */
+  --ease-out:cubic-bezier(0,0,.2,1); /* @kind other */
+  --transition-base:all var(--duration-base) var(--ease-standard);
+
+  --press-scale:.97; /* @kind other */
+  --media-hover-scale:1.04; /* @kind other */
+}

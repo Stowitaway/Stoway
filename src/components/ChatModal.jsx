@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useAuth } from "../auth/AuthContext";
 import { useLanguage } from "../i18n/LanguageContext";
 import { supabase } from "../lib/supabaseClient";
+import { IconButton } from "../design-system/components/core/IconButton";
 
 export default function ChatModal({ initialConversationId, onClose }) {
   const { t } = useLanguage();
@@ -90,38 +91,33 @@ export default function ChatModal({ initialConversationId, onClose }) {
   };
 
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-kraft-900/50 p-4"
-      onClick={onClose}
-    >
+    <div className="sw-modal__scrim" onClick={onClose}>
       <div
         onClick={(e) => e.stopPropagation()}
-        className="flex h-[80vh] w-full max-w-3xl overflow-hidden rounded-lg border-2 border-kraft-300 bg-kraft-50 shadow-2xl"
+        className="sw-modal sw-modal--lg"
+        style={{ height: "80vh", display: "flex", flexDirection: "row" }}
       >
         <div
-          className={`w-full flex-col sm:flex sm:w-56 sm:shrink-0 sm:border-r sm:border-kraft-300 ${
-            mobileView === "list" ? "flex" : "hidden"
-          }`}
+          className={`w-full flex-col sm:flex sm:w-56 sm:shrink-0 ${mobileView === "list" ? "flex" : "hidden"}`}
+          style={{ borderRight: "var(--border-width-hairline) solid var(--border-subtle)" }}
         >
-          <div className="flex items-center justify-between border-b border-kraft-300 bg-kraft-100 px-4 py-3">
-            <h2 className="text-lg font-semibold text-kraft-900">
+          <div
+            className="flex items-center justify-between px-4 py-3"
+            style={{ borderBottom: "var(--border-width-hairline) solid var(--border-subtle)", background: "var(--surface-sunken)" }}
+          >
+            <h2 className="m-0" style={{ fontSize: "var(--text-lg)", fontWeight: "var(--weight-bold)", color: "var(--text-strong)" }}>
               {t("chat.title")}
             </h2>
-            <button
-              type="button"
-              onClick={onClose}
-              aria-label={t("modal.close")}
-              className="rounded-full px-2 py-1 text-kraft-700 hover:bg-kraft-200 sm:hidden"
-            >
-              ✕
-            </button>
+            <span className="sm:hidden">
+              <IconButton icon="x-lg" size="sm" label={t("modal.close")} onClick={onClose} />
+            </span>
           </div>
 
           <div className="flex-1 overflow-y-auto">
             {loadingList ? (
-              <p className="p-4 text-sm text-kraft-600">…</p>
+              <p className="p-4" style={{ fontSize: "var(--text-sm)", color: "var(--text-muted)" }}>…</p>
             ) : conversations.length === 0 ? (
-              <p className="p-4 text-sm text-kraft-600">
+              <p className="p-4" style={{ fontSize: "var(--text-sm)", color: "var(--text-muted)" }}>
                 {t("chat.noConversations")}
               </p>
             ) : (
@@ -133,17 +129,18 @@ export default function ChatModal({ initialConversationId, onClose }) {
                     setActiveId(conversation.id);
                     setMobileView("thread");
                   }}
-                  className={`block w-full border-b border-kraft-200 px-4 py-3 text-left text-sm ${
-                    conversation.id === activeId
-                      ? "bg-[#F0EDE9]"
-                      : "hover:bg-kraft-100"
-                  }`}
+                  className="block w-full px-4 py-3 text-left"
+                  style={{
+                    fontSize: "var(--text-sm)",
+                    borderBottom: "var(--border-width-hairline) solid var(--border-subtle)",
+                    background: conversation.id === activeId ? "var(--surface-hover)" : "transparent",
+                  }}
                 >
-                  <div className="font-medium text-kraft-900">
+                  <div style={{ fontWeight: "var(--weight-semibold)", color: "var(--text-strong)" }}>
                     {otherPartyName(conversation)}
                   </div>
                   {conversation.listing_title && (
-                    <div className="truncate text-xs text-kraft-600">
+                    <div className="truncate" style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)" }}>
                       {conversation.listing_title}
                     </div>
                   )}
@@ -153,36 +150,23 @@ export default function ChatModal({ initialConversationId, onClose }) {
           </div>
         </div>
 
-        <div
-          className={`flex-1 flex-col sm:flex ${
-            mobileView === "thread" ? "flex" : "hidden"
-          }`}
-        >
-          <div className="flex items-center gap-2 border-b border-kraft-300 bg-kraft-100 px-4 py-3">
-            <button
-              type="button"
-              onClick={() => setMobileView("list")}
-              aria-label="Back"
-              className="rounded-full px-2 py-1 text-kraft-700 hover:bg-kraft-200 sm:hidden"
-            >
-              ‹
-            </button>
-            <span className="flex-1 font-medium text-kraft-900">
+        <div className={`flex-1 flex-col sm:flex ${mobileView === "thread" ? "flex" : "hidden"}`}>
+          <div
+            className="flex items-center gap-2 px-4 py-3"
+            style={{ borderBottom: "var(--border-width-hairline) solid var(--border-subtle)", background: "var(--surface-sunken)" }}
+          >
+            <span className="sm:hidden">
+              <IconButton icon="chevron-left" size="sm" label="Back" onClick={() => setMobileView("list")} />
+            </span>
+            <span className="flex-1" style={{ fontWeight: "var(--weight-semibold)", color: "var(--text-strong)" }}>
               {activeConversation ? otherPartyName(activeConversation) : ""}
             </span>
-            <button
-              type="button"
-              onClick={onClose}
-              aria-label={t("modal.close")}
-              className="rounded-full px-2 py-1 text-kraft-700 hover:bg-kraft-200"
-            >
-              ✕
-            </button>
+            <IconButton icon="x-lg" size="sm" label={t("modal.close")} onClick={onClose} />
           </div>
 
           <div className="flex-1 overflow-y-auto px-4 py-3">
             {!activeConversation ? (
-              <p className="text-sm text-kraft-600">
+              <p style={{ fontSize: "var(--text-sm)", color: "var(--text-muted)" }}>
                 {t("chat.selectConversation")}
               </p>
             ) : (
@@ -190,11 +174,13 @@ export default function ChatModal({ initialConversationId, onClose }) {
                 {messages.map((m) => (
                   <div
                     key={m.id}
-                    className={`max-w-[75%] rounded-lg px-3 py-2 text-sm ${
-                      m.sender_id === user.id
-                        ? "self-end bg-stamp text-kraft-50"
-                        : "self-start bg-[#F0EDE9] text-kraft-900"
-                    }`}
+                    className="max-w-[75%] rounded-md px-3 py-2"
+                    style={{
+                      fontSize: "var(--text-sm)",
+                      alignSelf: m.sender_id === user.id ? "flex-end" : "flex-start",
+                      background: m.sender_id === user.id ? "var(--brand)" : "var(--surface-sunken)",
+                      color: m.sender_id === user.id ? "var(--text-inverse)" : "var(--text-strong)",
+                    }}
                   >
                     {m.body}
                   </div>
@@ -207,20 +193,17 @@ export default function ChatModal({ initialConversationId, onClose }) {
           {activeConversation && (
             <form
               onSubmit={handleSend}
-              className="flex gap-2 border-t border-kraft-300 p-3"
+              className="flex gap-2 p-3"
+              style={{ borderTop: "var(--border-width-hairline) solid var(--border-subtle)" }}
             >
               <input
                 type="text"
                 value={messageText}
                 onChange={(e) => setMessageText(e.target.value)}
                 placeholder={t("chat.placeholder")}
-                className="flex-1 rounded-md border border-kraft-300 bg-white px-3 py-2 text-sm focus:border-kraft-500 focus:outline-none focus:ring-2 focus:ring-kraft-400"
+                className="sw-input flex-1"
               />
-              <button
-                type="submit"
-                disabled={sending || !messageText.trim()}
-                className="rounded-md bg-stamp px-4 py-2 text-sm font-medium text-kraft-50 transition hover:opacity-90 disabled:opacity-60"
-              >
+              <button type="submit" disabled={sending || !messageText.trim()} className="sw-btn sw-btn--primary">
                 {t("chat.send")}
               </button>
             </form>

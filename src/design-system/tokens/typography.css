@@ -1,0 +1,51 @@
+/* Stoway typography — v2. One humanist geometric sans for everything.
+   Replaces the product's Fraunces (display serif) + Karla pairing. */
+:root{
+  --font-sans:"Plus Jakarta Sans",-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;
+  --font-mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --font-ui:var(--font-sans);
+  --font-display:var(--font-sans);
+
+  --weight-regular:400;
+  --weight-medium:500;
+  --weight-semibold:600;
+  --weight-bold:700;
+  --weight-extrabold:800;
+
+  --text-2xs:.6875rem;
+  --text-xs:.75rem;
+  --text-sm:.875rem;
+  --text-md:.9375rem;
+  --text-base:1rem;
+  --text-lg:1.125rem;
+  --text-xl:1.375rem;
+  --text-2xl:1.625rem;
+  --text-3xl:2rem;
+  --text-4xl:2.5rem;
+
+  --leading-tight:1.2;
+  --leading-snug:1.35;
+  --leading-normal:1.5;
+  --leading-relaxed:1.6;
+
+  --tracking-tight:-0.02em;
+  --tracking-snug:-0.01em;
+  --tracking-normal:0;
+
+  /* Roles */
+  --type-display-size:var(--text-3xl);
+  --type-display-weight:var(--weight-bold);
+  --type-title-size:var(--text-2xl);
+  --type-title-weight:var(--weight-bold);
+  --type-heading-size:var(--text-xl);
+  --type-heading-weight:var(--weight-semibold);
+  --type-card-title-size:var(--text-md);
+  --type-card-title-weight:var(--weight-semibold);
+  --type-body-size:var(--text-md);
+  --type-body-leading:var(--leading-relaxed);
+  --type-meta-size:var(--text-sm);
+  --type-label-size:var(--text-sm);
+  --type-label-weight:var(--weight-semibold);
+  --type-price-size:var(--text-md);
+  --type-price-weight:var(--weight-bold);
+}

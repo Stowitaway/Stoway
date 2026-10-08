@@ -1,9 +1,15 @@
 import { useEffect, useState } from "react";
 import { ROOM_TYPES, localizedText } from "../data/listings";
 import { useLanguage } from "../i18n/LanguageContext";
-import GeoIcon from "./GeoIcon";
-import HeartIcon from "./HeartIcon";
-import RoomTypeIcon from "./RoomTypeIcon";
+import { Icon } from "../design-system/components/core/Icon";
+import { IconButton } from "../design-system/components/core/IconButton";
+import { Button } from "../design-system/components/core/Button";
+import { Tag } from "../design-system/components/core/Tag";
+import { Badge } from "../design-system/components/core/Badge";
+import { PriceStamp } from "../design-system/components/core/PriceStamp";
+import { FavoriteButton } from "../design-system/components/listings/FavoriteButton";
+
+const ROOM_ICON = { cellar: "house-down", garage: "car-front-fill", storage: "door-closed" };
 
 export default function ListingDetailModal({
   listing,
@@ -39,128 +45,74 @@ export default function ListingDetailModal({
   }, [hasMultiplePhotos, photos.length, onClose]);
 
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-kraft-900/50 p-4"
-      onClick={onClose}
-    >
+    <div className="sw-modal__scrim" onClick={onClose}>
       <div
         onClick={(e) => e.stopPropagation()}
-        className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-xl border-2 border-kraft-300 bg-card shadow-2xl"
+        className="sw-modal sw-modal--lg"
+        style={{ maxHeight: "90vh" }}
       >
         <div
-          className={`relative flex h-72 items-center justify-center sm:h-96 ${
-            hasPhotos ? "bg-kraft-100" : type?.tintClass
-          }`}
+          className="relative flex items-center justify-center"
+          style={{ aspectRatio: "4 / 3", background: "var(--surface-muted)" }}
         >
           {hasPhotos ? (
-            <img
-              src={photos[photoIndex]}
-              alt=""
-              className="h-full w-full object-cover"
-            />
+            <img src={photos[photoIndex]} alt="" className="h-full w-full object-cover" />
           ) : (
-            <RoomTypeIcon icon={type?.icon} className="h-24 w-24 object-contain" />
+            <div className={`sw-roomicon--${type?.value}`} style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <Icon name={ROOM_ICON[type?.value] || "box"} style={{ fontSize: 56 }} />
+            </div>
           )}
 
-          <button
-            type="button"
-            onClick={onClose}
-            aria-label={t("modal.close")}
-            className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-kraft-900/70 text-kraft-50 hover:bg-kraft-900"
-          >
-            ✕
-          </button>
-
-          <button
-            type="button"
-            onClick={() => onToggleFavorite(listing)}
-            aria-label={t(isFavorite ? "favorites.remove" : "favorites.add")}
-            className="absolute left-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-card/90 shadow-sm"
-          >
-            <HeartIcon
-              filled={isFavorite}
-              className={`h-4 w-4 ${isFavorite ? "" : "text-kraft-700"}`}
-            />
-          </button>
+          <span className="absolute right-3 top-3">
+            <IconButton icon="x-lg" variant="onimage" label={t("modal.close")} onClick={onClose} />
+          </span>
+          <span className="absolute left-3 top-3">
+            <FavoriteButton active={isFavorite} onToggle={() => onToggleFavorite(listing)} />
+          </span>
 
           {hasMultiplePhotos && (
             <>
-              <button
-                type="button"
-                onClick={goPrev}
-                aria-label="Previous photo"
-                className="absolute left-3 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-kraft-900/70 text-kraft-50 hover:bg-kraft-900"
-              >
-                ‹
-              </button>
-              <button
-                type="button"
-                onClick={goNext}
-                aria-label="Next photo"
-                className="absolute right-3 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-kraft-900/70 text-kraft-50 hover:bg-kraft-900"
-              >
-                ›
-              </button>
-
-              <div className="absolute bottom-3 left-1/2 flex -translate-x-1/2 gap-1.5">
-                {photos.map((_, i) => (
-                  <button
-                    key={i}
-                    type="button"
-                    onClick={() => setPhotoIndex(i)}
-                    aria-label={`Photo ${i + 1}`}
-                    className={`h-2 w-2 rounded-full ${
-                      i === photoIndex ? "bg-card" : "bg-card/40"
-                    }`}
-                  />
-                ))}
-              </div>
-
-              <span className="absolute bottom-3 left-3 rounded bg-kraft-900/70 px-2 py-0.5 text-xs font-medium text-kraft-50">
-                {photoIndex + 1} / {photos.length}
+              <span className="absolute left-3 top-1/2 -translate-y-1/2">
+                <IconButton icon="chevron-left" variant="onimage" label="Previous photo" onClick={goPrev} />
+              </span>
+              <span className="absolute right-3 top-1/2 -translate-y-1/2">
+                <IconButton icon="chevron-right" variant="onimage" label="Next photo" onClick={goNext} />
+              </span>
+              <span className="absolute bottom-3 left-3">
+                <Badge variant="overlay">{photoIndex + 1} / {photos.length}</Badge>
               </span>
             </>
           )}
         </div>
 
-        <div className="flex flex-col gap-3 p-5">
+        <div className="flex flex-col gap-3" style={{ padding: "var(--pad-modal-y) var(--pad-modal-x)", overflowY: "auto" }}>
           <div className="flex items-start justify-between gap-3">
-            <h2 className="text-xl font-semibold text-kraft-900">
+            <h2 className="m-0" style={{ fontSize: "var(--text-xl)", fontWeight: "var(--weight-bold)", color: "var(--text-strong)" }}>
               {localizedText(listing.title, locale)}
             </h2>
-            <span className="shrink-0 rounded bg-price px-2 py-1 text-sm font-semibold text-kraft-50 shadow-sm">
-              €{listing.price}
-              {t("perMonth")}
-            </span>
+            <PriceStamp amount={listing.price} unit={t("perMonth")} size="lg" />
           </div>
 
-          <div className="flex flex-wrap items-center gap-2 text-xs text-kraft-700">
-            <span className="flex items-center gap-1 rounded-full bg-[#F0EDE9] px-2 py-0.5">
-              <GeoIcon /> {listing.neighbourhood}
-            </span>
-            <span className="rounded-full bg-[#F0EDE9] px-2 py-0.5">
-              {t(`roomTypes.${type?.value}`)}
-            </span>
-            <span className="rounded-full bg-[#F0EDE9] px-2 py-0.5">
-              {listing.size} m²
-            </span>
+          <div className="flex flex-wrap items-center gap-2">
+            <Tag icon="geo-alt-fill">{listing.neighbourhood}</Tag>
+            <Tag>{t(`roomTypes.${type?.value}`)}</Tag>
+            <Tag>{listing.size} m²</Tag>
           </div>
 
-          <p className="text-sm text-kraft-800">
+          <p className="m-0" style={{ fontSize: "var(--text-md)", color: "var(--text-body)" }}>
             {localizedText(listing.description, locale)}
           </p>
 
-          <div className="mt-2 flex items-center justify-between border-t border-kraft-300 pt-3 text-sm">
-            <span className="text-kraft-700">
+          <div
+            className="mt-2 flex items-center justify-between pt-3"
+            style={{ borderTop: "var(--border-width-hairline) solid var(--border-subtle)" }}
+          >
+            <span style={{ fontSize: "var(--text-sm)", color: "var(--text-muted)" }}>
               {t("rentedBy", { host: listing.host })}
             </span>
-            <button
-              type="button"
-              onClick={() => onRequest(listing)}
-              className="rounded-md border border-stamp bg-transparent px-4 py-2 font-medium text-stamp transition hover:bg-stamp/5"
-            >
+            <Button variant="primary" onClick={() => onRequest(listing)}>
               {t("request")}
-            </button>
+            </Button>
           </div>
         </div>
       </div>

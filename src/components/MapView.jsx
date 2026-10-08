@@ -23,23 +23,10 @@ const MAP_STYLE = "https://tiles.openfreemap.org/styles/bright";
 config.WORKER_URL =
   "https://unpkg.com/maplibre-gl@6.11.1/dist/maplibre-gl-worker.mjs";
 
-function createPriceElement(price, isActive) {
+function createPriceElement(price, isActive, isFavorite) {
   const el = document.createElement("div");
-  el.textContent = `${price}€`;
-  el.style.cssText = `
-    display:inline-flex;align-items:center;justify-content:center;
-    padding:4px 10px;
-    border-radius:999px;
-    background:${isActive ? "#2b241c" : "#c1502b"};
-    color:#fffdf8;
-    font-family:Karla, Arial, Helvetica, sans-serif;
-    font-size:12px;
-    font-weight:700;
-    white-space:nowrap;
-    cursor:pointer;
-    box-shadow:0 1px 4px rgba(43,36,28,0.35);
-    border:2px solid #ddd0b4;
-  `;
+  el.className = `sw-marker${isActive ? " sw-marker--active" : ""}${isFavorite ? " sw-marker--favorite" : ""}`;
+  el.textContent = `€${price}`;
   return el;
 }
 
@@ -52,7 +39,7 @@ function createPopupContent(title, neighbourhood, price, perMonth) {
   return root;
 }
 
-export default function MapView({ listings, highlightedId, onMarkerClick }) {
+export default function MapView({ listings, highlightedId, onMarkerClick, favoriteIds }) {
   const { locale, t } = useLanguage();
   const containerRef = useRef(null);
   const mapRef = useRef(null);
@@ -91,7 +78,8 @@ export default function MapView({ listings, highlightedId, onMarkerClick }) {
               listing.id,
             );
       const isActive = listing.id === highlightedId;
-      const el = createPriceElement(listing.price, isActive);
+      const isFavorite = favoriteIds?.has(listing.id) ?? false;
+      const el = createPriceElement(listing.price, isActive, isFavorite);
       el.addEventListener("click", () => onMarkerClickRef.current(listing.id));
 
       const popup = new Popup({ offset: 16 }).setDOMContent(
@@ -109,7 +97,7 @@ export default function MapView({ listings, highlightedId, onMarkerClick }) {
       if (isActive) marker.getElement().style.zIndex = 1;
       return marker;
     });
-  }, [listings, highlightedId, locale, t]);
+  }, [listings, highlightedId, favoriteIds, locale, t]);
 
   return <div ref={containerRef} className="h-full w-full" />;
 }

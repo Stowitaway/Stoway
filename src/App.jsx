@@ -9,6 +9,8 @@ import ListingCard from "./components/ListingCard";
 import ListingDetailModal from "./components/ListingDetailModal";
 import ListSpaceModal from "./components/ListSpaceModal";
 import MapView from "./components/MapView";
+import { Button } from "./design-system/components/core/Button";
+import { EmptyState } from "./design-system/components/overlays/EmptyState";
 import { localizedText } from "./data/listings";
 import { useLanguage } from "./i18n/LanguageContext";
 import { supabase } from "./lib/supabaseClient";
@@ -178,34 +180,20 @@ function App() {
 
       <main className="mx-auto w-full max-w-7xl flex-1 px-4 py-6 sm:px-6">
         <div className="mb-4 flex items-center justify-between gap-4">
-          <p className="text-sm text-kraft-700">
+          <p className="m-0" style={{ fontSize: "var(--text-sm)", color: "var(--text-muted)" }}>
             {filteredListings.length}{" "}
             {t(filteredListings.length === 1 ? "resultsOne" : "resultsOther")}
           </p>
-          <button
-            type="button"
-            onClick={() => setShowMap((v) => !v)}
-            className="flex shrink-0 items-center gap-2 rounded-md border border-kraft-300 bg-kraft-50 px-3 py-1.5 text-sm font-medium text-kraft-800 hover:bg-kraft-200"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="14"
-              height="14"
-              fill="currentColor"
-              viewBox="0 0 16 16"
-              aria-hidden="true"
-            >
-              <path
-                fillRule="evenodd"
-                d="M15.817.113A.5.5 0 0 1 16 .5v14a.5.5 0 0 1-.402.49l-5 1a.5.5 0 0 1-.196 0L5.5 15.01l-4.902.98A.5.5 0 0 1 0 15.5v-14a.5.5 0 0 1 .402-.49l5-1a.5.5 0 0 1 .196 0L10.5.99l4.902-.98a.5.5 0 0 1 .415.103M10 1.91l-4-.8v12.98l4 .8zm1 12.98 4-.8V1.11l-4 .8zm-6-.8V1.11l-4 .8v12.98z"
-              />
-            </svg>
+          <Button variant="outline" size="sm" icon={showMap ? "list-ul" : "map"} onClick={() => setShowMap((v) => !v)}>
             {showMap ? t("hideMap") : t("showMap")}
-          </button>
+          </Button>
         </div>
 
         {loadError && (
-          <div className="mb-4 rounded-lg border border-stamp bg-kraft-50 p-4 text-sm text-stamp">
+          <div
+            className="mb-4 rounded-md p-4"
+            style={{ fontSize: "var(--text-sm)", background: "var(--status-danger-soft)", color: "var(--status-danger)" }}
+          >
             {loadError}
           </div>
         )}
@@ -213,18 +201,21 @@ function App() {
         <div className={`flex flex-col gap-6 ${showMap ? "lg:flex-row" : ""}`}>
           <div className={showMap ? "lg:w-3/5" : "w-full"}>
             {loading ? (
-              <div className="rounded-lg border border-kraft-300 bg-kraft-50 p-10 text-center text-kraft-700">
-                …
-              </div>
+              <EmptyState icon="hourglass-split">…</EmptyState>
             ) : filteredListings.length === 0 ? (
-              <div className="rounded-lg border border-kraft-300 bg-kraft-50 p-10 text-center text-kraft-700">
-                {t("noResults")}
-              </div>
+              <EmptyState
+                icon="search"
+                title={t("noResults")}
+                action={
+                  <Button variant="outline" onClick={() => { setSearch(""); setActiveType("all"); }}>
+                    {t("filterAll")}
+                  </Button>
+                }
+              />
             ) : (
               <div
-                className={`grid grid-cols-1 gap-5 sm:grid-cols-2 ${
-                  showMap ? "" : "lg:grid-cols-3"
-                }`}
+                className={`grid grid-cols-1 sm:grid-cols-2 ${showMap ? "" : "lg:grid-cols-3"}`}
+                style={{ columnGap: "var(--gap-grid-x)", rowGap: "var(--gap-grid-y)" }}
               >
                 {filteredListings.map((listing) => (
                   <ListingCard
@@ -243,11 +234,15 @@ function App() {
 
           {showMap && (
             <div className="lg:w-2/5">
-              <div className="sticky top-4 h-[60vh] overflow-hidden rounded-xl border border-kraft-300 lg:h-[75vh]">
+              <div
+                className="sticky top-4 h-[60vh] overflow-hidden lg:h-[75vh]"
+                style={{ borderRadius: "var(--radius-card)", boxShadow: "var(--shadow-sm)" }}
+              >
                 <MapView
                   listings={filteredListings}
                   highlightedId={highlightedId}
                   onMarkerClick={setHighlightedId}
+                  favoriteIds={favoriteIds}
                 />
               </div>
             </div>

@@ -1,10 +1,16 @@
 import { useAuth } from "../auth/AuthContext";
-import logo from "../assets/brand/logo.png";
+import logo from "../assets/brand/stoway-logo-blue.png";
+import { Button } from "../design-system/components/core/Button";
+import { IconButton } from "../design-system/components/core/IconButton";
+import { SearchInput } from "../design-system/components/forms/SearchInput";
+import { FilterChip } from "../design-system/components/navigation/FilterChip";
+import { Dropdown } from "../design-system/components/navigation/Dropdown";
+import { Avatar } from "../design-system/components/core/Avatar";
 import { ROOM_TYPES } from "../data/listings";
+import { LOCALES } from "../i18n/translations";
 import { useLanguage } from "../i18n/LanguageContext";
-import AccountMenu from "./AccountMenu";
-import LanguageSwitcher from "./LanguageSwitcher";
-import RoomTypeIcon from "./RoomTypeIcon";
+
+const ROOM_ICON = { cellar: "house-down", garage: "car-front-fill", storage: "door-closed" };
 
 export default function Header({
   search,
@@ -16,155 +22,88 @@ export default function Header({
   onChatClick,
   onFavoritesClick,
 }) {
-  const { t } = useLanguage();
-  const { user } = useAuth();
+  const { t, locale, setLocale } = useLanguage();
+  const { user, signOut } = useAuth();
 
   return (
-    <header className="border-b border-kraft-300 bg-page font-display">
-      <div className="mx-auto flex max-w-7xl flex-col gap-3.5 px-4 py-3.5 sm:px-6">
-        <div className="flex flex-wrap items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <img src={logo} alt="" className="h-[66px] w-[66px] shrink-0 rounded-xl" />
-            <div className="flex flex-col" style={{ lineHeight: 1.1 }}>
-              <h1 className="text-3xl font-semibold tracking-wide text-kraft-900">
-                Stoway
-              </h1>
-              <span
-                style={{
-                  fontFamily:
-                    'system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif',
-                  fontSize: "0.85rem",
-                  fontWeight: 400,
-                  color: "#8e8e93",
-                  letterSpacing: "0.02em",
-                  marginTop: "4px",
-                  whiteSpace: "nowrap",
-                }}
-              >
-                {t("tagline")}
-              </span>
-            </div>
-          </div>
+    <header className="sticky top-0 z-20" style={{ background: "var(--surface-page)" }}>
+      <div style={{ borderBottom: "var(--border-width-hairline) solid var(--border-subtle)" }}>
+        <div className="mx-auto flex max-w-7xl flex-wrap items-center gap-4 px-4 py-4 sm:px-6 sm:flex-nowrap">
+          <a href="#" onClick={(e) => e.preventDefault()} className="flex shrink-0 items-center gap-2.5">
+            <img src={logo} alt="" width={44} height={44} style={{ margin: "-4px -2px -4px -6px" }} />
+            <span style={{ fontSize: 22, fontWeight: 800, letterSpacing: "-0.03em", color: "var(--brand)" }}>
+              Stoway
+            </span>
+          </a>
 
-          <div className="flex items-center gap-3">
-            <button
-              type="button"
-              onClick={onListSpaceClick}
-              className="shrink-0 rounded-md bg-stamp px-5 py-3 text-base font-medium text-kraft-50 transition hover:opacity-90"
-            >
-              {t("listYourSpace")}
-            </button>
-
-            <button
-              type="button"
-              onClick={onFavoritesClick}
-              aria-label={t("favorites.title")}
-              title={t("favorites.title")}
-              className="flex h-11 w-11 items-center justify-center rounded-md border border-kraft-300 bg-kraft-50 hover:bg-kraft-200"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="18"
-                height="18"
-                fill="#000000"
-                viewBox="0 0 16 16"
-                aria-hidden="true"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314"
-                />
-              </svg>
-            </button>
-
-            {user && (
-              <button
-                type="button"
-                onClick={onChatClick}
-                aria-label={t("chat.title")}
-                title={t("chat.title")}
-                className="flex h-11 w-11 items-center justify-center rounded-md border border-kraft-300 bg-kraft-50 text-kraft-800 hover:bg-kraft-200"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="18"
-                  height="18"
-                  fill="currentColor"
-                  viewBox="0 0 16 16"
-                  aria-hidden="true"
-                >
-                  <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1zm13 2.383-4.708 2.825L15 11.105zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741M1 11.105l4.708-2.897L1 5.383z" />
-                </svg>
-              </button>
-            )}
-
-            <LanguageSwitcher />
-
-            {user ? (
-              <AccountMenu />
-            ) : (
-              <button
-                type="button"
-                onClick={onAuthClick}
-                className="rounded-md border border-kraft-300 px-3 py-1.5 text-sm font-medium text-kraft-800 hover:bg-kraft-200"
-              >
-                {t("auth.logIn")}
-              </button>
-            )}
-          </div>
-        </div>
-
-        <div className="flex flex-col gap-4 lg:flex-row lg:items-center">
-          <div className="relative lg:w-3/5">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              fill="currentColor"
-              viewBox="0 0 16 16"
-              className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-kraft-600"
-              aria-hidden="true"
-            >
-              <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
-            </svg>
-            <input
-              type="text"
+          <div className="order-last w-full sm:order-none sm:flex-1 sm:max-w-[560px]">
+            <SearchInput
+              label={t("searchPlaceholder")}
               value={search}
               onChange={(e) => onSearchChange(e.target.value)}
               placeholder={t("searchPlaceholder")}
-              className="w-full rounded-md border border-kraft-300 bg-kraft-50 py-3 pl-11 pr-4 text-base text-kraft-900 placeholder:text-[#8E8E93] focus:border-kraft-500 focus:outline-none focus:ring-2 focus:ring-kraft-400"
             />
           </div>
 
-          <div className="flex flex-wrap gap-2 lg:w-2/5 lg:justify-end">
-            <button
-              type="button"
-              onClick={() => onTypeChange("all")}
-              className={`rounded-full border px-4 py-2 text-base font-medium transition ${
-                activeType === "all"
-                  ? "border-[#6b6b6b] bg-[#6b6b6b] text-kraft-50"
-                  : "border-kraft-300 bg-kraft-50 text-kraft-800 hover:bg-kraft-200"
-              }`}
-            >
-              {t("filterAll")}
-            </button>
-            {ROOM_TYPES.map((rt) => (
-              <button
-                key={rt.value}
-                type="button"
-                onClick={() => onTypeChange(rt.value)}
-                className={`flex items-center gap-2 rounded-full border px-4 py-2 text-base font-medium transition ${
-                  activeType === rt.value
-                    ? "border-[#6b6b6b] bg-[#6b6b6b] text-kraft-50"
-                    : "border-kraft-300 bg-kraft-50 text-kraft-800 hover:bg-kraft-200"
-                }`}
-              >
-                <RoomTypeIcon icon={rt.icon} className="h-5 w-5 rounded-sm object-cover" />
-                {t(`roomTypes.${rt.value}`)}
-              </button>
-            ))}
+          <div className="flex shrink-0 items-center gap-2">
+            <Button variant="ghost" onClick={onListSpaceClick}>
+              {t("listYourSpace")}
+            </Button>
+
+            <IconButton
+              icon="heart"
+              variant="outline"
+              label={t("favorites.title")}
+              onClick={onFavoritesClick}
+            />
+
+            {user && (
+              <IconButton
+                icon="envelope"
+                variant="outline"
+                label={t("chat.title")}
+                onClick={onChatClick}
+              />
+            )}
+
+            <Dropdown
+              trigger={<IconButton icon="translate" variant="outline" label={t("language")} />}
+              heading={t("language")}
+              value={locale}
+              onSelect={setLocale}
+              items={LOCALES.map(({ code, name }) => ({ value: code, label: name }))}
+            />
+
+            {user ? (
+              <Dropdown
+                trigger={<Avatar name={user.user_metadata?.full_name || user.email} size={40} />}
+                heading={user.user_metadata?.full_name || user.email}
+                onSelect={(v) => v === "out" && signOut()}
+                items={[{ value: "out", label: t("auth.logOut"), icon: "box-arrow-right" }]}
+              />
+            ) : (
+              <Button variant="primary" size="sm" onClick={onAuthClick}>
+                {t("auth.logIn")}
+              </Button>
+            )}
           </div>
         </div>
+      </div>
+
+      <div className="mx-auto flex max-w-7xl flex-wrap items-center gap-2 px-4 py-4 sm:px-6">
+        <FilterChip selected={activeType === "all"} onClick={() => onTypeChange("all")}>
+          {t("filterAll")}
+        </FilterChip>
+        {ROOM_TYPES.map((rt) => (
+          <FilterChip
+            key={rt.value}
+            icon={ROOM_ICON[rt.value]}
+            selected={activeType === rt.value}
+            onClick={() => onTypeChange(rt.value)}
+          >
+            {t(`roomTypes.${rt.value}`)}
+          </FilterChip>
+        ))}
       </div>
     </header>
   );

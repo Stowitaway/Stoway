@@ -1,0 +1,84 @@
+/* Stoway colors — v2 "clean & comforting".
+   Brand blue #1446d4: a deeper, more saturated step from the product's #215fd1.
+   Neutrals are a soft warm grey, echoing the product's #fafaf9 page colour. */
+:root{
+  /* Brand blue */
+  --blue-50:#edf2fe;
+  --blue-100:#dbe5fd;
+  --blue-200:#b5c8fa;
+  --blue-300:#81a0f4;
+  --blue-400:#4b76e9;
+  --blue-500:#1446d4;
+  --blue-600:#103ab3;
+  --blue-700:#0d2f92;
+  --blue-800:#0a2470;
+  --brand:var(--blue-500);
+
+  /* Warm neutrals */
+  --neutral-0:#ffffff;
+  --neutral-50:#faf9f7;
+  --neutral-100:#f4f2ef;
+  --neutral-200:#ebe8e4;
+  --neutral-300:#dcd8d2;
+  --neutral-400:#b8b2aa;
+  --neutral-500:#8f8981;
+  --neutral-600:#6c675f;
+  --neutral-700:#4a4640;
+  --neutral-800:#2f2c28;
+  --neutral-900:#1f1d1a;
+
+  /* Space-type tints (placeholder covers when a host has no photos) */
+  --tint-cellar:#f2ebdf;
+  --tint-garage:#e7edf6;
+  --tint-storage:#e9eee6;
+  --tint-cellar-ink:#8a6d43;
+  --tint-garage-ink:#47658f;
+  --tint-storage-ink:#5b7353;
+
+  /* Favourite */
+  --heart:#e5484d;
+
+  /* Semantic: text */
+  --text-strong:var(--neutral-900);
+  --text-body:var(--neutral-800);
+  --text-muted:var(--neutral-600);
+  --text-subtle:var(--neutral-500);
+  --text-placeholder:var(--neutral-500);
+  --text-inverse:var(--neutral-0);
+  --text-brand:var(--blue-500);
+  --text-link:var(--blue-600);
+  --text-link-hover:var(--blue-700);
+
+  /* Semantic: surfaces */
+  --surface-page:var(--neutral-0);
+  --surface-card:var(--neutral-0);
+  --surface-sunken:var(--neutral-50);
+  --surface-muted:var(--neutral-100);
+  --surface-hover:var(--neutral-100);
+  --surface-brand:var(--blue-500);
+  --surface-brand-soft:var(--blue-50);
+  --surface-inverse:var(--neutral-900);
+  --surface-scrim:rgb(31 29 26 / .45);
+  --surface-overlay-chip:rgb(31 29 26 / .62);
+  --surface-on-image:rgb(255 255 255 / .94);
+
+  /* Semantic: borders */
+  --border-subtle:var(--neutral-200);
+  --border-default:var(--neutral-300);
+  --border-strong:var(--neutral-800);
+  --border-focus:var(--neutral-900);
+  --border-brand:var(--blue-500);
+
+  /* Interaction */
+  --focus-ring:rgb(20 70 212 / .28);
+  --hover-brand:var(--blue-600);
+  --press-brand:var(--blue-700);
+
+  /* Status */
+  --status-success:#1e7a52;
+  --status-success-soft:#e5f3ec;
+  --status-warning:#a66408;
+  --status-warning-soft:#fcf1df;
+  --status-danger:#c4323a;
+  --status-danger-soft:#fbe9ea;
+}

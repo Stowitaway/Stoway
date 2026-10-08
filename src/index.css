@@ -1,35 +1,18 @@
 @import "tailwindcss";
 
-@theme {
-  --font-sans: "Karla", Arial, Helvetica, sans-serif;
-  --font-display: "Fraunces", Georgia, serif;
-
-  --color-kraft-50: #f8f4ec;
-  --color-kraft-100: #faf9f6;
-  --color-kraft-200: #eae0c8;
-  --color-kraft-300: #c7c7c6;
-  --color-kraft-400: #c7b896;
-  --color-kraft-500: #8b7c64;
-  --color-kraft-600: #6b5d4c;
-  --color-kraft-700: #4a3f32;
-  --color-kraft-800: #3a2f23;
-  --color-kraft-900: #2b241c;
-  --color-stamp: #1a2a4f;
-  --color-price: #c1502b;
-
-  --color-page: #f8f4ec;
-  --color-card: #f8f4ec;
-
-  --color-tint-cellar: #e8dab9;
-  --color-tint-garage: #e6cdb3;
-  --color-tint-storage: #dad0ae;
-}
-
-body {
-  font-family: var(--font-sans);
-  background-color: var(--color-page);
-}
+/* Stoway v2 design system: brand blue, warm neutrals, Plus Jakarta Sans,
+   Bootstrap Icons, and the sw- component classes. See src/design-system/.
+   Plus Jakarta Sans + Bootstrap Icons are loaded via <link> tags in
+   index.html instead of @import here, since an @import nested inside a
+   bundled stylesheet isn't guaranteed to stay first in the file (browsers
+   ignore @import rules that aren't). */
+@import "./design-system/tokens/colors.css";
+@import "./design-system/tokens/typography.css";
+@import "./design-system/tokens/spacing.css";
+@import "./design-system/tokens/shape.css";
+@import "./design-system/tokens/base.css";
+@import "./design-system/components/stoway-ui.css";
 
 .leaflet-bar a {
-  background-color: var(--color-card);
+  background-color: var(--surface-card);
 }

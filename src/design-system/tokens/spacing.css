@@ -1,0 +1,40 @@
+/* Stoway spacing — 4px steps with 2px/6px half-steps. */
+:root{
+  --space-0:0;
+  --space-0-5:2px;
+  --space-1:4px;
+  --space-1-5:6px;
+  --space-2:8px;
+  --space-3:12px;
+  --space-4:16px;
+  --space-5:20px;
+  --space-6:24px;
+  --space-8:32px;
+  --space-10:40px;
+  --space-12:48px;
+  --space-16:64px;
+  --space-20:80px;
+
+  --pad-button-x:var(--space-5);
+  --pad-button-y:var(--space-3);
+  --pad-chip-x:var(--space-4);
+  --pad-chip-y:var(--space-2);
+  --pad-field-x:var(--space-4);
+  --pad-field-y:var(--space-3);
+  --pad-modal-x:var(--space-6);
+  --pad-modal-y:var(--space-6);
+  --pad-section-y:var(--space-6);
+  --pad-page-x:var(--space-10);
+
+  --gap-inline:var(--space-2);
+  --gap-stack:var(--space-3);
+  --gap-grid-x:var(--space-6);
+  --gap-grid-y:var(--space-8);
+  --gap-columns:var(--space-8);
+
+  --container-page:90rem;
+  --container-modal:28rem;
+  --container-modal-lg:46rem;
+  --header-height:80px;
+  --media-aspect:4 / 3; /* @kind other */
+}

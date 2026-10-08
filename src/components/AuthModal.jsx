@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { useAuth } from "../auth/AuthContext";
 import { useLanguage } from "../i18n/LanguageContext";
+import { Modal } from "../design-system/components/overlays/Modal";
+import { Field, Input } from "../design-system/components/forms/Input";
+import { Button } from "../design-system/components/core/Button";
 
 export default function AuthModal({ onClose, onAuthenticated }) {
   const { t } = useLanguage();
@@ -40,89 +43,57 @@ export default function AuthModal({ onClose, onAuthenticated }) {
   };
 
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-kraft-900/50 p-4"
-      onClick={onClose}
-    >
-      <div
-        onClick={(e) => e.stopPropagation()}
-        className="w-full max-w-sm overflow-hidden rounded-lg border-2 border-kraft-300 bg-kraft-50 shadow-2xl"
-      >
-        <div className="flex items-center justify-between border-b border-kraft-300 bg-kraft-100 px-5 py-4">
-          <h2 className="text-xl font-semibold text-kraft-900">
-            {mode === "signIn" ? t("auth.logIn") : t("auth.signUp")}
-          </h2>
-          <button
-            type="button"
-            onClick={onClose}
-            aria-label={t("modal.close")}
-            className="rounded-full px-2 py-1 text-kraft-700 hover:bg-kraft-200"
-          >
-            ✕
-          </button>
-        </div>
-
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4 px-5 py-5">
-          {mode === "signUp" && (
-            <label className="flex flex-col gap-1 text-sm text-kraft-800">
-              {t("auth.fullName")}
-              <input
-                required
-                type="text"
-                value={fullName}
-                onChange={(e) => setFullName(e.target.value)}
-                className="rounded-md border border-kraft-300 bg-white px-3 py-2 text-sm focus:border-kraft-500 focus:outline-none focus:ring-2 focus:ring-kraft-400"
-              />
-            </label>
-          )}
-
-          <label className="flex flex-col gap-1 text-sm text-kraft-800">
-            {t("auth.email")}
-            <input
+    <Modal title={mode === "signIn" ? t("auth.logIn") : t("auth.signUp")} onClose={onClose}>
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+        {mode === "signUp" && (
+          <Field label={t("auth.fullName")}>
+            <Input
               required
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="rounded-md border border-kraft-300 bg-white px-3 py-2 text-sm focus:border-kraft-500 focus:outline-none focus:ring-2 focus:ring-kraft-400"
+              type="text"
+              value={fullName}
+              onChange={(e) => setFullName(e.target.value)}
             />
-          </label>
+          </Field>
+        )}
 
-          <label className="flex flex-col gap-1 text-sm text-kraft-800">
-            {t("auth.password")}
-            <input
-              required
-              type="password"
-              minLength={6}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="rounded-md border border-kraft-300 bg-white px-3 py-2 text-sm focus:border-kraft-500 focus:outline-none focus:ring-2 focus:ring-kraft-400"
-            />
-          </label>
+        <Field label={t("auth.email")}>
+          <Input
+            required
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </Field>
 
-          {error && <p className="text-sm text-stamp">{error}</p>}
-          {info && <p className="text-sm text-kraft-700">{info}</p>}
+        <Field label={t("auth.password")}>
+          <Input
+            required
+            type="password"
+            minLength={6}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </Field>
 
-          <button
-            type="submit"
-            disabled={submitting}
-            className="rounded-md bg-stamp px-4 py-2 text-sm font-medium text-kraft-50 transition hover:opacity-90 disabled:opacity-60"
-          >
-            {mode === "signIn" ? t("auth.logIn") : t("auth.signUp")}
-          </button>
+        {error && <p className="m-0" style={{ fontSize: "var(--text-sm)", color: "var(--status-danger)" }}>{error}</p>}
+        {info && <p className="m-0" style={{ fontSize: "var(--text-sm)", color: "var(--text-muted)" }}>{info}</p>}
 
-          <button
-            type="button"
-            onClick={() => {
-              setMode((m) => (m === "signIn" ? "signUp" : "signIn"));
-              setError("");
-              setInfo("");
-            }}
-            className="text-sm text-kraft-700 underline hover:text-kraft-900"
-          >
-            {mode === "signIn" ? t("auth.needAccount") : t("auth.haveAccount")}
-          </button>
-        </form>
-      </div>
-    </div>
+        <Button type="submit" variant="primary" disabled={submitting} block>
+          {mode === "signIn" ? t("auth.logIn") : t("auth.signUp")}
+        </Button>
+
+        <Button
+          type="button"
+          variant="link"
+          onClick={() => {
+            setMode((m) => (m === "signIn" ? "signUp" : "signIn"));
+            setError("");
+            setInfo("");
+          }}
+        >
+          {mode === "signIn" ? t("auth.needAccount") : t("auth.haveAccount")}
+        </Button>
+      </form>
+    </Modal>
   );
 }

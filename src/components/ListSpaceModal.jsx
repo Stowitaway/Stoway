@@ -1,10 +1,15 @@
 import { useState } from "react";
 import { useAuth } from "../auth/AuthContext";
-import CameraIcon from "./CameraIcon";
 import { NEIGHBOURHOODS, ROOM_TYPES } from "../data/listings";
 import { fuzzLocation, geocodeAddress } from "../lib/geocode";
 import { useLanguage } from "../i18n/LanguageContext";
 import { supabase } from "../lib/supabaseClient";
+import { Modal } from "../design-system/components/overlays/Modal";
+import { Field, Input } from "../design-system/components/forms/Input";
+import { Select } from "../design-system/components/forms/Select";
+import { Textarea } from "../design-system/components/forms/Textarea";
+import { PhotoUploader } from "../design-system/components/forms/PhotoUploader";
+import { Button } from "../design-system/components/core/Button";
 
 const emptyForm = {
   title: "",
@@ -41,9 +46,7 @@ export default function ListSpaceModal({ onClose, onCreated }) {
   const update = (field) => (e) =>
     setForm((f) => ({ ...f, [field]: e.target.value }));
 
-  const handlePhotosChange = (e) => {
-    const files = Array.from(e.target.files ?? []);
-    e.target.value = "";
+  const handlePhotosAdd = (files) => {
     const newPhotos = files.map((file) => ({
       file,
       previewUrl: URL.createObjectURL(file),
@@ -100,185 +103,90 @@ export default function ListSpaceModal({ onClose, onCreated }) {
   };
 
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-kraft-900/50 p-4"
-      onClick={onClose}
-    >
-      <div
-        onClick={(e) => e.stopPropagation()}
-        className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-lg border-2 border-kraft-300 bg-kraft-50 shadow-2xl"
-      >
-        <div className="flex items-center justify-between border-b border-kraft-300 bg-kraft-100 px-5 py-4">
-          <h2 className="text-xl font-semibold text-kraft-900">
-            {t("modal.title")}
-          </h2>
-          <button
-            type="button"
-            onClick={onClose}
-            aria-label={t("modal.close")}
-            className="rounded-full px-2 py-1 text-kraft-700 hover:bg-kraft-200"
-          >
-            ✕
-          </button>
+    <Modal title={t("modal.title")} onClose={onClose}>
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+        <Field label={t("modal.fieldTitle")}>
+          <Input
+            required
+            type="text"
+            value={form.title}
+            onChange={update("title")}
+            placeholder={t("modal.titlePlaceholder")}
+          />
+        </Field>
+
+        <Field label={t("modal.fieldAddress")} hint={t("modal.addressPrivacyHint")}>
+          <Input
+            required
+            type="text"
+            value={form.address}
+            onChange={update("address")}
+            placeholder={t("modal.addressPlaceholder")}
+          />
+        </Field>
+
+        <div className="grid grid-cols-2 gap-4">
+          <Field label={t("modal.fieldNeighbourhood")}>
+            <Select value={form.neighbourhood} onChange={update("neighbourhood")}>
+              {NEIGHBOURHOODS.map((n) => (
+                <option key={n} value={n}>
+                  {n}
+                </option>
+              ))}
+            </Select>
+          </Field>
+
+          <Field label={t("modal.fieldRoomType")}>
+            <Select value={form.type} onChange={update("type")}>
+              {ROOM_TYPES.map((rt) => (
+                <option key={rt.value} value={rt.value}>
+                  {t(`roomTypes.${rt.value}`)}
+                </option>
+              ))}
+            </Select>
+          </Field>
         </div>
 
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4 px-5 py-5">
-          <label className="flex flex-col gap-1 text-sm text-kraft-800">
-            {t("modal.fieldTitle")}
-            <input
-              required
-              type="text"
-              value={form.title}
-              onChange={update("title")}
-              placeholder={t("modal.titlePlaceholder")}
-              className="rounded-md border border-kraft-300 bg-white px-3 py-2 text-sm focus:border-kraft-500 focus:outline-none focus:ring-2 focus:ring-kraft-400"
-            />
-          </label>
+        <div className="grid grid-cols-2 gap-4">
+          <Field label={t("modal.fieldSize")}>
+            <Input required type="number" min="1" value={form.size} onChange={update("size")} />
+          </Field>
 
-          <label className="flex flex-col gap-1 text-sm text-kraft-800">
-            {t("modal.fieldAddress")}
-            <input
-              required
-              type="text"
-              value={form.address}
-              onChange={update("address")}
-              placeholder={t("modal.addressPlaceholder")}
-              className="rounded-md border border-kraft-300 bg-white px-3 py-2 text-sm focus:border-kraft-500 focus:outline-none focus:ring-2 focus:ring-kraft-400"
-            />
-            <span className="text-xs text-kraft-600">
-              {t("modal.addressPrivacyHint")}
-            </span>
-          </label>
+          <Field label={t("modal.fieldPrice")}>
+            <Input required type="number" min="1" value={form.price} onChange={update("price")} />
+          </Field>
+        </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            <label className="flex flex-col gap-1 text-sm text-kraft-800">
-              {t("modal.fieldNeighbourhood")}
-              <select
-                value={form.neighbourhood}
-                onChange={update("neighbourhood")}
-                className="rounded-md border border-kraft-300 bg-white px-3 py-2 text-sm focus:border-kraft-500 focus:outline-none focus:ring-2 focus:ring-kraft-400"
-              >
-                {NEIGHBOURHOODS.map((n) => (
-                  <option key={n} value={n}>
-                    {n}
-                  </option>
-                ))}
-              </select>
-            </label>
+        <PhotoUploader
+          label={t("modal.fieldPhotos")}
+          addLabel={t("modal.addPhotos")}
+          hint=""
+          photos={form.photos.map((p) => p.previewUrl)}
+          onAdd={handlePhotosAdd}
+          onRemove={removePhoto}
+        />
 
-            <label className="flex flex-col gap-1 text-sm text-kraft-800">
-              {t("modal.fieldRoomType")}
-              <select
-                value={form.type}
-                onChange={update("type")}
-                className="rounded-md border border-kraft-300 bg-white px-3 py-2 text-sm focus:border-kraft-500 focus:outline-none focus:ring-2 focus:ring-kraft-400"
-              >
-                {ROOM_TYPES.map((rt) => (
-                  <option key={rt.value} value={rt.value}>
-                    {t(`roomTypes.${rt.value}`)}
-                  </option>
-                ))}
-              </select>
-            </label>
-          </div>
+        <Field label={t("modal.fieldDescription")}>
+          <Textarea
+            required
+            rows={3}
+            value={form.description}
+            onChange={update("description")}
+            placeholder={t("modal.descriptionPlaceholder")}
+          />
+        </Field>
 
-          <div className="grid grid-cols-2 gap-4">
-            <label className="flex flex-col gap-1 text-sm text-kraft-800">
-              {t("modal.fieldSize")}
-              <input
-                required
-                type="number"
-                min="1"
-                value={form.size}
-                onChange={update("size")}
-                className="rounded-md border border-kraft-300 bg-white px-3 py-2 text-sm focus:border-kraft-500 focus:outline-none focus:ring-2 focus:ring-kraft-400"
-              />
-            </label>
+        {error && <p className="m-0" style={{ fontSize: "var(--text-sm)", color: "var(--status-danger)" }}>{error}</p>}
 
-            <label className="flex flex-col gap-1 text-sm text-kraft-800">
-              {t("modal.fieldPrice")}
-              <input
-                required
-                type="number"
-                min="1"
-                value={form.price}
-                onChange={update("price")}
-                className="rounded-md border border-kraft-300 bg-white px-3 py-2 text-sm focus:border-kraft-500 focus:outline-none focus:ring-2 focus:ring-kraft-400"
-              />
-            </label>
-          </div>
-
-          <div className="flex flex-col gap-2 text-sm text-kraft-800">
-            <span>{t("modal.fieldPhotos")}</span>
-
-            {form.photos.length > 0 && (
-              <div className="grid grid-cols-4 gap-2">
-                {form.photos.map((photo, index) => (
-                  <div key={index} className="group relative aspect-square">
-                    <img
-                      src={photo.previewUrl}
-                      alt=""
-                      className="h-full w-full rounded-md border border-kraft-300 object-cover"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => removePhoto(index)}
-                      aria-label={t("modal.removePhoto")}
-                      className="absolute -right-1.5 -top-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-kraft-900 text-xs text-kraft-50 shadow"
-                    >
-                      ✕
-                    </button>
-                  </div>
-                ))}
-              </div>
-            )}
-
-            <label className="flex cursor-pointer items-center justify-center rounded-md border border-dashed border-kraft-300 bg-white px-3 py-4 text-sm text-kraft-600 hover:bg-kraft-100">
-              <span className="flex items-center gap-1.5">
-                <CameraIcon /> {t("modal.addPhotos")}
-              </span>
-              <input
-                type="file"
-                accept="image/*"
-                multiple
-                onChange={handlePhotosChange}
-                className="hidden"
-              />
-            </label>
-          </div>
-
-          <label className="flex flex-col gap-1 text-sm text-kraft-800">
-            {t("modal.fieldDescription")}
-            <textarea
-              required
-              rows={3}
-              value={form.description}
-              onChange={update("description")}
-              placeholder={t("modal.descriptionPlaceholder")}
-              className="resize-none rounded-md border border-kraft-300 bg-white px-3 py-2 text-sm focus:border-kraft-500 focus:outline-none focus:ring-2 focus:ring-kraft-400"
-            />
-          </label>
-
-          {error && <p className="text-sm text-stamp">{error}</p>}
-
-          <div className="mt-2 flex justify-end gap-3">
-            <button
-              type="button"
-              onClick={onClose}
-              className="rounded-md border border-kraft-300 px-4 py-2 text-sm text-kraft-800 hover:bg-kraft-200"
-            >
-              {t("modal.cancel")}
-            </button>
-            <button
-              type="submit"
-              disabled={submitting}
-              className="rounded-md bg-stamp px-4 py-2 text-sm font-medium text-kraft-50 transition hover:opacity-90 disabled:opacity-60"
-            >
-              {t("modal.publish")}
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
+        <div className="mt-2 flex justify-end gap-3">
+          <Button type="button" variant="outline" onClick={onClose}>
+            {t("modal.cancel")}
+          </Button>
+          <Button type="submit" variant="primary" disabled={submitting}>
+            {t("modal.publish")}
+          </Button>
+        </div>
+      </form>
+    </Modal>
   );
 }

@@ -14,6 +14,7 @@ export const translations = {
     listYourSpace: "List your space",
     searchPlaceholder: "Search by neighbourhood, e.g. Alfama, Chiado, Graça…",
     filterAll: "All",
+    language: "Language",
     roomTypes: {
       cellar: "Basement",
       garage: "Garage",
@@ -80,6 +81,7 @@ export const translations = {
     listYourSpace: "Anuncie o seu espaço",
     searchPlaceholder: "Pesquisar por bairro, ex. Alfama, Chiado, Graça…",
     filterAll: "Todos",
+    language: "Idioma",
     roomTypes: {
       cellar: "Cave",
       garage: "Garagem",
@@ -146,6 +148,7 @@ export const translations = {
     listYourSpace: "Stauraum vermieten",
     searchPlaceholder: "Nach Stadtteil suchen, z. B. Alfama, Chiado, Graça…",
     filterAll: "Alle",
+    language: "Sprache",
     roomTypes: {
       cellar: "Keller",
       garage: "Garage",
@@ -212,6 +215,7 @@ export const translations = {
     listYourSpace: "Metti in affitto il tuo spazio",
     searchPlaceholder: "Cerca per quartiere, es. Alfama, Chiado, Graça…",
     filterAll: "Tutti",
+    language: "Lingua",
     roomTypes: {
       cellar: "Cantina",
       garage: "Garage",
@@ -278,6 +282,7 @@ export const translations = {
     listYourSpace: "Proposez votre espace",
     searchPlaceholder: "Rechercher par quartier, ex. Alfama, Chiado, Graça…",
     filterAll: "Tous",
+    language: "Langue",
     roomTypes: {
       cellar: "Cave",
       garage: "Garage",
