@@ -4,7 +4,7 @@
   --font-sans: "Karla", Arial, Helvetica, sans-serif;
   --font-display: "Fraunces", Georgia, serif;
 
-  --color-kraft-50: #ffffff;
+  --color-kraft-50: #f8f4ec;
   --color-kraft-100: #faf9f6;
   --color-kraft-200: #eae0c8;
   --color-kraft-300: #c7c7c6;
@@ -14,11 +14,11 @@
   --color-kraft-700: #4a3f32;
   --color-kraft-800: #3a2f23;
   --color-kraft-900: #2b241c;
-  --color-stamp: #215fd1;
+  --color-stamp: #1a2a4f;
   --color-price: #c1502b;
 
-  --color-page: #fafaf9;
-  --color-card: #fcfcfc;
+  --color-page: #f8f4ec;
+  --color-card: #f8f4ec;
 
   --color-tint-cellar: #e8dab9;
   --color-tint-garage: #e6cdb3;
