@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { supabase } from "../lib/supabaseClient";
+import { TERMS_VERSION } from "../lib/legal";
 
 const AuthContext = createContext(null);
 
@@ -30,7 +31,13 @@ export function AuthProvider({ children }) {
         const { error } = await supabase.auth.signUp({
           email,
           password,
-          options: { data: { full_name: fullName } },
+          options: {
+            data: {
+              full_name: fullName,
+              terms_accepted_at: new Date().toISOString(),
+              terms_version: TERMS_VERSION,
+            },
+          },
         });
         return { error };
       },

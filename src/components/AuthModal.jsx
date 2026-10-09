@@ -4,6 +4,7 @@ import { useLanguage } from "../i18n/LanguageContext";
 import { Modal } from "../design-system/components/overlays/Modal";
 import { Field, Input } from "../design-system/components/forms/Input";
 import { Button } from "../design-system/components/core/Button";
+import { interpolateLinks } from "../lib/legal";
 
 export default function AuthModal({ onClose, onAuthenticated }) {
   const { t } = useLanguage();
@@ -12,6 +13,7 @@ export default function AuthModal({ onClose, onAuthenticated }) {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [acceptTerms, setAcceptTerms] = useState(false);
   const [error, setError] = useState("");
   const [info, setInfo] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -20,6 +22,9 @@ export default function AuthModal({ onClose, onAuthenticated }) {
     e.preventDefault();
     setError("");
     setInfo("");
+
+    if (mode === "signUp" && !acceptTerms) return;
+
     setSubmitting(true);
 
     if (mode === "signUp") {
@@ -75,10 +80,27 @@ export default function AuthModal({ onClose, onAuthenticated }) {
           />
         </Field>
 
+        {mode === "signUp" && (
+          <label className="flex items-start gap-2" style={{ fontSize: "var(--text-sm)" }}>
+            <input
+              type="checkbox"
+              checked={acceptTerms}
+              onChange={(e) => setAcceptTerms(e.target.checked)}
+              className="mt-1"
+            />
+            <span>
+              {interpolateLinks(t("auth.acceptTerms"), {
+                terms: { label: t("legalTabTerms"), href: "/legal#terms" },
+                privacy: { label: t("legalTabPrivacy"), href: "/legal#privacy" },
+              })}
+            </span>
+          </label>
+        )}
+
         {error && <p className="m-0" style={{ fontSize: "var(--text-sm)", color: "var(--status-danger)" }}>{error}</p>}
         {info && <p className="m-0" style={{ fontSize: "var(--text-sm)", color: "var(--text-muted)" }}>{info}</p>}
 
-        <Button type="submit" variant="primary" disabled={submitting} block>
+        <Button type="submit" variant="primary" disabled={submitting || (mode === "signUp" && !acceptTerms)} block>
           {mode === "signIn" ? t("auth.logIn") : t("auth.signUp")}
         </Button>
 

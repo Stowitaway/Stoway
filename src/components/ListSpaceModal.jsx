@@ -10,6 +10,7 @@ import { Select } from "../design-system/components/forms/Select";
 import { Textarea } from "../design-system/components/forms/Textarea";
 import { PhotoUploader } from "../design-system/components/forms/PhotoUploader";
 import { Button } from "../design-system/components/core/Button";
+import { TERMS_VERSION, interpolateLinks } from "../lib/legal";
 
 const emptyForm = {
   title: "",
@@ -42,6 +43,8 @@ export default function ListSpaceModal({ onClose, onCreated }) {
   const [form, setForm] = useState(emptyForm);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
+  const [hostTermsAccepted, setHostTermsAccepted] = useState(false);
+  const [showHostTermsError, setShowHostTermsError] = useState(false);
 
   const update = (field) => (e) =>
     setForm((f) => ({ ...f, [field]: e.target.value }));
@@ -63,6 +66,10 @@ export default function ListSpaceModal({ onClose, onCreated }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!hostTermsAccepted) {
+      setShowHostTermsError(true);
+      return;
+    }
     setError("");
     setSubmitting(true);
     try {
@@ -91,6 +98,8 @@ export default function ListSpaceModal({ onClose, onCreated }) {
           photos: photoUrls,
           lat,
           lng,
+          host_terms_accepted_at: new Date().toISOString(),
+          host_terms_version: TERMS_VERSION,
         })
         .select()
         .single();
@@ -176,13 +185,37 @@ export default function ListSpaceModal({ onClose, onCreated }) {
           />
         </Field>
 
+        <div>
+          <label className="flex items-start gap-2" style={{ fontSize: "var(--text-sm)" }}>
+            <input
+              type="checkbox"
+              checked={hostTermsAccepted}
+              onChange={(e) => {
+                setHostTermsAccepted(e.target.checked);
+                if (e.target.checked) setShowHostTermsError(false);
+              }}
+              className="mt-1"
+            />
+            <span>
+              {interpolateLinks(t("hostTerms.label"), {
+                terms: { label: t("legalTabTerms"), href: "/legal#terms" },
+              })}
+            </span>
+          </label>
+          {showHostTermsError && (
+            <p className="m-0 mt-1" style={{ fontSize: "var(--text-xs)", color: "var(--status-danger)" }}>
+              {t("hostTerms.required")}
+            </p>
+          )}
+        </div>
+
         {error && <p className="m-0" style={{ fontSize: "var(--text-sm)", color: "var(--status-danger)" }}>{error}</p>}
 
         <div className="mt-2 flex justify-end gap-3">
           <Button type="button" variant="outline" onClick={onClose}>
             {t("modal.cancel")}
           </Button>
-          <Button type="submit" variant="primary" disabled={submitting}>
+          <Button type="submit" variant="primary" disabled={submitting || !hostTermsAccepted}>
             {t("modal.publish")}
           </Button>
         </div>

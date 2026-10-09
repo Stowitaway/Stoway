@@ -8,6 +8,7 @@ import { Tag } from "../design-system/components/core/Tag";
 import { Badge } from "../design-system/components/core/Badge";
 import { PriceStamp } from "../design-system/components/core/PriceStamp";
 import { FavoriteButton } from "../design-system/components/listings/FavoriteButton";
+import ReportModal from "./ReportModal";
 
 const ROOM_ICON = { cellar: "house-down", garage: "car-front-fill", storage: "door-closed" };
 
@@ -20,6 +21,7 @@ export default function ListingDetailModal({
 }) {
   const { t, locale } = useLanguage();
   const [photoIndex, setPhotoIndex] = useState(0);
+  const [showReport, setShowReport] = useState(false);
 
   const type = ROOM_TYPES.find((rt) => rt.value === listing.type);
   const hasPhotos = listing.photos?.length > 0;
@@ -114,8 +116,35 @@ export default function ListingDetailModal({
               {t("request")}
             </Button>
           </div>
+
+          <button
+            type="button"
+            onClick={() => setShowReport(true)}
+            className="self-start"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 6,
+              background: "none",
+              border: "none",
+              padding: 0,
+              cursor: "pointer",
+              color: "var(--text-muted)",
+              fontSize: "var(--text-xs)",
+            }}
+          >
+            <Icon name="flag" /> {t("report.button")}
+          </button>
         </div>
       </div>
+
+      {showReport && (
+        <ReportModal
+          targetType="listing"
+          targetId={listing.id}
+          onClose={() => setShowReport(false)}
+        />
+      )}
     </div>
   );
 }

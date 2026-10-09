@@ -9,11 +9,23 @@ import ListingCard from "./components/ListingCard";
 import ListingDetailModal from "./components/ListingDetailModal";
 import ListSpaceModal from "./components/ListSpaceModal";
 import MapView from "./components/MapView";
+import LegalPage from "./pages/LegalPage";
+import ContactPage from "./pages/ContactPage";
+import HowItWorksPage from "./pages/HowItWorksPage";
+import AccountPage from "./pages/AccountPage";
 import { Button } from "./design-system/components/core/Button";
 import { EmptyState } from "./design-system/components/overlays/EmptyState";
 import { localizedText } from "./data/listings";
 import { useLanguage } from "./i18n/LanguageContext";
+import { navigate, usePath } from "./lib/navigation";
 import { supabase } from "./lib/supabaseClient";
+
+const PAGE_TITLES = {
+  "/legal": "legalTitle",
+  "/contact": "contactTitle",
+  "/how-it-works": "howTitle",
+  "/account": "account.settings",
+};
 
 function mapRow(row) {
   return { ...row, host: row.host_name };
@@ -22,6 +34,7 @@ function mapRow(row) {
 function App() {
   const { t, locale } = useLanguage();
   const { user } = useAuth();
+  const path = usePath();
   const [listings, setListings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState("");
@@ -38,6 +51,18 @@ function App() {
   const [chatConversationId, setChatConversationId] = useState(null);
   const [favoriteIds, setFavoriteIds] = useState(new Set());
   const [showFavoritesModal, setShowFavoritesModal] = useState(false);
+
+  useEffect(() => {
+    const titleKey = PAGE_TITLES[path];
+    document.title = titleKey ? `${t(titleKey)} · Stoway` : "Stoway";
+  }, [path, t]);
+
+  useEffect(() => {
+    if (path === "/account" && !user) {
+      navigate("/");
+      setShowAuthModal(true);
+    }
+  }, [path, user]);
 
   useEffect(() => {
     let cancelled = false;
@@ -162,6 +187,8 @@ function App() {
     setShowChatModal(true);
   };
 
+  const handleListSpaceClick = () => (user ? setShowModal(true) : setShowAuthModal(true));
+
   return (
     <div className="flex min-h-screen flex-col">
       <Header
@@ -169,7 +196,7 @@ function App() {
         onSearchChange={setSearch}
         activeType={activeType}
         onTypeChange={setActiveType}
-        onListSpaceClick={() => (user ? setShowModal(true) : setShowAuthModal(true))}
+        onListSpaceClick={handleListSpaceClick}
         onAuthClick={() => setShowAuthModal(true)}
         onChatClick={() => {
           setChatConversationId(null);
@@ -180,79 +207,89 @@ function App() {
         }
       />
 
-      <main className="mx-auto w-full max-w-7xl flex-1 px-4 py-6 sm:px-6">
-        <div className="mb-4 flex items-center justify-between gap-4">
-          <p className="m-0" style={{ fontSize: "var(--text-sm)", color: "var(--text-muted)" }}>
-            {filteredListings.length}{" "}
-            {t(filteredListings.length === 1 ? "resultsOne" : "resultsOther")}
-          </p>
-          <Button variant="outline" size="sm" icon={showMap ? "list-ul" : "map"} onClick={() => setShowMap((v) => !v)}>
-            {showMap ? t("hideMap") : t("showMap")}
-          </Button>
-        </div>
-
-        {loadError && (
-          <div
-            className="mb-4 rounded-md p-4"
-            style={{ fontSize: "var(--text-sm)", background: "var(--status-danger-soft)", color: "var(--status-danger)" }}
-          >
-            {loadError}
+      {path === "/legal" ? (
+        <LegalPage />
+      ) : path === "/contact" ? (
+        <ContactPage />
+      ) : path === "/how-it-works" ? (
+        <HowItWorksPage onListSpaceClick={handleListSpaceClick} />
+      ) : path === "/account" ? (
+        <AccountPage />
+      ) : (
+        <main className="mx-auto w-full max-w-7xl flex-1 px-4 py-6 sm:px-6">
+          <div className="mb-4 flex items-center justify-between gap-4">
+            <p className="m-0" style={{ fontSize: "var(--text-sm)", color: "var(--text-muted)" }}>
+              {filteredListings.length}{" "}
+              {t(filteredListings.length === 1 ? "resultsOne" : "resultsOther")}
+            </p>
+            <Button variant="outline" size="sm" icon={showMap ? "list-ul" : "map"} onClick={() => setShowMap((v) => !v)}>
+              {showMap ? t("hideMap") : t("showMap")}
+            </Button>
           </div>
-        )}
 
-        <div className={`flex flex-col gap-6 ${showMap ? "lg:flex-row" : ""}`}>
-          <div className={showMap ? "lg:w-3/5" : "w-full"}>
-            {loading ? (
-              <EmptyState icon="hourglass-split">…</EmptyState>
-            ) : filteredListings.length === 0 ? (
-              <EmptyState
-                icon="search"
-                title={t("noResults")}
-                action={
-                  <Button variant="outline" onClick={() => { setSearch(""); setActiveType("all"); }}>
-                    {t("filterAll")}
-                  </Button>
-                }
-              />
-            ) : (
-              <div
-                className={`grid grid-cols-1 sm:grid-cols-2 ${showMap ? "" : "lg:grid-cols-3"}`}
-                style={{ columnGap: "var(--gap-grid-x)", rowGap: "var(--gap-grid-y)" }}
-              >
-                {filteredListings.map((listing) => (
-                  <ListingCard
-                    key={listing.id}
-                    listing={listing}
-                    highlighted={listing.id === highlightedId}
-                    onOpen={setSelectedListing}
-                    onRequest={handleRequest}
-                    isFavorite={favoriteIds.has(listing.id)}
-                    onToggleFavorite={handleToggleFavorite}
+          {loadError && (
+            <div
+              className="mb-4 rounded-md p-4"
+              style={{ fontSize: "var(--text-sm)", background: "var(--status-danger-soft)", color: "var(--status-danger)" }}
+            >
+              {loadError}
+            </div>
+          )}
+
+          <div className={`flex flex-col gap-6 ${showMap ? "lg:flex-row" : ""}`}>
+            <div className={showMap ? "lg:w-3/5" : "w-full"}>
+              {loading ? (
+                <EmptyState icon="hourglass-split">…</EmptyState>
+              ) : filteredListings.length === 0 ? (
+                <EmptyState
+                  icon="search"
+                  title={t("noResults")}
+                  action={
+                    <Button variant="outline" onClick={() => { setSearch(""); setActiveType("all"); }}>
+                      {t("filterAll")}
+                    </Button>
+                  }
+                />
+              ) : (
+                <div
+                  className={`grid grid-cols-1 sm:grid-cols-2 ${showMap ? "" : "lg:grid-cols-3"}`}
+                  style={{ columnGap: "var(--gap-grid-x)", rowGap: "var(--gap-grid-y)" }}
+                >
+                  {filteredListings.map((listing) => (
+                    <ListingCard
+                      key={listing.id}
+                      listing={listing}
+                      highlighted={listing.id === highlightedId}
+                      onOpen={setSelectedListing}
+                      onRequest={handleRequest}
+                      isFavorite={favoriteIds.has(listing.id)}
+                      onToggleFavorite={handleToggleFavorite}
+                    />
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {showMap && (
+              <div className="order-first lg:order-none lg:w-2/5">
+                <div
+                  className="sticky top-4 h-[60vh] overflow-hidden lg:h-[75vh]"
+                  style={{ borderRadius: "var(--radius-card)", boxShadow: "var(--shadow-sm)" }}
+                >
+                  <MapView
+                    listings={filteredListings}
+                    highlightedId={highlightedId}
+                    onMarkerClick={setHighlightedId}
+                    favoriteIds={favoriteIds}
                   />
-                ))}
+                </div>
               </div>
             )}
           </div>
+        </main>
+      )}
 
-          {showMap && (
-            <div className="order-first lg:order-none lg:w-2/5">
-              <div
-                className="sticky top-4 h-[60vh] overflow-hidden lg:h-[75vh]"
-                style={{ borderRadius: "var(--radius-card)", boxShadow: "var(--shadow-sm)" }}
-              >
-                <MapView
-                  listings={filteredListings}
-                  highlightedId={highlightedId}
-                  onMarkerClick={setHighlightedId}
-                  favoriteIds={favoriteIds}
-                />
-              </div>
-            </div>
-          )}
-        </div>
-      </main>
-
-      <Footer />
+      <Footer onListSpaceClick={handleListSpaceClick} />
 
       {showModal && (
         <ListSpaceModal

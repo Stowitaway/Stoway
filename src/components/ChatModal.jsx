@@ -3,6 +3,7 @@ import { useAuth } from "../auth/AuthContext";
 import { useLanguage } from "../i18n/LanguageContext";
 import { supabase } from "../lib/supabaseClient";
 import { IconButton } from "../design-system/components/core/IconButton";
+import ReportModal from "./ReportModal";
 
 export default function ChatModal({ initialConversationId, onClose }) {
   const { t } = useLanguage();
@@ -16,6 +17,7 @@ export default function ChatModal({ initialConversationId, onClose }) {
   const [messages, setMessages] = useState([]);
   const [messageText, setMessageText] = useState("");
   const [sending, setSending] = useState(false);
+  const [showReport, setShowReport] = useState(false);
   const messagesEndRef = useRef(null);
 
   useEffect(() => {
@@ -161,6 +163,14 @@ export default function ChatModal({ initialConversationId, onClose }) {
             <span className="flex-1" style={{ fontWeight: "var(--weight-semibold)", color: "var(--text-strong)" }}>
               {activeConversation ? otherPartyName(activeConversation) : ""}
             </span>
+            {activeConversation && (
+              <IconButton
+                icon="flag"
+                size="sm"
+                label={t("report.titleConversation")}
+                onClick={() => setShowReport(true)}
+              />
+            )}
             <IconButton icon="x-lg" size="sm" label={t("modal.close")} onClick={onClose} />
           </div>
 
@@ -210,6 +220,14 @@ export default function ChatModal({ initialConversationId, onClose }) {
           )}
         </div>
       </div>
+
+      {showReport && activeConversation && (
+        <ReportModal
+          targetType="conversation"
+          targetId={activeConversation.id}
+          onClose={() => setShowReport(false)}
+        />
+      )}
     </div>
   );
 }

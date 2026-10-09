@@ -9,6 +9,7 @@ import { Avatar } from "../design-system/components/core/Avatar";
 import { ROOM_TYPES } from "../data/listings";
 import { LOCALES } from "../i18n/translations";
 import { useLanguage } from "../i18n/LanguageContext";
+import { navigate } from "../lib/navigation";
 
 const ROOM_ICON = { cellar: "house-down", garage: "car-front-fill", storage: "door-closed" };
 
@@ -29,7 +30,14 @@ export default function Header({
     <header className="sticky top-0 z-20" style={{ background: "var(--surface-page)" }}>
       <div style={{ borderBottom: "var(--border-width-hairline) solid var(--border-subtle)" }}>
         <div className="mx-auto flex max-w-7xl flex-wrap items-center gap-4 px-4 py-4 sm:px-6 sm:flex-nowrap">
-          <a href="#" onClick={(e) => e.preventDefault()} className="flex shrink-0 items-center gap-2.5">
+          <a
+            href="/"
+            onClick={(e) => {
+              e.preventDefault();
+              navigate("/");
+            }}
+            className="flex shrink-0 items-center gap-2.5"
+          >
             <img src={logo} alt="" width={44} height={44} style={{ margin: "-4px -2px -4px -6px" }} />
             <span style={{ fontSize: 22, fontWeight: 800, letterSpacing: "-0.03em", color: "var(--brand)" }}>
               Stoway
@@ -78,8 +86,14 @@ export default function Header({
               <Dropdown
                 trigger={<Avatar name={user.user_metadata?.full_name || user.email} size={40} />}
                 heading={user.user_metadata?.full_name || user.email}
-                onSelect={(v) => v === "out" && signOut()}
-                items={[{ value: "out", label: t("auth.logOut"), icon: "box-arrow-right" }]}
+                onSelect={(v) => {
+                  if (v === "account") navigate("/account");
+                  if (v === "out") signOut();
+                }}
+                items={[
+                  { value: "account", label: t("account.settings"), icon: "gear" },
+                  { value: "out", label: t("auth.logOut"), icon: "box-arrow-right" },
+                ]}
               />
             ) : (
               <Button variant="primary" size="sm" onClick={onAuthClick}>
