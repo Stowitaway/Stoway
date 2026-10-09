@@ -22,11 +22,13 @@ export default function Footer({ onListSpaceClick }) {
       style={{ borderTop: "var(--border-width-hairline) solid var(--border-subtle)", background: "var(--surface-sunken)" }}
     >
       <div
-        className="mx-auto flex max-w-7xl flex-col flex-wrap items-start justify-between gap-4 px-4 py-8 sm:flex-row sm:items-center sm:px-6"
-        style={{ fontSize: "var(--text-sm)", color: "var(--text-muted)", lineHeight: 1.6 }}
+        className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-6 px-4 py-12 sm:flex-row sm:items-center sm:px-6"
+        style={{ fontSize: "var(--text-md)", color: "var(--text-muted)", lineHeight: 1.6 }}
       >
-        <div className="flex flex-wrap gap-x-5 gap-y-2">
-          <Link to="/how-it-works">{t("footer.howItWorks")}</Link>
+        <div
+          className="grid grid-cols-2 gap-x-8 gap-y-3 sm:grid-cols-3"
+          style={{ rowGap: "var(--space-3)" }}
+        >
           <button
             type="button"
             onClick={handleListSpaceClick}
@@ -35,14 +37,16 @@ export default function Footer({ onListSpaceClick }) {
               border: "none",
               padding: 0,
               cursor: "pointer",
-              color: "inherit",
+              color: "var(--text-link)",
               textDecoration: "underline",
               textUnderlineOffset: 3,
               font: "inherit",
+              textAlign: "left",
             }}
           >
             {t("listYourSpace")}
           </button>
+          <Link to="/how-it-works">{t("footer.howItWorks")}</Link>
           <Link to="/legal">{t("footerLegal")}</Link>
           <Link to="/contact">{t("footerContact")}</Link>
           <a href="https://www.livroreclamacoes.pt" target="_blank" rel="noopener noreferrer">
