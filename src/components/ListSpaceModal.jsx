@@ -125,7 +125,7 @@ export default function ListSpaceModal({ onClose, onCreated }) {
           />
         </Field>
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <Field label={t("modal.fieldNeighbourhood")}>
             <Select value={form.neighbourhood} onChange={update("neighbourhood")}>
               {NEIGHBOURHOODS.map((n) => (
@@ -147,7 +147,7 @@ export default function ListSpaceModal({ onClose, onCreated }) {
           </Field>
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <Field label={t("modal.fieldSize")}>
             <Input required type="number" min="1" value={form.size} onChange={update("size")} />
           </Field>

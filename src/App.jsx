@@ -29,7 +29,9 @@ function App() {
   const [activeType, setActiveType] = useState("all");
   const [showModal, setShowModal] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
-  const [showMap, setShowMap] = useState(true);
+  const [showMap, setShowMap] = useState(
+    () => typeof window === "undefined" || window.matchMedia("(min-width: 1024px)").matches,
+  );
   const [highlightedId, setHighlightedId] = useState(null);
   const [selectedListing, setSelectedListing] = useState(null);
   const [showChatModal, setShowChatModal] = useState(false);
