@@ -235,7 +235,7 @@ function App() {
           </div>
 
           {showMap && (
-            <div className="lg:w-2/5">
+            <div className="order-first lg:order-none lg:w-2/5">
               <div
                 className="sticky top-4 h-[60vh] overflow-hidden lg:h-[75vh]"
                 style={{ borderRadius: "var(--radius-card)", boxShadow: "var(--shadow-sm)" }}
