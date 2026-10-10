@@ -13,6 +13,8 @@ import LegalPage from "./pages/LegalPage";
 import ContactPage from "./pages/ContactPage";
 import HowItWorksPage from "./pages/HowItWorksPage";
 import AccountPage from "./pages/AccountPage";
+import StowkeeperDashboard from "./pages/StowkeeperDashboard";
+import BecomeStowkeeperModal from "./components/BecomeStowkeeperModal";
 import { Button } from "./design-system/components/core/Button";
 import { IconButton } from "./design-system/components/core/IconButton";
 import { EmptyState } from "./design-system/components/overlays/EmptyState";
@@ -26,6 +28,7 @@ const PAGE_TITLES = {
   "/contact": "contactTitle",
   "/how-it-works": "howTitle",
   "/account": "account.settings",
+  "/stowkeeper": "stowkeeper.dashboardTitle",
 };
 
 function mapRow(row) {
@@ -53,6 +56,10 @@ function App() {
   const [chatConversationId, setChatConversationId] = useState(null);
   const [favoriteIds, setFavoriteIds] = useState(new Set());
   const [showFavoritesModal, setShowFavoritesModal] = useState(false);
+  const [editingListing, setEditingListing] = useState(null);
+  const [showBecomeStowkeeper, setShowBecomeStowkeeper] = useState(false);
+
+  const isStowkeeper = Boolean(user?.user_metadata?.stowkeeper_agreement_accepted_at);
 
   useEffect(() => {
     const titleKey = PAGE_TITLES[path];
@@ -65,6 +72,16 @@ function App() {
       setShowAuthModal(true);
     }
   }, [path, user]);
+
+  useEffect(() => {
+    if (path !== "/stowkeeper") return;
+    if (!user) {
+      navigate("/");
+      setShowAuthModal(true);
+    } else if (!isStowkeeper) {
+      setShowBecomeStowkeeper(true);
+    }
+  }, [path, user, isStowkeeper]);
 
   useEffect(() => {
     let cancelled = false;
@@ -151,6 +168,30 @@ function App() {
     setShowModal(false);
   };
 
+  const handleUpdated = (row) => {
+    setListings((prev) => prev.map((l) => (l.id === row.id ? mapRow(row) : l)));
+    setShowModal(false);
+    setEditingListing(null);
+  };
+
+  const handleDeleteListing = async (listing) => {
+    if (!window.confirm(t("stowkeeper.deleteConfirm"))) return;
+    const marker = "/listing-photos/";
+    const paths = (listing.photos ?? [])
+      .map((url) => {
+        const idx = url.indexOf(marker);
+        return idx === -1 ? null : url.slice(idx + marker.length);
+      })
+      .filter(Boolean);
+    if (paths.length) {
+      await supabase.storage.from("listing-photos").remove(paths);
+    }
+    const { error } = await supabase.from("listings").delete().eq("id", listing.id);
+    if (!error) {
+      setListings((prev) => prev.filter((l) => l.id !== listing.id));
+    }
+  };
+
   const handleRequest = async (listing) => {
     if (!user) {
       setShowAuthModal(true);
@@ -189,7 +230,28 @@ function App() {
     setShowChatModal(true);
   };
 
-  const handleListSpaceClick = () => (user ? setShowModal(true) : setShowAuthModal(true));
+  const handleListSpaceClick = () => {
+    if (!user) {
+      setShowAuthModal(true);
+      return;
+    }
+    if (isStowkeeper) {
+      navigate("/stowkeeper");
+      return;
+    }
+    setShowBecomeStowkeeper(true);
+  };
+
+  const handleStowkeeperDashboard = () => {
+    navigate(path === "/stowkeeper" ? "/" : "/stowkeeper");
+  };
+
+  const handleAgreedToBecomeStowkeeper = () => {
+    setShowBecomeStowkeeper(false);
+    navigate("/stowkeeper");
+    setEditingListing(null);
+    setShowModal(true);
+  };
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -207,6 +269,9 @@ function App() {
         onFavoritesClick={() =>
           user ? setShowFavoritesModal(true) : setShowAuthModal(true)
         }
+        isStowkeeper={isStowkeeper}
+        isOnStowkeeperPage={path === "/stowkeeper"}
+        onStowkeeperDashboard={handleStowkeeperDashboard}
       />
 
       {path === "/legal" ? (
@@ -217,6 +282,21 @@ function App() {
         <HowItWorksPage onListSpaceClick={handleListSpaceClick} />
       ) : path === "/account" ? (
         <AccountPage />
+      ) : path === "/stowkeeper" ? (
+        isStowkeeper && (
+          <StowkeeperDashboard
+            listings={listings.filter((l) => l.owner_id === user?.id)}
+            onAddListing={() => {
+              setEditingListing(null);
+              setShowModal(true);
+            }}
+            onEditListing={(listing) => {
+              setEditingListing(listing);
+              setShowModal(true);
+            }}
+            onDeleteListing={handleDeleteListing}
+          />
+        )
       ) : (
         <main className="mx-auto w-full max-w-7xl flex-1 px-4 py-6 sm:px-6">
           <div className="mb-4 flex items-center justify-between gap-4">
@@ -313,8 +393,20 @@ function App() {
 
       {showModal && (
         <ListSpaceModal
-          onClose={() => setShowModal(false)}
+          listing={editingListing}
+          onClose={() => {
+            setShowModal(false);
+            setEditingListing(null);
+          }}
           onCreated={handleCreated}
+          onUpdated={handleUpdated}
+        />
+      )}
+
+      {showBecomeStowkeeper && (
+        <BecomeStowkeeperModal
+          onClose={() => setShowBecomeStowkeeper(false)}
+          onAgreed={handleAgreedToBecomeStowkeeper}
         />
       )}
 

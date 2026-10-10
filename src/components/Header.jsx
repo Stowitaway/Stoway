@@ -22,6 +22,9 @@ export default function Header({
   onAuthClick,
   onChatClick,
   onFavoritesClick,
+  isStowkeeper,
+  onStowkeeperDashboard,
+  isOnStowkeeperPage,
 }) {
   const { t, locale, setLocale } = useLanguage();
   const { user, signOut } = useAuth();
@@ -53,10 +56,16 @@ export default function Header({
             />
           </div>
 
-          <div className="flex shrink-0 items-center gap-2">
-            <Button variant="ghost" onClick={onListSpaceClick}>
-              {t("listYourSpace")}
-            </Button>
+          <div className="ml-auto flex shrink-0 items-center gap-2">
+            {user && isStowkeeper ? (
+              <Button variant="ghost" onClick={onStowkeeperDashboard}>
+                {isOnStowkeeperPage ? t("stowkeeper.findOtherListings") : t("stowkeeper.switchToStowkeeper")}
+              </Button>
+            ) : (
+              <Button variant="ghost" onClick={onListSpaceClick}>
+                {t("listYourSpace")}
+              </Button>
+            )}
 
             <IconButton
               icon="heart"

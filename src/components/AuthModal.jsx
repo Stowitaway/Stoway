@@ -6,6 +6,9 @@ import { Field, Input } from "../design-system/components/forms/Input";
 import { Button } from "../design-system/components/core/Button";
 import { interpolateLinks } from "../lib/legal";
 
+// More than 8 characters, at least one digit and one special (non-alphanumeric) character.
+const PASSWORD_RULE = /^(?=.*[0-9])(?=.*[^A-Za-z0-9]).{9,}$/;
+
 export default function AuthModal({ onClose, onAuthenticated }) {
   const { t } = useLanguage();
   const { signUp, signIn } = useAuth();
@@ -24,6 +27,11 @@ export default function AuthModal({ onClose, onAuthenticated }) {
     setInfo("");
 
     if (mode === "signUp" && !acceptTerms) return;
+
+    if (mode === "signUp" && !PASSWORD_RULE.test(password)) {
+      setError(t("auth.passwordWeak"));
+      return;
+    }
 
     setSubmitting(true);
 
@@ -70,11 +78,11 @@ export default function AuthModal({ onClose, onAuthenticated }) {
           />
         </Field>
 
-        <Field label={t("auth.password")}>
+        <Field label={t("auth.password")} hint={mode === "signUp" ? t("auth.passwordHint") : undefined}>
           <Input
             required
             type="password"
-            minLength={6}
+            minLength={mode === "signUp" ? 9 : 6}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />

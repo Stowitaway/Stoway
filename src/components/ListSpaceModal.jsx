@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useAuth } from "../auth/AuthContext";
-import { NEIGHBOURHOODS, ROOM_TYPES } from "../data/listings";
+import { NEIGHBOURHOODS, ROOM_TYPES, localizedText } from "../data/listings";
 import { fuzzLocation, geocodeAddress } from "../lib/geocode";
 import { useLanguage } from "../i18n/LanguageContext";
 import { supabase } from "../lib/supabaseClient";
@@ -12,16 +12,30 @@ import { PhotoUploader } from "../design-system/components/forms/PhotoUploader";
 import { Button } from "../design-system/components/core/Button";
 import { TERMS_VERSION, interpolateLinks } from "../lib/legal";
 
-const emptyForm = {
-  title: "",
-  address: "",
-  neighbourhood: NEIGHBOURHOODS[0],
-  type: ROOM_TYPES[0].value,
-  size: "",
-  price: "",
-  description: "",
-  photos: [],
-};
+function formFromListing(listing) {
+  if (!listing) {
+    return {
+      title: "",
+      address: "",
+      neighbourhood: NEIGHBOURHOODS[0],
+      type: ROOM_TYPES[0].value,
+      size: "",
+      price: "",
+      description: "",
+      photos: [],
+    };
+  }
+  return {
+    title: localizedText(listing.title, "en"),
+    address: "",
+    neighbourhood: listing.neighbourhood,
+    type: listing.type,
+    size: String(listing.size ?? ""),
+    price: String(listing.price ?? ""),
+    description: localizedText(listing.description, "en"),
+    photos: (listing.photos ?? []).map((url, i) => ({ id: `existing-${i}`, kind: "existing", url })),
+  };
+}
 
 async function uploadPhotos(userId, photos) {
   const urls = [];
@@ -37,10 +51,12 @@ async function uploadPhotos(userId, photos) {
   return urls;
 }
 
-export default function ListSpaceModal({ onClose, onCreated }) {
+// listing: pass an existing row to edit it; omit to create a new one.
+export default function ListSpaceModal({ listing, onClose, onCreated, onUpdated }) {
   const { t } = useLanguage();
   const { user } = useAuth();
-  const [form, setForm] = useState(emptyForm);
+  const isEdit = Boolean(listing);
+  const [form, setForm] = useState(() => formFromListing(listing));
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [hostTermsAccepted, setHostTermsAccepted] = useState(false);
@@ -51,6 +67,8 @@ export default function ListSpaceModal({ onClose, onCreated }) {
 
   const handlePhotosAdd = (files) => {
     const newPhotos = files.map((file) => ({
+      id: `new-${Date.now()}-${Math.random().toString(36).slice(2)}`,
+      kind: "new",
       file,
       previewUrl: URL.createObjectURL(file),
     }));
@@ -59,52 +77,80 @@ export default function ListSpaceModal({ onClose, onCreated }) {
 
   const removePhoto = (index) => {
     setForm((f) => {
-      URL.revokeObjectURL(f.photos[index].previewUrl);
+      const item = f.photos[index];
+      if (item.kind === "new") URL.revokeObjectURL(item.previewUrl);
       return { ...f, photos: f.photos.filter((_, i) => i !== index) };
     });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!hostTermsAccepted) {
+    if (!isEdit && !hostTermsAccepted) {
       setShowHostTermsError(true);
+      return;
+    }
+    if (form.photos.length === 0) {
+      setError(t("modal.photosRequired"));
       return;
     }
     setError("");
     setSubmitting(true);
     try {
-      const geocoded = await geocodeAddress(
-        `${form.address}, ${form.neighbourhood}, Lisboa, Portugal`,
-      );
-      if (!geocoded) {
-        setError(t("modal.addressNotFound"));
-        setSubmitting(false);
-        return;
+      let lat;
+      let lng;
+      if (!isEdit) {
+        const geocoded = await geocodeAddress(
+          `${form.address}, ${form.neighbourhood}, Lisboa, Portugal`,
+        );
+        if (!geocoded) {
+          setError(t("modal.addressNotFound"));
+          setSubmitting(false);
+          return;
+        }
+        ({ lat, lng } = fuzzLocation(geocoded));
       }
-      const { lat, lng } = fuzzLocation(geocoded);
 
-      const photoUrls = await uploadPhotos(user.id, form.photos);
-      const { data, error: insertError } = await supabase
-        .from("listings")
-        .insert({
-          owner_id: user.id,
-          host_name: user.user_metadata?.full_name || user.email,
-          title: form.title,
-          description: form.description,
-          neighbourhood: form.neighbourhood,
-          type: form.type,
-          size: Number(form.size) || 0,
-          price: Number(form.price) || 0,
-          photos: photoUrls,
-          lat,
-          lng,
-          host_terms_accepted_at: new Date().toISOString(),
-          host_terms_version: TERMS_VERSION,
-        })
-        .select()
-        .single();
-      if (insertError) throw insertError;
-      onCreated(data);
+      const newFiles = form.photos.filter((p) => p.kind === "new");
+      const uploadedUrls = await uploadPhotos(user.id, newFiles);
+      const existingUrls = form.photos.filter((p) => p.kind === "existing").map((p) => p.url);
+      const photoUrls = [...existingUrls, ...uploadedUrls];
+
+      const payload = {
+        title: form.title,
+        description: form.description,
+        neighbourhood: form.neighbourhood,
+        type: form.type,
+        size: Number(form.size) || 0,
+        price: Number(form.price) || 0,
+        photos: photoUrls,
+      };
+
+      if (isEdit) {
+        const { data, error: updateError } = await supabase
+          .from("listings")
+          .update(payload)
+          .eq("id", listing.id)
+          .select()
+          .single();
+        if (updateError) throw updateError;
+        onUpdated(data);
+      } else {
+        const { data, error: insertError } = await supabase
+          .from("listings")
+          .insert({
+            ...payload,
+            owner_id: user.id,
+            host_name: user.user_metadata?.full_name || user.email,
+            lat,
+            lng,
+            host_terms_accepted_at: new Date().toISOString(),
+            host_terms_version: TERMS_VERSION,
+          })
+          .select()
+          .single();
+        if (insertError) throw insertError;
+        onCreated(data);
+      }
     } catch (err) {
       setError(err.message);
       setSubmitting(false);
@@ -112,7 +158,7 @@ export default function ListSpaceModal({ onClose, onCreated }) {
   };
 
   return (
-    <Modal title={t("modal.title")} onClose={onClose}>
+    <Modal title={t(isEdit ? "modal.editTitle" : "modal.title")} onClose={onClose}>
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <Field label={t("modal.fieldTitle")}>
           <Input
@@ -124,15 +170,17 @@ export default function ListSpaceModal({ onClose, onCreated }) {
           />
         </Field>
 
-        <Field label={t("modal.fieldAddress")} hint={t("modal.addressPrivacyHint")}>
-          <Input
-            required
-            type="text"
-            value={form.address}
-            onChange={update("address")}
-            placeholder={t("modal.addressPlaceholder")}
-          />
-        </Field>
+        {!isEdit && (
+          <Field label={t("modal.fieldAddress")} hint={t("modal.addressPrivacyHint")}>
+            <Input
+              required
+              type="text"
+              value={form.address}
+              onChange={update("address")}
+              placeholder={t("modal.addressPlaceholder")}
+            />
+          </Field>
+        )}
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <Field label={t("modal.fieldNeighbourhood")}>
@@ -170,7 +218,7 @@ export default function ListSpaceModal({ onClose, onCreated }) {
           label={t("modal.fieldPhotos")}
           addLabel={t("modal.addPhotos")}
           hint=""
-          photos={form.photos.map((p) => p.previewUrl)}
+          photos={form.photos.map((p) => (p.kind === "existing" ? p.url : p.previewUrl))}
           onAdd={handlePhotosAdd}
           onRemove={removePhoto}
         />
@@ -185,29 +233,31 @@ export default function ListSpaceModal({ onClose, onCreated }) {
           />
         </Field>
 
-        <div>
-          <label className="flex items-start gap-2" style={{ fontSize: "var(--text-sm)" }}>
-            <input
-              type="checkbox"
-              checked={hostTermsAccepted}
-              onChange={(e) => {
-                setHostTermsAccepted(e.target.checked);
-                if (e.target.checked) setShowHostTermsError(false);
-              }}
-              className="mt-1"
-            />
-            <span>
-              {interpolateLinks(t("hostTerms.label"), {
-                terms: { label: t("legalTabTerms"), href: "/legal#terms" },
-              })}
-            </span>
-          </label>
-          {showHostTermsError && (
-            <p className="m-0 mt-1" style={{ fontSize: "var(--text-xs)", color: "var(--status-danger)" }}>
-              {t("hostTerms.required")}
-            </p>
-          )}
-        </div>
+        {!isEdit && (
+          <div>
+            <label className="flex items-start gap-2" style={{ fontSize: "var(--text-sm)" }}>
+              <input
+                type="checkbox"
+                checked={hostTermsAccepted}
+                onChange={(e) => {
+                  setHostTermsAccepted(e.target.checked);
+                  if (e.target.checked) setShowHostTermsError(false);
+                }}
+                className="mt-1"
+              />
+              <span>
+                {interpolateLinks(t("hostTerms.label"), {
+                  terms: { label: t("legalTabTerms"), href: "/legal#terms" },
+                })}
+              </span>
+            </label>
+            {showHostTermsError && (
+              <p className="m-0 mt-1" style={{ fontSize: "var(--text-xs)", color: "var(--status-danger)" }}>
+                {t("hostTerms.required")}
+              </p>
+            )}
+          </div>
+        )}
 
         {error && <p className="m-0" style={{ fontSize: "var(--text-sm)", color: "var(--status-danger)" }}>{error}</p>}
 
@@ -215,8 +265,8 @@ export default function ListSpaceModal({ onClose, onCreated }) {
           <Button type="button" variant="outline" onClick={onClose}>
             {t("modal.cancel")}
           </Button>
-          <Button type="submit" variant="primary" disabled={submitting || !hostTermsAccepted}>
-            {t("modal.publish")}
+          <Button type="submit" variant="primary" disabled={submitting || (!isEdit && !hostTermsAccepted)}>
+            {t(isEdit ? "modal.saveChanges" : "modal.publish")}
           </Button>
         </div>
       </form>

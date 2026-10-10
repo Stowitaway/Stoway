@@ -1,4 +1,5 @@
 export const TERMS_VERSION = "2026-10-09";
+export const COMMUNITY_AGREEMENT_VERSION = "2026-10-10";
 
 // Splits "...{terms}..." into text/link fragments, so `links.terms` can be
 // rendered as an inline <a>, e.g. { terms: { label: "Terms", href: "/legal#terms" } }.
