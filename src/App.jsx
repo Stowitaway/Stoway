@@ -14,6 +14,7 @@ import ContactPage from "./pages/ContactPage";
 import HowItWorksPage from "./pages/HowItWorksPage";
 import AccountPage from "./pages/AccountPage";
 import { Button } from "./design-system/components/core/Button";
+import { IconButton } from "./design-system/components/core/IconButton";
 import { EmptyState } from "./design-system/components/overlays/EmptyState";
 import { localizedText } from "./data/listings";
 import { useLanguage } from "./i18n/LanguageContext";
@@ -45,6 +46,7 @@ function App() {
   const [showMap, setShowMap] = useState(
     () => typeof window === "undefined" || window.matchMedia("(min-width: 1024px)").matches,
   );
+  const [mapExpanded, setMapExpanded] = useState(false);
   const [highlightedId, setHighlightedId] = useState(null);
   const [selectedListing, setSelectedListing] = useState(null);
   const [showChatModal, setShowChatModal] = useState(false);
@@ -222,7 +224,15 @@ function App() {
               {filteredListings.length}{" "}
               {t(filteredListings.length === 1 ? "resultsOne" : "resultsOther")}
             </p>
-            <Button variant="outline" size="sm" icon={showMap ? "list-ul" : "map"} onClick={() => setShowMap((v) => !v)}>
+            <Button
+              variant="outline"
+              size="sm"
+              icon={showMap ? "list-ul" : "map"}
+              onClick={() => {
+                setShowMap((v) => !v);
+                setMapExpanded(false);
+              }}
+            >
               {showMap ? t("hideMap") : t("showMap")}
             </Button>
           </div>
@@ -237,45 +247,55 @@ function App() {
           )}
 
           <div className={`flex flex-col gap-6 ${showMap ? "lg:flex-row" : ""}`}>
-            <div className={showMap ? "lg:w-3/5" : "w-full"}>
-              {loading ? (
-                <EmptyState icon="hourglass-split">…</EmptyState>
-              ) : filteredListings.length === 0 ? (
-                <EmptyState
-                  icon="search"
-                  title={t("noResults")}
-                  action={
-                    <Button variant="outline" onClick={() => { setSearch(""); setActiveType("all"); }}>
-                      {t("filterAll")}
-                    </Button>
-                  }
-                />
-              ) : (
-                <div
-                  className={`grid grid-cols-1 sm:grid-cols-2 ${showMap ? "" : "lg:grid-cols-3"}`}
-                  style={{ columnGap: "var(--gap-grid-x)", rowGap: "var(--gap-grid-y)" }}
-                >
-                  {filteredListings.map((listing) => (
-                    <ListingCard
-                      key={listing.id}
-                      listing={listing}
-                      highlighted={listing.id === highlightedId}
-                      onOpen={setSelectedListing}
-                      onRequest={handleRequest}
-                      isFavorite={favoriteIds.has(listing.id)}
-                      onToggleFavorite={handleToggleFavorite}
-                    />
-                  ))}
-                </div>
-              )}
-            </div>
+            {!(showMap && mapExpanded) && (
+              <div className={showMap ? "lg:w-3/5" : "w-full"}>
+                {loading ? (
+                  <EmptyState icon="hourglass-split">…</EmptyState>
+                ) : filteredListings.length === 0 ? (
+                  <EmptyState
+                    icon="search"
+                    title={t("noResults")}
+                    action={
+                      <Button variant="outline" onClick={() => { setSearch(""); setActiveType("all"); }}>
+                        {t("filterAll")}
+                      </Button>
+                    }
+                  />
+                ) : (
+                  <div
+                    className={`grid grid-cols-1 sm:grid-cols-2 ${showMap ? "" : "lg:grid-cols-3"}`}
+                    style={{ columnGap: "var(--gap-grid-x)", rowGap: "var(--gap-grid-y)" }}
+                  >
+                    {filteredListings.map((listing) => (
+                      <ListingCard
+                        key={listing.id}
+                        listing={listing}
+                        highlighted={listing.id === highlightedId}
+                        onOpen={setSelectedListing}
+                        onRequest={handleRequest}
+                        isFavorite={favoriteIds.has(listing.id)}
+                        onToggleFavorite={handleToggleFavorite}
+                      />
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
 
             {showMap && (
-              <div className="order-first lg:order-none lg:w-2/5">
+              <div className={mapExpanded ? "w-full" : "order-first lg:order-none lg:w-2/5"}>
                 <div
-                  className="sticky top-4 h-[60vh] overflow-hidden lg:h-[75vh]"
+                  className={`sticky top-4 relative overflow-hidden h-[60vh] ${mapExpanded ? "lg:h-[80vh]" : "lg:h-[75vh]"}`}
                   style={{ borderRadius: "var(--radius-card)", boxShadow: "var(--shadow-sm)" }}
                 >
+                  <span className="absolute left-3 top-3 z-10 hidden lg:block">
+                    <IconButton
+                      icon={mapExpanded ? "fullscreen-exit" : "arrows-fullscreen"}
+                      variant="onimage"
+                      label={mapExpanded ? t("collapseMap") : t("expandMap")}
+                      onClick={() => setMapExpanded((v) => !v)}
+                    />
+                  </span>
                   <MapView
                     listings={filteredListings}
                     highlightedId={highlightedId}
