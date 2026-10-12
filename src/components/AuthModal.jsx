@@ -16,10 +16,19 @@ export default function AuthModal({ onClose, onAuthenticated }) {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [passwordInvalid, setPasswordInvalid] = useState(false);
   const [acceptTerms, setAcceptTerms] = useState(false);
   const [error, setError] = useState("");
   const [info, setInfo] = useState("");
   const [submitting, setSubmitting] = useState(false);
+
+  const handlePasswordChange = (e) => {
+    const value = e.target.value;
+    setPassword(value);
+    // Once a bad password has been flagged, keep checking live so the red
+    // outline clears as soon as it's fixed, rather than waiting for another submit.
+    if (passwordInvalid) setPasswordInvalid(mode === "signUp" && !PASSWORD_RULE.test(value));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -29,9 +38,10 @@ export default function AuthModal({ onClose, onAuthenticated }) {
     if (mode === "signUp" && !acceptTerms) return;
 
     if (mode === "signUp" && !PASSWORD_RULE.test(password)) {
-      setError(t("auth.passwordWeak"));
+      setPasswordInvalid(true);
       return;
     }
+    setPasswordInvalid(false);
 
     setSubmitting(true);
 
@@ -78,13 +88,18 @@ export default function AuthModal({ onClose, onAuthenticated }) {
           />
         </Field>
 
-        <Field label={t("auth.password")} hint={mode === "signUp" ? t("auth.passwordHint") : undefined}>
+        <Field
+          label={t("auth.password")}
+          hint={mode === "signUp" && !passwordInvalid ? t("auth.passwordHint") : undefined}
+          error={passwordInvalid ? t("auth.passwordWeak") : undefined}
+        >
           <Input
             required
             type="password"
             minLength={mode === "signUp" ? 9 : 6}
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={handlePasswordChange}
+            invalid={passwordInvalid}
           />
         </Field>
 
@@ -119,6 +134,7 @@ export default function AuthModal({ onClose, onAuthenticated }) {
             setMode((m) => (m === "signIn" ? "signUp" : "signIn"));
             setError("");
             setInfo("");
+            setPasswordInvalid(false);
           }}
         >
           {mode === "signIn" ? t("auth.needAccount") : t("auth.haveAccount")}
