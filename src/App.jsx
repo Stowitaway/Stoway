@@ -7,14 +7,15 @@ import Footer from "./components/Footer";
 import Header from "./components/Header";
 import ListingCard from "./components/ListingCard";
 import ListingDetailModal from "./components/ListingDetailModal";
-import ListSpaceModal from "./components/ListSpaceModal";
 import MapView from "./components/MapView";
 import LegalPage from "./pages/LegalPage";
 import ContactPage from "./pages/ContactPage";
 import HowItWorksPage from "./pages/HowItWorksPage";
 import AccountPage from "./pages/AccountPage";
 import StowkeeperDashboard from "./pages/StowkeeperDashboard";
+import StowkeeperListingWizard from "./pages/StowkeeperListingWizard";
 import BecomeStowkeeperModal from "./components/BecomeStowkeeperModal";
+import { COMMUNITY_AGREEMENT_VERSION } from "./lib/legal";
 import { Button } from "./design-system/components/core/Button";
 import { IconButton } from "./design-system/components/core/IconButton";
 import { EmptyState } from "./design-system/components/overlays/EmptyState";
@@ -44,7 +45,6 @@ function App() {
   const [loadError, setLoadError] = useState("");
   const [search, setSearch] = useState("");
   const [activeType, setActiveType] = useState("all");
-  const [showModal, setShowModal] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [showMap, setShowMap] = useState(
     () => typeof window === "undefined" || window.matchMedia("(min-width: 1024px)").matches,
@@ -59,7 +59,11 @@ function App() {
   const [editingListing, setEditingListing] = useState(null);
   const [showBecomeStowkeeper, setShowBecomeStowkeeper] = useState(false);
 
-  const isStowkeeper = Boolean(user?.user_metadata?.stowkeeper_agreement_accepted_at);
+  // Stowkeepers must have accepted the current community commitment; bumping
+  // COMMUNITY_AGREEMENT_VERSION asks everyone to accept it again.
+  const isStowkeeper =
+    Boolean(user?.user_metadata?.stowkeeper_agreement_accepted_at) &&
+    user?.user_metadata?.stowkeeper_agreement_version === COMMUNITY_AGREEMENT_VERSION;
 
   useEffect(() => {
     const titleKey = PAGE_TITLES[path];
@@ -74,7 +78,7 @@ function App() {
   }, [path, user]);
 
   useEffect(() => {
-    if (path !== "/stowkeeper") return;
+    if (path !== "/stowkeeper" && path !== "/stowkeeper/listing") return;
     if (!user) {
       navigate("/");
       setShowAuthModal(true);
@@ -163,14 +167,12 @@ function App() {
     return () => clearTimeout(timeout);
   }, [highlightedId]);
 
-  const handleCreated = (row) => {
-    setListings((prev) => [mapRow(row), ...prev]);
-    setShowModal(false);
-  };
-
-  const handleUpdated = (row) => {
-    setListings((prev) => prev.map((l) => (l.id === row.id ? mapRow(row) : l)));
-    setShowModal(false);
+  const handleListingWizardDone = (row, action) => {
+    if (action === "created") {
+      setListings((prev) => [mapRow(row), ...prev]);
+    } else if (action === "updated") {
+      setListings((prev) => prev.map((l) => (l.id === row.id ? mapRow(row) : l)));
+    }
     setEditingListing(null);
   };
 
@@ -248,9 +250,8 @@ function App() {
 
   const handleAgreedToBecomeStowkeeper = () => {
     setShowBecomeStowkeeper(false);
-    navigate("/stowkeeper");
     setEditingListing(null);
-    setShowModal(true);
+    navigate("/stowkeeper/listing");
   };
 
   return (
@@ -282,17 +283,24 @@ function App() {
         <HowItWorksPage onListSpaceClick={handleListSpaceClick} />
       ) : path === "/account" ? (
         <AccountPage />
+      ) : path === "/stowkeeper/listing" ? (
+        isStowkeeper && (
+          <StowkeeperListingWizard
+            listing={editingListing}
+            onDone={handleListingWizardDone}
+          />
+        )
       ) : path === "/stowkeeper" ? (
         isStowkeeper && (
           <StowkeeperDashboard
             listings={listings.filter((l) => l.owner_id === user?.id)}
             onAddListing={() => {
               setEditingListing(null);
-              setShowModal(true);
+              navigate("/stowkeeper/listing");
             }}
             onEditListing={(listing) => {
               setEditingListing(listing);
-              setShowModal(true);
+              navigate("/stowkeeper/listing");
             }}
             onDeleteListing={handleDeleteListing}
           />
@@ -390,18 +398,6 @@ function App() {
       )}
 
       <Footer onListSpaceClick={handleListSpaceClick} />
-
-      {showModal && (
-        <ListSpaceModal
-          listing={editingListing}
-          onClose={() => {
-            setShowModal(false);
-            setEditingListing(null);
-          }}
-          onCreated={handleCreated}
-          onUpdated={handleUpdated}
-        />
-      )}
 
       {showBecomeStowkeeper && (
         <BecomeStowkeeperModal

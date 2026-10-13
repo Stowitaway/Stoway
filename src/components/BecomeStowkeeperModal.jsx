@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useLanguage } from "../i18n/LanguageContext";
 import { supabase } from "../lib/supabaseClient";
-import { COMMUNITY_AGREEMENT_VERSION } from "../lib/legal";
+import { COMMUNITY_AGREEMENT_VERSION, interpolateLinks } from "../lib/legal";
 import { Modal } from "../design-system/components/overlays/Modal";
 import { Button } from "../design-system/components/core/Button";
 
@@ -46,6 +46,9 @@ export default function BecomeStowkeeperModal({ onClose, onAgreed }) {
           <h3 className="mt-0 mb-2" style={{ fontSize: "var(--text-md)", fontWeight: "var(--weight-bold)", color: "var(--text-strong)" }}>
             {t("stowkeeper.agreementTitle")}
           </h3>
+          <p className="mt-0 mb-3" style={{ fontSize: "var(--text-sm)", fontWeight: "var(--weight-bold)", color: "var(--text-strong)" }}>
+            {t("stowkeeper.commitment")}
+          </p>
           <p className="mt-0 mb-2" style={{ fontSize: "var(--text-sm)", color: "var(--text-muted)" }}>
             {t("stowkeeper.agreementIntro")}
           </p>
@@ -56,6 +59,11 @@ export default function BecomeStowkeeperModal({ onClose, onAgreed }) {
               </li>
             ))}
           </ul>
+          <p className="mt-3 mb-0" style={{ fontSize: "var(--text-sm)", color: "var(--text-muted)" }}>
+            {interpolateLinks(t("stowkeeper.policyLink"), {
+              policy: { label: t("stowkeeper.policyLabel"), href: "/legal#community" },
+            })}
+          </p>
         </div>
 
         <label className="flex items-start gap-2" style={{ fontSize: "var(--text-sm)" }}>

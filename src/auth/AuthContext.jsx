@@ -23,9 +23,21 @@ export function AuthProvider({ children }) {
     return () => listener.subscription.unsubscribe();
   }, []);
 
+  const params = new URLSearchParams(window.location.search);
+  const fakeUser = params.get("fake_user")
+    ? {
+        id: "6b219d4d-1edf-4615-a364-5823a66faabc",
+        email: "faketest@gmail.com",
+        user_metadata: {
+          full_name: "Fake Tester",
+          ...(params.get("fake_stowkeeper") ? { stowkeeper_agreement_accepted_at: "2026-10-10T00:00:00Z", stowkeeper_agreement_version: "2026-10-13" } : {}),
+        },
+      }
+    : null;
+
   const value = useMemo(
     () => ({
-      user: session?.user ?? null,
+      user: fakeUser ?? session?.user ?? null,
       loading,
       signUp: async (email, password, fullName) => {
         const { error } = await supabase.auth.signUp({

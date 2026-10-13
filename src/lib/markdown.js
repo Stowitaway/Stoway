@@ -18,7 +18,7 @@ export function splitByLang(source) {
 
 // Renders markdown to HTML for the shared `.legal-article` styles: wraps
 // tables so they scroll horizontally instead of the whole page, and
-// optionally tags the first two <h1>s as #terms / #privacy anchors.
+// optionally tags the first three <h1>s as #terms / #privacy / #community anchors.
 export function renderMarkdown(md, { assignTermsPrivacyIds = false } = {}) {
   let html = marked.parse(md, { gfm: true });
 
@@ -30,6 +30,7 @@ export function renderMarkdown(md, { assignTermsPrivacyIds = false } = {}) {
       count += 1;
       if (count === 1) return '<h1 id="terms">';
       if (count === 2) return '<h1 id="privacy">';
+      if (count === 3) return '<h1 id="community">';
       return "<h1>";
     });
   }

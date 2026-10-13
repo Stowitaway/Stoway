@@ -26,6 +26,9 @@ export default function LegalPage() {
         <Link to="/legal#privacy" className="sw-chip">
           {t("legalTabPrivacy")}
         </Link>
+        <Link to="/legal#community" className="sw-chip">
+          {t("legalTabCommunity")}
+        </Link>
       </div>
       {isFallback && t("legalFallbackNote") && (
         <p className="mb-6" style={{ fontSize: "var(--text-sm)", color: "var(--text-muted)" }}>

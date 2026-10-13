@@ -1,9 +1,9 @@
 <!--
-Stoway legal texts: Terms of Service + Privacy Policy, in English, Portuguese and French.
+Stoway legal texts: Terms of Service + Privacy Policy + Community Commitment & Nondiscrimination Policy, in English, Portuguese and French.
 Each language block starts with a marker comment line "lang:en", "lang:pt" or "lang:fr" (do not remove the markers).
 The site splits this file on those markers and shows the block for the current language.
 German and Italian visitors see the English version.
-Effective date: 9 October 2026. When the text changes, update the date in all three languages.
+Effective date: 9 October 2026 (Terms, Privacy); 13 October 2026 (Nondiscrimination). When a text changes, update its date in all three languages. If the Nondiscrimination Policy changes materially, also bump COMMUNITY_AGREEMENT_VERSION in src/lib/legal.jsx so Stowkeepers re-accept.
 TODO before publishing: confirm the Supabase project region is in the EU (Supabase dashboard > Project Settings > General).
 -->
 
@@ -218,6 +218,90 @@ Stoway is for people aged 18 and over. We do not knowingly collect data from min
 
 We will post any update here with a new effective date, and email you about significant changes before they take effect.
 
+# Community Commitment & Nondiscrimination Policy
+
+Effective date: 13 October 2026
+
+## 1. Our commitment
+
+Stoway is built on trust between neighbours. Everyone who lists a space on Stoway (a "Stowkeeper", called "Host" in our Terms) must accept this commitment before listing:
+
+> **I agree to treat everyone in the Stoway community with respect, and without judgment or bias, regardless of race, colour, ethnicity, national origin, nationality, religion or belief, sex, gender identity, sexual orientation, disability, age, family or marital status, or pregnancy.**
+
+This policy explains what that means in practice. It applies alongside our Terms of Service.
+
+## 2. What it covers
+
+It covers listings, profiles, photos, messages and every step of a rental arranged through Stoway: requests, visits, handing over keys or codes, drop-off, collection, and anything said or done off the site in connection with that rental. Renters must treat Stowkeepers with the same respect; points 4.5 and 4.6 apply to them too.
+
+## 3. Protected characteristics
+
+You may not treat anyone differently because of any of the following — theirs, or those of someone with them:
+
+- race, colour, ethnicity or ancestry
+- national origin, nationality or place of origin
+- religion or belief
+- sex, pregnancy, gender identity or gender expression
+- sexual orientation
+- disability or chronic illness
+- age
+- family or marital status
+
+## 4. What Stowkeepers must not do
+
+1. Decline, ignore or cancel a request, or end a rental, because of a protected characteristic.
+2. Set different prices, deposits, rental periods, access hours, rules or other terms because of a protected characteristic.
+3. State a preference for or against certain people in a listing or message — for example "Portuguese only", "no foreigners", "ideal for a Christian family" or "no elderly people".
+4. Ask about a protected characteristic, or ask for photos or documents in order to find one out. If you check renters' identity, check every renter in the same way.
+5. Use slurs, stereotypes or demeaning remarks, including deliberately using the wrong name or pronouns for someone.
+6. Display hateful symbols or images in listing photos or on a profile.
+7. Discourage someone from renting — for example by suggesting they look for "a space more suited to them" — because of a protected characteristic.
+
+## 5. What Stowkeepers can do
+
+You still decide who stores things in your space, as long as the reason is not a protected characteristic and you apply it to everyone in the same way. Legitimate reasons include:
+
+- the items don't fit, are too heavy, or are on the prohibited list (Terms, section 6);
+- the dates or access times don't work for you;
+- the renter won't agree to written rental terms, has broken a previous agreement, or has been rude or threatening;
+- the renter can't confirm their identity, when you ask every renter to do so.
+
+Describe your space factually — stairs, lift, door width, lighting, distance from parking, access hours — so each renter can decide for themselves whether it suits them. That decision is theirs.
+
+## 6. Age
+
+All Stoway users must be 18 or over (Terms, section 3). Beyond that, you may not refuse a renter or change your terms because you think they are too young or too old.
+
+## 7. Disability and accessibility
+
+1. Describe accessibility accurately, without overstating it.
+2. Don't charge more, or ask for a bigger deposit, because a renter has a disability.
+3. Let an assistance dog, a carer or a helper accompany the renter for visits, drop-off and collection, and allow wheelchairs and other mobility aids wherever the renter is allowed to go.
+4. When asked, communicate in a way that works for the renter — for example in writing instead of by phone.
+5. Consider reasonable requests that make access easier, such as meeting the renter at street level, allowing extra time for drop-off, or sharing access with a helper the renter names. You don't have to make building works to your property.
+
+## 8. Gender identity
+
+Respect each person's gender identity, name and pronouns. You may not refuse anyone, or treat them differently, because you disagree with their gender identity.
+
+Exception: if reaching your space means the renter has to enter the home you live in (for example a storage room inside your flat, rather than a separate garage, box or lock-up), you may choose to rent only to people of your own gender. Say so clearly in your listing and apply it to everyone.
+
+## 9. When the law says otherwise
+
+Follow the law where your space is. If a law requires a distinction this policy would otherwise forbid, the law prevails, and you may explain that restriction factually in your listing. Everywhere else, this policy applies.
+
+## 10. Reporting
+
+If you experience or witness discrimination on Stoway, use the Report button (reason: "Harassment or abuse") or write to [stoway.support@gmail.com](mailto:stoway.support@gmail.com). Tell us what happened and when, with screenshots if you have them. We handle reports confidentially and do not tolerate retaliation against anyone who reports in good faith. You can also complain to the competent authorities — in Portugal, the Comissão para a Igualdade e Contra a Discriminação Racial (CICDR) for discrimination based on racial or ethnic origin, colour, nationality, ancestry or place of origin.
+
+## 11. What we do
+
+We review every report (Terms, section 8). Depending on what happened, we may contact the people involved, issue a warning, remove a listing or content, or suspend or close an account — including for conduct off the site linked to a rental arranged through Stoway. If a renter loses a space because of discrimination, we will do our best to help them find another one.
+
+## 12. If you don't accept
+
+Without accepting this commitment, you can't list or manage spaces on Stoway. You can still browse, contact Stowkeepers and rent space, or delete your account at any time. When this policy changes in a way that matters, Stowkeepers will be asked to accept it again.
+
 <!-- lang:pt -->
 
 # Termos de Serviço
@@ -429,6 +513,90 @@ A Stoway destina-se a maiores de 18 anos. Não recolhemos intencionalmente dados
 
 Publicaremos aqui qualquer atualização com uma nova data de entrada em vigor e informá-lo-emos por email sobre alterações significativas antes de produzirem efeitos.
 
+# Compromisso da Comunidade e Política de Não Discriminação
+
+Data de entrada em vigor: 13 de outubro de 2026
+
+## 1. O nosso compromisso
+
+A Stoway assenta na confiança entre vizinhos. Quem anuncia um espaço na Stoway (um "Stowkeeper", designado "Anfitrião" nos nossos Termos) tem de aceitar este compromisso antes de anunciar:
+
+> **Comprometo-me a tratar todas as pessoas da comunidade Stoway com respeito, sem julgamentos nem preconceitos, independentemente da raça, cor, origem étnica, origem nacional, nacionalidade, religião ou convicções, sexo, identidade de género, orientação sexual, deficiência, idade, situação familiar ou estado civil, ou gravidez.**
+
+Esta política explica o que isso significa na prática. Aplica-se em conjunto com os nossos Termos de Serviço.
+
+## 2. O que abrange
+
+Abrange anúncios, perfis, fotografias, mensagens e todas as fases de um aluguer combinado através da Stoway: pedidos, visitas, entrega de chaves ou códigos, depósito e levantamento de bens, e tudo o que for dito ou feito fora do site relacionado com esse aluguer. Os Locatários devem tratar os Stowkeepers com o mesmo respeito; os pontos 4.5 e 4.6 aplicam-se também a eles.
+
+## 3. Características protegidas
+
+Não pode tratar ninguém de forma diferente por causa de qualquer das seguintes características — da própria pessoa ou de alguém que a acompanhe:
+
+- raça, cor, origem étnica ou ascendência
+- origem nacional, nacionalidade ou território de origem
+- religião ou convicções
+- sexo, gravidez, identidade ou expressão de género
+- orientação sexual
+- deficiência ou doença crónica
+- idade
+- situação familiar ou estado civil
+
+## 4. O que os Stowkeepers não podem fazer
+
+1. Recusar, ignorar ou cancelar um pedido, ou terminar um aluguer, por causa de uma característica protegida.
+2. Aplicar preços, cauções, períodos de aluguer, horários de acesso, regras ou outras condições diferentes por causa de uma característica protegida.
+3. Manifestar, num anúncio ou mensagem, preferência a favor ou contra certas pessoas — por exemplo "só portugueses", "estrangeiros não", "ideal para família cristã" ou "não aceito idosos".
+4. Perguntar por uma característica protegida, ou pedir fotografias ou documentos para a descobrir. Se verificar a identidade dos Locatários, faça-o da mesma forma com todos.
+5. Usar insultos, estereótipos ou comentários depreciativos, incluindo usar deliberadamente o nome ou os pronomes errados de alguém.
+6. Exibir símbolos ou imagens de ódio nas fotografias do anúncio ou no perfil.
+7. Desencorajar alguém de alugar — por exemplo, sugerindo que procure "um espaço mais adequado" — por causa de uma característica protegida.
+
+## 5. O que os Stowkeepers podem fazer
+
+Continua a decidir quem guarda bens no seu espaço, desde que o motivo não seja uma característica protegida e o aplique da mesma forma a todos. São motivos legítimos, por exemplo:
+
+- os bens não cabem, são demasiado pesados ou constam da lista de bens proibidos (Termos, secção 6);
+- as datas ou os horários de acesso não lhe convêm;
+- o Locatário não aceita condições de aluguer por escrito, já incumpriu um acordo anterior, ou foi mal-educado ou ameaçador;
+- o Locatário não consegue confirmar a sua identidade, quando pede essa confirmação a todos.
+
+Descreva o espaço de forma factual — escadas, elevador, largura da porta, iluminação, distância ao estacionamento, horários de acesso — para que cada Locatário decida por si se o espaço lhe serve. Essa decisão é dele.
+
+## 6. Idade
+
+Todos os utilizadores da Stoway têm de ter 18 anos ou mais (Termos, secção 3). Para além disso, não pode recusar um Locatário nem alterar as condições por o achar demasiado novo ou demasiado velho.
+
+## 7. Deficiência e acessibilidade
+
+1. Descreva a acessibilidade com rigor, sem a exagerar.
+2. Não cobre mais, nem peça uma caução maior, por o Locatário ter uma deficiência.
+3. Permita que um cão de assistência, um cuidador ou um ajudante acompanhe o Locatário nas visitas, no depósito e no levantamento dos bens, e permita cadeiras de rodas e outras ajudas técnicas em todos os locais a que o Locatário tem acesso.
+4. Quando lhe for pedido, comunique de forma adequada ao Locatário — por exemplo, por escrito em vez de por telefone.
+5. Considere pedidos razoáveis que facilitem o acesso, como encontrar o Locatário ao nível da rua, dar mais tempo para o depósito dos bens, ou partilhar o acesso com um ajudante indicado pelo Locatário. Não é obrigado a fazer obras no seu imóvel.
+
+## 8. Identidade de género
+
+Respeite a identidade de género, o nome e os pronomes de cada pessoa. Não pode recusar ninguém, nem tratar alguém de forma diferente, por discordar da sua identidade de género.
+
+Exceção: se, para chegar ao espaço, o Locatário tiver de entrar na casa onde vive (por exemplo, uma arrecadação dentro do seu apartamento, e não uma garagem, box ou arrecadação independente), pode optar por alugar apenas a pessoas do seu género. Indique-o claramente no anúncio e aplique-o a todos.
+
+## 9. Quando a lei diz outra coisa
+
+Cumpra a lei do local onde fica o espaço. Se uma lei exigir uma distinção que esta política proibiria, prevalece a lei, e pode explicar essa restrição de forma factual no anúncio. Em tudo o resto, aplica-se esta política.
+
+## 10. Como denunciar
+
+Se for vítima ou testemunha de discriminação na Stoway, use o botão Denunciar (motivo: "Assédio ou abuso") ou escreva para [stoway.support@gmail.com](mailto:stoway.support@gmail.com). Diga-nos o que aconteceu e quando, com capturas de ecrã, se as tiver. Tratamos as denúncias com confidencialidade e não toleramos represálias contra quem denuncia de boa-fé. Pode também apresentar queixa às autoridades competentes — em Portugal, à Comissão para a Igualdade e Contra a Discriminação Racial (CICDR), em casos de discriminação em razão da origem racial e étnica, cor, nacionalidade, ascendência ou território de origem.
+
+## 11. O que fazemos
+
+Analisamos todas as denúncias (Termos, secção 8). Consoante o caso, podemos contactar as pessoas envolvidas, emitir um aviso, remover um anúncio ou conteúdo, ou suspender ou encerrar uma conta — incluindo por condutas fora do site ligadas a um aluguer combinado através da Stoway. Se um Locatário perder um espaço por causa de discriminação, faremos o possível para o ajudar a encontrar outro.
+
+## 12. Se não aceitar
+
+Sem aceitar este compromisso, não pode anunciar nem gerir espaços na Stoway. Pode continuar a pesquisar, contactar Stowkeepers e alugar espaço, ou eliminar a sua conta a qualquer momento. Quando esta política mudar de forma relevante, os Stowkeepers terão de a aceitar novamente.
+
 <!-- lang:fr -->
 
 # Conditions d'utilisation
@@ -639,3 +807,87 @@ Stoway est réservé aux personnes de 18 ans et plus. Nous ne collectons pas sci
 ## 11. Modification de cette politique
 
 Nous publierons ici toute mise à jour avec une nouvelle date d'entrée en vigueur, et vous informerons par email des modifications importantes avant leur entrée en vigueur.
+
+# Engagement de la communauté et politique de non-discrimination
+
+Date d'entrée en vigueur : 13 octobre 2026
+
+## 1. Notre engagement
+
+Stoway repose sur la confiance entre voisins. Toute personne qui propose un espace sur Stoway (un « Stowkeeper », appelé « Hôte » dans nos Conditions) doit accepter cet engagement avant de publier une annonce :
+
+> **Je m'engage à traiter chaque membre de la communauté Stoway avec respect, sans jugement ni préjugé, quels que soient son origine ethnique, sa couleur de peau, son origine nationale, sa nationalité, sa religion ou ses convictions, son sexe, son identité de genre, son orientation sexuelle, son handicap, son âge, sa situation familiale ou matrimoniale, ou une grossesse.**
+
+Cette politique explique ce que cela signifie en pratique. Elle s'applique en complément de nos Conditions d'utilisation.
+
+## 2. Ce qu'elle couvre
+
+Elle couvre les annonces, profils, photos, messages et chaque étape d'une location conclue via Stoway : demandes, visites, remise des clés ou codes, dépôt, retrait, ainsi que tout ce qui est dit ou fait hors du site en lien avec cette location. Les Locataires doivent traiter les Stowkeepers avec le même respect ; les points 4.5 et 4.6 s'appliquent aussi à eux.
+
+## 3. Caractéristiques protégées
+
+Vous ne pouvez traiter personne différemment en raison de l'une des caractéristiques suivantes — les siennes ou celles d'une personne qui l'accompagne :
+
+- origine ethnique, couleur de peau ou ascendance
+- origine nationale, nationalité ou lieu d'origine
+- religion ou convictions
+- sexe, grossesse, identité ou expression de genre
+- orientation sexuelle
+- handicap ou maladie chronique
+- âge
+- situation familiale ou matrimoniale
+
+## 4. Ce que les Stowkeepers ne doivent pas faire
+
+1. Refuser, ignorer ou annuler une demande, ou mettre fin à une location, en raison d'une caractéristique protégée.
+2. Appliquer des prix, cautions, durées de location, horaires d'accès, règles ou autres conditions différents en raison d'une caractéristique protégée.
+3. Exprimer dans une annonce ou un message une préférence pour ou contre certaines personnes — par exemple « Portugais uniquement », « pas d'étrangers », « idéal pour une famille chrétienne » ou « pas de personnes âgées ».
+4. Poser des questions sur une caractéristique protégée, ou demander des photos ou documents pour la connaître. Si vous vérifiez l'identité des Locataires, faites-le de la même manière pour tous.
+5. Tenir des propos injurieux, stéréotypés ou dégradants, y compris utiliser délibérément le mauvais prénom ou les mauvais pronoms pour quelqu'un.
+6. Afficher des symboles ou images haineux sur les photos d'une annonce ou sur un profil.
+7. Dissuader quelqu'un de louer — par exemple en lui suggérant de chercher « un espace plus adapté » — en raison d'une caractéristique protégée.
+
+## 5. Ce que les Stowkeepers peuvent faire
+
+Vous décidez toujours qui stocke ses affaires dans votre espace, tant que le motif n'est pas une caractéristique protégée et que vous l'appliquez de la même manière à tous. Motifs légitimes, par exemple :
+
+- les biens ne rentrent pas, sont trop lourds ou figurent sur la liste des biens interdits (Conditions, section 6) ;
+- les dates ou horaires d'accès ne vous conviennent pas ;
+- le Locataire refuse des conditions de location écrites, n'a pas respecté un accord précédent, ou s'est montré impoli ou menaçant ;
+- le Locataire ne peut pas confirmer son identité, alors que vous le demandez à tous.
+
+Décrivez votre espace de façon factuelle — escaliers, ascenseur, largeur de porte, éclairage, distance du stationnement, horaires d'accès — pour que chaque Locataire décide lui-même si l'espace lui convient. Cette décision lui appartient.
+
+## 6. Âge
+
+Tous les utilisateurs de Stoway doivent avoir au moins 18 ans (Conditions, section 3). Au-delà, vous ne pouvez pas refuser un Locataire ni modifier vos conditions parce que vous le jugez trop jeune ou trop âgé.
+
+## 7. Handicap et accessibilité
+
+1. Décrivez l'accessibilité avec exactitude, sans l'exagérer.
+2. Ne facturez pas davantage, et ne demandez pas de caution plus élevée, parce qu'un Locataire est en situation de handicap.
+3. Laissez un chien d'assistance, un aidant ou une personne qui l'aide accompagner le Locataire lors des visites, du dépôt et du retrait, et autorisez fauteuils roulants et autres aides à la mobilité partout où le Locataire a accès.
+4. Sur demande, communiquez d'une façon adaptée au Locataire — par exemple par écrit plutôt que par téléphone.
+5. Étudiez les demandes raisonnables qui facilitent l'accès, comme retrouver le Locataire au niveau de la rue, prévoir plus de temps pour le dépôt, ou partager l'accès avec une personne désignée par le Locataire. Vous n'êtes pas tenu de faire des travaux dans votre logement.
+
+## 8. Identité de genre
+
+Respectez l'identité de genre, le prénom et les pronoms de chacun. Vous ne pouvez refuser personne, ni traiter quelqu'un différemment, parce que vous êtes en désaccord avec son identité de genre.
+
+Exception : si, pour accéder à votre espace, le Locataire doit entrer dans le logement où vous vivez (par exemple un débarras à l'intérieur de votre appartement, et non un garage, un box ou une cave indépendants), vous pouvez choisir de ne louer qu'à des personnes de votre genre. Indiquez-le clairement dans votre annonce et appliquez-le à tous.
+
+## 9. Quand la loi prévoit autre chose
+
+Respectez la loi du lieu où se trouve votre espace. Si une loi impose une distinction que cette politique interdirait, la loi prévaut, et vous pouvez expliquer cette restriction de façon factuelle dans votre annonce. Partout ailleurs, cette politique s'applique.
+
+## 10. Signaler
+
+Si vous êtes victime ou témoin de discrimination sur Stoway, utilisez le bouton Signaler (motif : « Harcèlement ou abus ») ou écrivez à [stoway.support@gmail.com](mailto:stoway.support@gmail.com). Dites-nous ce qui s'est passé et quand, avec des captures d'écran si vous en avez. Nous traitons les signalements de manière confidentielle et ne tolérons aucune représaille contre une personne ayant signalé de bonne foi. Vous pouvez aussi saisir les autorités compétentes — au Portugal, la Comissão para a Igualdade e Contra a Discriminação Racial (CICDR) pour les discriminations fondées sur l'origine raciale ou ethnique, la couleur de peau, la nationalité, l'ascendance ou le lieu d'origine.
+
+## 11. Ce que nous faisons
+
+Nous examinons chaque signalement (Conditions, section 8). Selon les cas, nous pouvons contacter les personnes concernées, adresser un avertissement, retirer une annonce ou un contenu, ou suspendre ou fermer un compte — y compris pour des comportements hors du site liés à une location conclue via Stoway. Si un Locataire perd un espace en raison d'une discrimination, nous ferons de notre mieux pour l'aider à en trouver un autre.
+
+## 12. Si vous n'acceptez pas
+
+Sans accepter cet engagement, vous ne pouvez ni publier ni gérer d'espaces sur Stoway. Vous pouvez toujours parcourir le site, contacter des Stowkeepers et louer un espace, ou supprimer votre compte à tout moment. Lorsque cette politique change de manière importante, les Stowkeepers devront l'accepter à nouveau.
